@@ -1,0 +1,160 @@
+<%#= render :partial => '/navreq' %>
+<table border="1" width="100%">
+	<tr>
+		<td width ="230"><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><h4><h3>ESTADO DE LA REQUISICION DE EJERCICIO</h3></td>
+		<td align="center" width="100"><h3>FOLIO: <%=h @requisicion.id %></h3><br/>
+		<%= Estado.find(:first, :conditions => { :id => @requisicion.estado_id }).estado %>
+		</td>
+	</tr>
+</table>
+<br/>
+<table border="2" width="100%">
+	<tr>
+		<td><b>Unidad Solicitante:</b></td>
+		<td><% if @requisicion.clues_id != nil %><%=h Clue.find(:first, :conditions => { :id => @requisicion.clues_id}).name %><% end %></td>
+		<% if @requisicion.etiqueta != nil && @requisicion.etiqueta != 0 %><td align="center"><b>ETIQUETA</b></td><% end %>
+		<td align="center"><b>IMPORTE</b></td>
+		<td align="center"><b>SOLICITUDES</b></td>
+		<td align="center"><b>AAAA-MM-DD</b></td>
+	</tr>
+	<tr>
+		<td><b>Financiamiento:</b></td>
+		<td><%=h Fuente.find(:first, :conditions => { :id => @requisicion.fuente_id }).name %></td>
+		<% if @requisicion.etiqueta != nil && @requisicion.etiqueta != 0 %><td align="center"><%= @requisicion.etiqueta %></td><% end %>
+		<td align="center"><%=h number_to_currency(@requisicion.importe,:unit => '$',:separator => ".", :delimiter => ",") %></td>
+		<td align="center"><%= number_to_currency(@asignado,:unit => '$',:separator => ".", :delimiter => ",") %></td>
+		<td align="center"><%=h @requisicion.fecha %></td>
+	</tr>
+</table>
+<table border="10" width="100%">
+  <tr>
+    <th>No.</th>
+    <th>Proyecto</th>
+    <th>Prog.</th>
+    <th>Aplica</th>
+    <th>Part.</th>
+    <th>Mes</th>
+    <th>Descripcion del Gasto</th>
+    <th>Por Asignar</th>
+  </tr>
+<br/>
+<% @renglones.each do |renglon| %> 
+  <tr>
+    <td align="center"><%=h renglon.renglon %></td>
+    <td align="center"><% if renglon.proyecto != nil %><%=h renglon.proyecto.name %><% end %></td>
+    <td align="center"><%=h renglon.programa.clave %></td>
+    <td align="center"><% if renglon.clues_id != nil %><%=h Clue.find(:first, :conditions => { :id => renglon.clues_id}).clues %><% end %></td>
+    <td align="center"><%=h renglon.partida.partida %></td>
+    <td align="center"><% if renglon.ejercicio != nil %><%=h renglon.ejercicio.year %>-<%=h renglon.ejercicio.month %><% end %></td>
+    <td align="center"><%=h renglon.descripcion %></td>
+    <td align="center"><%=h renglon.importe %></td>
+  </tr>
+<% end %>
+</table>
+<br/>
+<table border="10" width="100%">
+  <tr>
+    <th>Solic.#</th>
+    <th>Item#</th>
+    <th>Clues</th>
+    <th>Clave</th>
+    <th>Presentacion</th>
+    <th>Precio c/IVA</th>
+    <th>Marca mod</th>
+    <th>Cant.</th>
+    <th>Cad.</th>
+    <th>Alm.</th>
+    <th>Ent.</th>
+    <th>Req.</th>
+    <th>R</th>
+    <th>Capa.</th>
+    <th>Muestra</th>
+    <th>Notas</th>
+    <th>Monto</th>
+  </tr>
+<% for articulo in @articulos %> 
+  <tr>
+    <td align="center"><%= link_to String(articulo.solicitud_id),solicitud_path(articulo.solicitud_id) %></td>
+    <td align="center"><%=h articulo.id %></td>
+	<% if articulo.clues_id != nil && articulo.clues_id != "" %>
+		<td align="center"><%=h Clue.find(:first, :conditions => { :id=> articulo.clues_id }).clues %></td>
+	<% end %>	
+	<td align="center"><%=h articulo.clave_id %></td>
+	<td align="center"><%=h articulo.presentacion %></td>
+	<td align="center"><%=h articulo.precio %></td>
+	<td align="center"><%=h articulo.marca_mod %></td>
+	<td align="center"><%=h articulo.cantidad %></td>
+	<td align="center"><%=h articulo.caducidad %></td>
+	<td align="center"><%=h articulo.almacen_id %></td>
+	<td align="center"><%=h articulo.entregas %></td>
+	<td align="center"><% if articulo.requisicion_id != nil %><%= link_to String(articulo.requisicion_id),requisicion_path(articulo.requisicion_id) %><% end %></td>
+    <td align="center"><% if articulo.renglon != nil %><%=h articulo.renglon.renglon %><% end %></td>
+    <td align="center"><%=h articulo.capacitacion %></td>
+    <td align="center"><%=h articulo.muestra %></td>
+    <td align="center"><%=h articulo.notas %></td>
+    <td align="center"><%=h articulo.importe %></td>
+  </tr>
+  <tr>
+    <td colspan="2"><b>Descripcion</b></td>
+	<td align="center" colspan="15"><%=h articulo.descripcion %></td>
+  </tr>
+<% end %>  
+</table>
+<table border='10'>
+<% if @peds.size > 0 %>
+ <tr>
+	<th colspan="8">PEDIDOS</th>
+ </tr>
+ <tr>
+    <th>No.</th>
+    <th>Clues</th>
+    <th>Proceso</th>
+    <th>Fecha</th>
+    <th>Proveedor</th>
+    <th>Entrega</th>
+    <th>Importe</th>
+    <th>Estado</th>
+  </tr>
+<% end %>
+<% total = 0.0 %>
+<% @peds.each do |ped| %>
+	<% if [5,8,10,13,15].include?(current_user.rol_id) || [ped.user_id].include?(current_user.id) %>
+  <tr>
+    <td align="center" ><%=link_to ped.id, ped %>
+	<td align="center"><% if ped.clues_id != nil %>
+		<% clues = Clue.find(:first, :conditions => { :id => ped.clues_id }) %>
+		<%= clues.nomunidad %>-<%= clues.clues %>
+		<% end %>	
+    </td>
+	<td align="center">
+		<% if ped.proceso_id != nil %>
+			<%=h Proceso.find(:first, :conditions => { :id => ped.proceso_id }).proceso %>
+		<% else %>
+			<%=h ped.tipo.tipo %>
+		<% end %>	
+    </td>
+    <td align="center"><%=h ped.fecha %></td>
+	<td align="center">
+		<% if ped.proveedor_id != nil %>
+				<% proveedor = Prov.find(:first , :conditions => {:id => ped.proveedor_id}) %>
+				<%=h proveedor != nil ? proveedor.fiscal : '' %>
+		<% end %>	
+    </td>
+    <td align="center"><%=h ped.entrega %></td>
+	<td align="right">
+		<%=h number_to_currency(ped.total,:unit => '$',:separator => ".", :delimiter => ",") %>
+		<% total = total + ped.total %>
+    </td>
+    <td align="center"><%=h ped.estado.estado %></td>
+	<% if [10,15].include?(current_user.rol_id) || ([1,3].include?(ped.estado_id) && (ped.user_id == current_user.id)) %>
+		<td align="center"><%= link_to 'Mod.', edit_ped_path(ped) %></td>
+	<% end %>
+  </tr>
+	<% end %>
+<% end %>
+ <tr>
+	<td align="right" colspan="6">Importe Total:</th>
+	<td align="right" colspan="2"><%=h number_to_currency(total,:unit => '$',:separator => ".", :delimiter => ",") %></th>
+ </tr>
+</table>

@@ -1,59 +1,78 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Atencions</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Clue</th>
-      <th>Unidad</th>
-      <th>Paciente</th>
-      <th>Fecha</th>
-      <th>Diagnosticos</th>
-      <th>Tipoat</th>
-      <th>Semanas</th>
-      <th>Gesta</th>
-      <th>Para</th>
-      <th>Aborto</th>
-      <th>Cesareas</th>
-      <th>Terminacion</th>
-      <th>Termino</th>
-      <th>Altapor</th>
-      <th>Fechaeg</th>
-      <th>User</th>
-      <th>Tipo</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @atencions.each do |atencion| %>
-      <tr>
-        <td><%= atencion.clue_id %></td>
-        <td><%= atencion.unidad %></td>
-        <td><%= atencion.paciente_id %></td>
-        <td><%= atencion.fecha %></td>
-        <td><%= atencion.diagnosticos %></td>
-        <td><%= atencion.tipoat %></td>
-        <td><%= atencion.semanas %></td>
-        <td><%= atencion.gesta %></td>
-        <td><%= atencion.para %></td>
-        <td><%= atencion.aborto %></td>
-        <td><%= atencion.cesareas %></td>
-        <td><%= atencion.terminacion %></td>
-        <td><%= atencion.termino %></td>
-        <td><%= atencion.altapor %></td>
-        <td><%= atencion.fechaeg %></td>
-        <td><%= atencion.user_id %></td>
-        <td><%= atencion.tipo_id %></td>
-        <td><%= link_to 'Show', atencion %></td>
-        <td><%= link_to 'Edit', edit_atencion_path(atencion) %></td>
-        <td><%= link_to 'Destroy', atencion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp-smp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Seguimiento a Pacientes con Complicaciones durante el Embarazo o Puerperio</b><hr/>
+							<h2>Atencion Medica</h2>
+			<% if @paciente_id != nil %>
+				<%= link_to @paciente_id,paciente_path(@paciente_id) %>-<%= Paciente.find(:first, :conditions=>{:id => @paciente_id}).name %>
+			<% end %>
+        </td>
+		<td align="right" valign="bottom">
+		<%= link_to 'Inicio', url_for("/") %>
+		<% if @paciente_id != nil  && (17..20).include?(current_user.rol_id) %>
+			<br/><br/><%= link_to 'Ingreso en UCI', new_atencion_path(:paciente => @paciente_id,:tipo=>23) %>
+			<br/><br/><%= link_to 'Ingreso en GYO', new_atencion_path(:paciente => @paciente_id,:tipo=>24) %>
+		<% end %>
+		<% if [10].include?(current_user.rol_id) && false %>
+			<br/><%= link_to "Detalle Solicitudes", articulos_url %> 
+		<% end %>		
+		</td>
+	</tr>
 </table>
+<table border='10' width='100%'>
+  <tr>
+    <th>No.</th>
+	<% if @paciente_id == nil %>
+		<th>Pac.</th>
+		<th>CLUES</th>
+	<% end %>	
+    <th>T</th>
+    <th>Unidad</th>
+    <th>Fecha</th>
+    <th>Diagnosticos</th>
+    <th>SG</th>
+    <th>G</th>
+    <th>P</th>
+    <th>A</th>
+    <th>C</th>
+    <th>Alta Por</th>
+    <th>Fecha Eg.</th>
+    <th>MD</th>
+  </tr>
 
-<br>
-
-<%= link_to 'New Atencion', new_atencion_path %>
+<% @atencions.each do |atencion| %>
+  <tr>
+    <td align="center"><%=h atencion.id %></td>
+	<% if @paciente_id == nil %>
+		<td align="center"><%= link_to atencion.paciente_id, paciente_path(atencion.paciente_id) %></td>
+		<td align="center"><%=h atencion.clue_id %></td>
+	<% end %>	
+    <td align="center"><%=h atencion.tipo_id == 23 ? 'U' : 'G' %></td>
+    <td align="center"><%=h atencion.clue_id == nil ? atencion.unidad : Clue.find(:first, :conditions=>{:id =>atencion.clue_id}).nomunidad %></td>
+    <td align="center"><%=h atencion.fecha %></td>
+    <td align="center"><%=h atencion.diagnosticos %></td>
+    <td align="center"><%=h atencion.semanas %></td>
+    <td align="center"><%=h atencion.gesta %></td>
+    <td align="center"><%=h atencion.para %></td>
+    <td align="center"><%=h atencion.aborto %></td>
+    <td align="center"><%=h atencion.cesareas %></td>
+    <td align="center"><%=h atencion.altapor %></td>
+    <td align="center">
+		<% if atencion.fechaeg == nil %>
+			<%= (link_to "NuevaEvol.", new_evolucion_path(:paciente=>atencion.paciente_id, :atencion=>atencion.id)) %><br/>
+			<%= (link_to "NuevoNac.", new_nacido_path(:paciente=>atencion.paciente_id, :atencion=>atencion.id)) %>
+		<% else %>	
+			<%= atencion.fechaeg %>
+		<% end %>	
+	</td>
+	<td align="center"><%=h User.find(atencion.user_id).login %></td>
+	<% if [10,18].include?(current_user.rol_id) || ([17].include?(current_user.rol_id) && atencion.user_id == current_user.id && atencion.fechaeg == nil)%>
+		<td align="center"><%= link_to 'Mod.', edit_atencion_path(atencion) %></td>
+	<% end %>
+	<% if [10,18].include?(current_user.rol_id) %>
+		<td align="center"><%= link_to 'X', atencion, :confirm => 'Are you sure?', :method => :delete %></td>
+	<% end %>
+  </tr>
+<% end %>
+</table>
+<br />

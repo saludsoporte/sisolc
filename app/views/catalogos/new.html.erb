@@ -1,5 +1,96 @@
-<h1>New Catalogo</h1>
-
-<%= render 'form', catalogo: @catalogo %>
-
-<%= link_to 'Back', catalogos_path %>
+<%= form_for(@catalogo) do |f| %>
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><h2>Nuevo Articulo</h2><br />
+			<b>Partida:</b><%= f.select :partida_id, Partida.all().order(:id).collect {|s| [(String(s.partida)+"/"+String(s.cog2011)+" "+s.descripcion), s.id]} %>
+		</td>
+		<td align="center">
+			<b>Estado Art. </b><%= f.select :estado_id, Estado.where("id in (6,9)").order(:id).collect {|s| [s.estado, s.id]}%><br /><br />
+			<b>Tipo Art. </b><%= f.select :tipo_id, Tipo.where("id =21").order(:tipo).collect {|s| [s.tipo, s.id]}, :include_blank=>true %><br /><br />
+			<b>Grupo Art. </b><%= f.select :tipo_id, Tipo.where("id in (22,37,38)").order(:tipo).collect {|s| [s.tipo, s.id]}, :include_blank=>true %>
+		</td>
+		<td align="right"><%= link_to 'Catalogo por partida', partidas_path %><br /><br /><%= link_to 'Catalogo de partidas', partidas_path %></td>
+		</tr>
+</table>
+<% if current_user.rol_id==10 || (12..14).include?(current_user.rol_id) %>
+	<%= f.error_messages %>
+<table width="100%">
+	<tr>
+	<td>
+	<p>
+		<%= f.label :presentacion %><br />
+		<%= f.text_field :presentacion, :size=>80 %>
+	</p>
+	<p>
+		<%= f.label :descripcion %><br />
+		<%= f.text_area :descripcion, :COLS =>"60", :ROWS =>"20" %>
+	</p>
+	</td>
+	<td valign="top">
+	<p>
+		<%= f.label :clave %><br />
+		<%= f.text_field :clave %>
+	</p>
+	<p>
+		Sub-Unidades<br />
+		<%= f.text_field :unidades %>
+	</p>
+	<p>
+		Factor IVA (ej.1.16 o nada)<br />
+		<%= f.text_field :iva %>
+	</p>
+	<p>
+		<%= f.label :precio %><br />
+		<%= f.text_field :precio %>
+	</p>
+	<p>
+		<%= f.label :proceso %><br />
+		<%= f.text_field :proceso %>
+	</p>
+	<p>
+		<%= f.label :fecha %><br />
+		<%= f.date_select :fecha %>
+	</p>
+	<p>
+		<%= f.label :precio2 %><br />
+		<%= f.text_field :precio2 %>
+	</p>
+	<p>
+		<%= f.label :fecha2 %><br />
+		<%= f.date_select :fecha2 %>
+	</p>
+	</td>
+	</tr>
+	<% if [10,13].include?(current_user.rol_id) %>
+	<tr>
+		<td colspan="2">
+		P0 
+		<%= f.select :prog0_id, Tipo.find("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P1 
+		<%= f.select :prog1_id, Tipo.find("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P2 
+		<%= f.select :prog2_id, Tipo.find("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P3 
+		<%= f.select :prog3_id, Tipo.find("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P4 
+		<%= f.select :prog4_id, Tipo.find("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P5 
+		<%= f.select :prog5_id, Tipo.find("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P6 
+		<%= f.select :prog6_id, Tipo.find("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P7 
+		<%= f.select :prog7_id, Tipo.find("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P8 
+		<%= f.select :prog8_id, Tipo.find("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P9
+		<%= f.select :prog9_id, Tipo.find("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		<td>
+	<tr>
+	<% end %>
+</table>
+	<p>
+		<%= f.submit 'Crear' %>
+	</p>	
+	<% end %>
+<% end %>

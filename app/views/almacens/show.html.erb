@@ -1,129 +1,148 @@
-<p id="notice"><%= notice %></p>
+<HEAD>
+    <STYLE TYPE="text/css">
+         P.breakhere {page-break-before: always}
+    </STYLE>
+    </HEAD>
+    <% if !@marbetes %>
+    <table border="0" width="90%">
+        <tr>
+            <td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+            <td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+            <h2><%= !@marbetes ? 'Existencias de Almacen' : 'Marbetes para Inventario' %></h2>
+                <%= @almacen.nombre %>
+            <td align="center">
+                <%= link_to 'Inicio', url_for("/") %>
+                <br/><br/><%= link_to 'Movimientos', movimientos_path(:almacen=>@almacen.id) %>
+                <br/><br/><%= link_to 'Almacenes', almacens_path %>
+            </td>
+        </tr>
+    </table>
+    <table border="10" width="100%">
+    <% articulo = nil %>
+    <% @existencia = 0.0 %>
+    <% @existencias.each do |lote| %>
 
-<p>
-  <strong>Clue:</strong>
-  <%= @almacen.clue_id %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @almacen.user_id %>
-</p>
-
-<p>
-  <strong>Nombre:</strong>
-  <%= @almacen.nombre %>
-</p>
-
-<p>
-  <strong>Tipo:</strong>
-  <%= @almacen.tipo %>
-</p>
-
-<p>
-  <strong>Cuenta1:</strong>
-  <%= @almacen.cuenta1 %>
-</p>
-
-<p>
-  <strong>Cuenta2:</strong>
-  <%= @almacen.cuenta2 %>
-</p>
-
-<p>
-  <strong>Tipo:</strong>
-  <%= @almacen.tipo_id %>
-</p>
-
-<p>
-  <strong>Conta1:</strong>
-  <%= @almacen.conta1_id %>
-</p>
-
-<p>
-  <strong>Conta2:</strong>
-  <%= @almacen.conta2_id %>
-</p>
-
-<p>
-  <strong>Almac1:</strong>
-  <%= @almacen.almac1_id %>
-</p>
-
-<p>
-  <strong>Almac2:</strong>
-  <%= @almacen.almac2_id %>
-</p>
-
-<p>
-  <strong>Almac3:</strong>
-  <%= @almacen.almac3_id %>
-</p>
-
-<p>
-  <strong>Depende:</strong>
-  <%= @almacen.depende_id %>
-</p>
-
-<p>
-  <strong>Almac4:</strong>
-  <%= @almacen.almac4_id %>
-</p>
-
-<p>
-  <strong>Almac5:</strong>
-  <%= @almacen.almac5_id %>
-</p>
-
-<p>
-  <strong>Almac6:</strong>
-  <%= @almacen.almac6_id %>
-</p>
-
-<p>
-  <strong>Almac7:</strong>
-  <%= @almacen.almac7_id %>
-</p>
-
-<p>
-  <strong>Domicilio:</strong>
-  <%= @almacen.domicilio %>
-</p>
-
-<p>
-  <strong>Municipio:</strong>
-  <%= @almacen.municipio %>
-</p>
-
-<p>
-  <strong>Cp:</strong>
-  <%= @almacen.cp %>
-</p>
-
-<p>
-  <strong>Cpostal:</strong>
-  <%= @almacen.cpostal %>
-</p>
-
-<p>
-  <strong>Jefeu:</strong>
-  <%= @almacen.jefeu %>
-</p>
-
-<p>
-  <strong>Admoru:</strong>
-  <%= @almacen.admoru %>
-</p>
-
-<p>
-  <strong>Cierre1:</strong>
-  <%= @almacen.cierre1 %>
-</p>
-
-<p>
-  <strong>Cierre2:</strong>
-  <%= @almacen.cierre2 %>
-</p>
-
-<%= link_to 'Edit', edit_almacen_path(@almacen) %> |
-<%= link_to 'Back', almacens_path %>
+        <% if articulo != lote.catalogo_id %>
+            <% if !lote.catalogo_id.nil? %>
+                <% @catalogo = Catalogo.find(lote.catalogo_id) %>
+                <% if articulo != nil %>
+                    <tr>
+                        <td align="right" colspan="3"><%= @existencia %></td>
+                        <th align="center" colspan="2">Existencia Total</th>
+                    </tr>
+                <% end %>
+            <% end %>
+            <tr>
+                <th align="center" colspan="8">Descripcion</th>
+                <th align="center" colspan="4">Presentaci&oacute;n</th>
+            </tr>
+            <tr>
+                <td align="center" colspan="8"><%= @catalogo ? @catalogo.descripcion : lote.observacion %></td>
+                <td align="center" colspan="4"><%= @catalogo ? @catalogo.presentacion : " " %></td>
+            </tr>
+            <tr>
+                <th>#Lote</th>
+                <th>Part.</th>
+                <th>Clave</th>
+                <th>Exist.</th>
+                <th>Unid.</th>
+                <th>Caducidad</th>
+                <th>Lote</th>
+                <th>Fuente</th>
+                <th>Precio</th>
+                <th>Observ.</th>
+                <th>Mov.</th>
+                <th>Ped.</th>
+                <th>Estado</th>
+            </tr>
+            <% @existencia = 0.0 %>
+            <% articulo = lote.catalogo_id %>
+        <% end %>	
+        <% @existencia = @existencia + (lote.existencia.blank? ? 0.0 : lote.existencia)  %>
+      <tr>
+        <td align="center"><%= lote.id %></td>
+        <td align="center"><%= @catalogo ? link_to(lote.partida.partida_armonizada,partida_path(@catalogo.partida_id)) : lote.partida.partidas %></td>
+        <td align="center"><%= @catalogo ? link_to(@catalogo.clave, catalogo_path(@catalogo,:acceso=>2,:almacen=>lote.almacen_id)) : lote.observacion %></td>
+        <td align="center"><%= lote.existencia %></td>
+        <td align="center"><%=h lote.cantidadu != nil ? lote.cantidadu * lote.existencia : '' %></td>
+        <% difecha = lote.caducidad != nil ? (lote.caducidad - Date.today).to_i : nil %>
+        <% tono = 	case
+                        when difecha == nil || difecha > 365
+                            '#FFFFFF'
+                        when difecha <= 0 
+                            '#E0E0E0'
+                        when difecha <= 30 
+                            '#FF6666'
+                        when difecha <= 90 
+                            '#FF99FF'
+                        when difecha <= 182
+                            '#FFCC66'
+                        when difecha <= 365
+                            '#FFFFFF'
+                    end %>
+        <td align="center" bgcolor=<%= tono %>><%=h lote.caducidad %><%= difecha != nil ? '/'+difecha.to_s : '' %></td>
+        <td align="center"><%=h lote.lote %></td>
+        <td align="center"><%=h lote.fuente == nil ? 'FALTANTE' : lote.fuente.fuente%></td>
+        <td align="center"><%=h number_to_currency(lote.precio, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+        <td align="center"><%=h lote.observacion %></td>
+        <td align="center"><%= link_to 'Ver',movimiento_path(lote.movimiento_id.blank? ? lote.salida_id : lote.movimiento_id) %></td>
+        <td align="center"><%= lote.ped_id != nil ? link_to(lote.ped_id,ped_path(lote.ped_id)) : '' %></td>
+        <td align="center"><%= lote.estado.estado %></td>
+        <% if false %>
+            <td align="center"><%= link_to 'V', lote %></td>
+            <td align="center"><%= link_to 'Mod.', edit_lote_path(lote) %></td>
+        <% end %>
+      </tr>
+    <% end %>
+        <% if @existencia != 0.0 %>
+            <tr>
+                <td align="right" colspan="3"><%= @existencia %></td>
+                <th align="center" colspan="2">Existencia Total</th>
+            </tr>
+        <% end %>
+    </table>
+    <% else %>
+    <% @catalogo = nil %>
+    <% folio = 0 %>
+    <% @existencias.each do |lote| %>
+        <% if lote.catalogo_id == nil %>
+            <% @catalogo = nil %>
+        <% else %> 	
+            <% if @catalogo == nil || @catalogo.id != lote.catalogo_id %>
+                <% @catalogo = Catalogo.find(lote.catalogo_id) %>
+            <% end %>
+        <% end %>
+    <% folio = folio+1 %>
+    <table border="1" width="100%">
+      <tr>
+        <td align="center" valign="center">UBICACION: <%= @almacen.nombre %> FOLIO: <%= folio %><br/>
+            FUENTE: <%= lote.fuente == nil ? 'FALTANTE' : lote.fuente.fuente%><br/>
+            PARTIDA: <%= @catalogo ? lote.partida.partida_armonizada : '' %><br/>
+            CLAVE: <%= @catalogo ? @catalogo.clave : '' %><br/>
+            DESCRIPCION: <%= @catalogo ? @catalogo.descripcion[0..255] : 'CLAVE FALTANTE'%><br/>
+            PRESENTACION: <%= @catalogo ? @catalogo.presentacion : '' %><br/>
+            LOTE: <%= lote.lote %> CADUCIDAD: <%= lote.caducidad %><br/><br/>
+            CANTIDAD: _________________<br/><br/>
+            PERSONA QUE EFECTUA EL CONTEO:<br/><br/>
+            NOMBRE: _____________________________________<br/><br/>
+            FIRMA: _____________________________________<br/><br/>
+            FECHA (DIA/MES/A&Ntilde;O): _____________________________________
+        </td>
+        <td align="center" valign="center">UBICACION: <%= @almacen.nombre %> FOLIO: <%= folio %><br/>
+            FUENTE: <%= lote.fuente == nil ? 'FALTANTE' : lote.fuente.fuente%><br/>
+            PARTIDA: <%= @catalogo ? lote.partida.partida_armonizada : '' %><br/>
+            CLAVE: <%= @catalogo ? @catalogo.clave : '' %><br/>
+            DESCRIPCION: <%= @catalogo ? @catalogo.descripcion[0..255] : 'CLAVE FALTANTE' %><br/>
+            PRESENTACION: <%= @catalogo ? @catalogo.presentacion : '' %><br/>
+            LOTE: <%= lote.lote %> CADUCIDAD: <%= lote.caducidad %><br/><br/>
+            CANTIDAD: _________________<br/><br/>
+            PERSONA QUE EFECTUA EL CONTEO:<br/><br/>
+            NOMBRE: _____________________________________<br/><br/>
+            FIRMA: _____________________________________<br/><br/>
+            FECHA (DIA/MES/A&Ntilde;O): _____________________________________
+        </td>
+      </tr>
+    </table>
+      <P CLASS="breakhere">
+    <% end %>
+    <% end %>

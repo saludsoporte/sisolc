@@ -1,5 +1,38 @@
-<h1>New Reorden</h1>
+<%= javascript_pack_tag 'reordens.js' %>
+<script>
+   // new setId();
+</script>
+<%= form_for(@reorden) do |f| %>     
+   
+    <table border="0" width="100%">
+        <tr>
+		    <td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+    		<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+            <h2>Nueva Alerta</h2></td>
+            <td align="center"><b>Usuario:</b><br />
+                <%= f.select :user_id, User.where("id =?",current_user.id).order(:nombre).collect {|s| [s.name, s.id]} %>
+		    </td>	
+	    </tr>
+    </table>
+    <p><%= f.label :nombre %><br /><%= f.text_field :nombre %></p>
+    <div id='part' name='part'></div>
+        <%= f.label :partida_id %><br />     
+        <%= f.select :partida_id, Partida.all().order(:partida).collect {|s| [(String(s.partida)+"/"+String(s.partida_armonizada)+" "+s.descripcion), s.id]},
+        {prompt:"Selecciona una partida"}%>
+    </div> 
+ 
+    <p><%= f.label :catalogo_id %><br />
+       <div id="select_div"></div>
+    
 
-<%= render 'form', reorden: @reorden %>
+    <p><%= f.label :punto %><br /><%= f.text_field :punto %></p>
+    <p><%= f.label :tipo_id %><br /><%= f.select :tipo_id, Tipo.where("id between 13 and 15").order(:tipo).collect {|s| [s.tipo, s.id]}, :include_blank=>true %></p>
+    <p><%= f.label :almacen_id %><br /><%= f.select :almacen_id, Almacen.all().collect {|s| [s.nombre, s.id]}, :include_blank=>true %></p>
+    <p>Vigencia Inicial<br /><input id="reorden_vigenciai" name="reorden[vigenciai]" type="date">
+    <p>Vigencia Final<br /><input id="reorden_vigenciaf" name="reorden[vigenciaf]" type="date">
+    <p><%= f.submit 'Crear' %></p>
 
-<%= link_to 'Back', reordens_path %>
+<%end%>
+
+<%= link_to 'Alertas', reordens_path %>
+

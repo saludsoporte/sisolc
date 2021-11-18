@@ -1,53 +1,50 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Ajustes</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Almacen</th>
-      <th>Partida</th>
-      <th>Fuente</th>
-      <th>Ajuste</th>
-      <th>Lote</th>
-      <th>Lote</th>
-      <th>Caducidad</th>
-      <th>Existen</th>
-      <th>Precio</th>
-      <th>Estado</th>
-      <th>Tipo</th>
-      <th>Fecharep</th>
-      <th>Catalogo</th>
-      <th>Descrip</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @ajustes.each do |ajuste| %>
-      <tr>
-        <td><%= ajuste.almacen_id %></td>
-        <td><%= ajuste.partida_id %></td>
-        <td><%= ajuste.fuente_id %></td>
-        <td><%= ajuste.ajuste %></td>
-        <td><%= ajuste.lote_id %></td>
-        <td><%= ajuste.lote %></td>
-        <td><%= ajuste.caducidad %></td>
-        <td><%= ajuste.existen %></td>
-        <td><%= ajuste.precio %></td>
-        <td><%= ajuste.estado_id %></td>
-        <td><%= ajuste.tipo_id %></td>
-        <td><%= ajuste.fecharep %></td>
-        <td><%= ajuste.catalogo_id %></td>
-        <td><%= ajuste.descrip %></td>
-        <td><%= link_to 'Show', ajuste %></td>
-        <td><%= link_to 'Edit', edit_ajuste_path(ajuste) %></td>
-        <td><%= link_to 'Destroy', ajuste, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
+<table border="0" width="80%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+		<h2>Ajustes de auditor&iacute;a/Inventarios</h2>
+		<td align="center">
+			<%= link_to 'Inicio', url_for("/") %>
+			<% if [10].include?(current_user.rol_id) %>
+				<br/><br/><%= link_to 'Nuevo ajuste', new_ajuste_path %>
+			<% end %>
+		</td>
+	</tr>
 </table>
+<table border="1" width="100%">
+  <tr>
+    <th>No.</th>
+    <th>Almacen</th>
+    <th>#Lote</th>
+    <th>Part.</th>
+    <th>Fuente</th>
+    <th>Lote</th>
+    <th>Caducidad</th>
+    <th>Afect&oacute;</th>
+    <th>Observ.</th>
+    <th>E</th>
+  </tr>
 
-<br>
 
-<%= link_to 'New Ajuste', new_ajuste_path %>
+  <% @ajustes.each do |ajuste| %>
+	<% almacen = Almacen.find(ajuste.almacen_id) %>
+	<% if [almacen.user_id,almacen.almac1_id,almacen.almac2_id,almacen.almac3_id,almacen.almac4_id,almacen.almac5_id,almacen.almac6_id,almacen.almac7_id].include?(current_user.id) || [5,10,13,24,26,27].include?(current_user.rol_id) || [165].include?(current_user.id) %>
+		<tr>
+		<td align="center"><%=h ajuste.id %></td>
+		<td align="center"><%= ajuste.almacen_id.blank? ? '' : link_to(Almacen.find(ajuste.almacen_id).nombre,almacen_path(ajuste.almacen_id)) %></td>
+		<td align="right"><%= link_to(ajuste.lote_id,catalogo_path(Lote.find(ajuste.lote_id).catalogo_id,:acceso=>3)) %></td>
+		<td align="center"><%=h ajuste.partida_id.blank? ? '' : Partida.find(ajuste.partida_id).partida_armonizada %></td>
+		<td align="center"><%=h ajuste.fuente_id.blank? ? '' : Fuente.find(ajuste.fuente_id).fuente %></td>
+		<td align="center"><%=h ajuste.lote %></td>
+		<td align="center"><%=h ajuste.caducidad %></td>
+		<td align="right"><%=h ajuste.existen %></td>
+		<td><%=h ajuste.descrip %></td>
+		<td><%=h ajuste.estado_id == 12 ? 'A' : 'E' %></td>
+		<% if [10].include?(current_user.rol_id) || ajuste.estado_id != 12 %>
+			<td><%= link_to 'Mod.', reporte_path(12,:almacen_id=>ajuste.almacen_id,:partida_id=>ajuste.partida_id,:fuente_id=>ajuste.fuente_id) %></td>
+			<td><%= link_to 'X', ajuste, :confirm => 'Are you sure?', :method => :delete %></td>
+		<% end %>	
+		</tr>
+	<% end %>	
+<% end %>
+</table>

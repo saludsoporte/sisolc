@@ -1,6 +1,50 @@
-<h1>Editing Domicilio</h1>
-
-<%= render 'form', domicilio: @domicilio %>
-
-<%= link_to 'Show', @domicilio %> |
-<%= link_to 'Back', domicilios_path %>
+<% form_for(@domicilio) do |f| %>
+  <%= f.error_messages %>
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp-smp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Seguimiento a Pacientes con Complicaciones durante el Embarazo y/o Puerperio</b></br><hr/>
+							<h2>Modificar Domicilio</h2></td>
+		<td align="center"><b>Medico:</b><br />
+			<%= f.select :user_id, User.find(:all , :conditions => { :id => current_user.id}, :order => "nombre").collect {|s| [s.name, s.id]} %>
+			<b>Paciente:</b><br />
+			<%= f.select :paciente_id, Paciente.find(:all , :conditions => { :id => @domicilio.paciente_id }).collect {|s| [s.name, s.id]} %>
+		</td>	
+	</tr>
+</table>
+  <p>
+    <%= f.label :entidad_id %><br />
+	<%= f.select :entidad_id, Entidad.find(:all).collect {|s| [s.entidad, s.id]} %>
+  </p>
+  <p>
+    <%= f.label :municipio %><br />
+    <%= f.text_field :municipio, :size=>100 %>
+  </p>
+  <p>
+    <%= f.label :calle %><br />
+    <%= f.text_field :calle, :size=>100 %>
+  </p>
+  <p>
+    <%= f.label :numero %><br />
+    <%= f.text_field :numero %>
+  </p>
+  <p>
+    <%= f.label :colonia %><br />
+    <%= f.text_field :colonia, :size=>100 %>
+  </p>
+  <p>
+    <%= f.label :cp %><br />
+    <%= f.text_field :cp %>
+  </p>
+  <p>
+    <%= f.label :telefono %><br />
+    <%= f.text_field :telefono %>
+  </p>
+  <p>
+    <%= f.label :observa %><br />
+    <%= f.text_field :observa, :size=>100 %>
+  <p>
+    <%= f.submit 'Actualizar' %>
+  </p>
+<% end %>
+<%= link_to 'Domicilios', domicilios_path(:paciente => @domicilio.paciente_id) %>

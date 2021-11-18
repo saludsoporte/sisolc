@@ -1,0 +1,25 @@
+<br/><br/>
+<%= form_for(session_path) do |f| -%>
+<table border="0" align="center" width="25%">	
+	<tr align="left">
+		<td><%= f.label :login %>:</td>
+	  	<td><%= f.text_field :login ,class: "form-control" %></td>
+	</tr>	  
+	<tr align="left">
+		<td><%= f.label :password,"Contraseña" %></td>
+		<td><%= f.password_field  :password, class: "form-control" %></td>
+	</tr>
+	<tr align="center">
+		<td></td>
+		<td><%= f.submit :"Iniciar" , class: "form-control btn btn-success" %></td>
+	</tr>	
+	<% if (@ultimo_login == -1) %>
+	<tr align="center">
+		<td colspan="2"><h4>Nombre de usuario / contraseña incorrecto<h4></td>
+	</tr>
+	<% else %>
+		<tr><td></td></tr>
+	<% end %>
+
+</table>
+<% end %>

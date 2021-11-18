@@ -1,69 +1,95 @@
 class ProcesosController < ApplicationController
-  before_action :set_proceso, only: %i[ show edit update destroy ]
-
-  # GET /procesos or /procesos.json
+  before_action :login_required
+  # GET /procesos
+  # GET /procesos.xml
   def index
-    @procesos = Proceso.all
+    @procesos = Proceso.all().order(proceso: :DESC)
+  
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @procesos }
+    end
   end
 
-  # GET /procesos/1 or /procesos/1.json
+  def vistaimp
+    @proceso = Proceso.find(params[:id])
+    @propuestas = Propuesta.where("proceso_id =?",@proceso.id).order(provee_id: :asc,anexo: :asc,reng_id: :asc)
+  end
+
+  # GET /procesos/1
+  # GET /procesos/1.xml
   def show
+    @proceso = Proceso.find(params[:id])
+    @pedidos = Pedido.where("proceso =?",@proceso.proceso)
+    @propuestas = Propuesta.where("proceso_id =?",@proceso.id).order(provee_id: :asc,anexo: :asc,reng_id: :asc)
+    @peds = Ped.where("proceso_id =? and estado_id in (1,3,12)",@proceso.id).order(:id)
+    @resprovs = Ped.find_by_sql ["select pr.fiscal observaciones,sum(pd.total) total from peds pd,provs pr where proceso_id = ? and pd.proveedor_id = pr.id group by pr.fiscal order by total desc",@proceso.id]
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @proceso }
+    end
   end
 
   # GET /procesos/new
+  # GET /procesos/new.xml
   def new
     @proceso = Proceso.new
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @proceso }
+    end
   end
 
   # GET /procesos/1/edit
   def edit
+    @proceso = Proceso.find(params[:id])
   end
 
-  # POST /procesos or /procesos.json
+  # POST /procesos
+  # POST /procesos.xml
   def create
-    @proceso = Proceso.new(proceso_params)
+    @proceso = Proceso.new(params[:proceso])
 
     respond_to do |format|
       if @proceso.save
-        format.html { redirect_to @proceso, notice: "Proceso was successfully created." }
-        format.json { render :show, status: :created, location: @proceso }
+        flash[:notice] = 'Proceso was successfully created.'
+        format.html { redirect_to(@proceso) }
+        format.xml  { render :xml => @proceso, :status => :created, :location => @proceso }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @proceso.errors, status: :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @proceso.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /procesos/1 or /procesos/1.json
+  # PUT /procesos/1
+  # PUT /procesos/1.xml
   def update
+    @proceso = Proceso.find(params[:id])
+
     respond_to do |format|
-      if @proceso.update(proceso_params)
-        format.html { redirect_to @proceso, notice: "Proceso was successfully updated." }
-        format.json { render :show, status: :ok, location: @proceso }
+      if @proceso.update_attributes(params[:proceso])
+        flash[:notice] = 'Proceso was successfully updated.'
+        format.html { redirect_to(@proceso) }
+        format.xml  { head :ok }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @proceso.errors, status: :unprocessable_entity }
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @proceso.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /procesos/1 or /procesos/1.json
+  # DELETE /procesos/1
+  # DELETE /procesos/1.xml
   def destroy
+    @proceso = Proceso.find(params[:id])
     @proceso.destroy
+
     respond_to do |format|
-      format.html { redirect_to procesos_url, notice: "Proceso was successfully destroyed." }
-      format.json { head :no_content }
+      format.html { redirect_to(procesos_url) }
+      format.xml  { head :ok }
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_proceso
-      @proceso = Proceso.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def proceso_params
-      params.require(:proceso).permit(:proceso, :fecha, :tipopro_id, :partida_id, :observacion, :estado_id, :pena, :sancionmax, :tipo_id)
-    end
 end

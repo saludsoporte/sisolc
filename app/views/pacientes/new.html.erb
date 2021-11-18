@@ -1,5 +1,43 @@
-<h1>New Paciente</h1>
+<% form_for(@paciente) do |f| %>
+  <%= f.error_messages %>
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp-smp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Seguimiento a Pacientes con Complicaciones durante el Embarazo y/o Puerperio</b></br><hr/>
+							<h2>Nuevo Paciente</h2></td>
+		<td align="center"><b>Medico:</b><br />
+			<%= f.select :user_id, User.find(:all , :conditions => { :id => current_user.id}, :order => "nombre").collect {|s| [s.name, s.id]} %>
+		</td>	
+	</tr>
+</table>
 
-<%= render 'form', paciente: @paciente %>
+  <p>
+    Apellido Paterno:<br />
+    <%= f.text_field :paterno, :size=>100 %>
+  </p>
+  <p>
+    Apellido Materno:<br />
+    <%= f.text_field :materno, :size=>100 %>
+  </p>
+  <p>
+    Nombre(s):<br />
+    <%= f.text_field :nombre, :size=>100 %>
+  </p>
+  <p>
+    Fecha Nacimiento:<br />
+    <%= f.date_select :nacimiento, :start_year=>Time.now.year - 120, :end_year=>Time.now.year %>
+  </p>
+  <p>
+    CURP o RFC:<br />
+    <%= f.text_field :curp %>
+  </p>
+  <p>
+    <%= f.label :observa %><br />
+    <%= f.text_field :observa, :size=>100 %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
 
-<%= link_to 'Back', pacientes_path %>
+<%= link_to 'Pacientes', pacientes_path %>

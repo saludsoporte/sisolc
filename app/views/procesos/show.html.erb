@@ -1,49 +1,189 @@
-<p id="notice"><%= notice %></p>
+<%= render :partial => '/navigation' %>
+<table border="0" width="95%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="left"><h3>Propuesta y Pedidos Proceso: <%=h @proceso.proceso %></h3></td>
+		<% if [10,15].include?(current_user.rol_id) %>
+			<td align="center"><%= link_to 'Aumentar Propuesta', new_propuesta_path(:partida => @proceso.partida_id, :proceso =>@proceso.id) %> </td>
+		<% end %>
+	</tr>
+</table>
+<% if @propuestas.count{ |x| !x.nil } > 0%>
+<table border='10'>
+</h3><br/>
+  <tr><th colspan='10' align='center'><%= link_to 'PROPUESTA DE ADJUDICACION', :action =>'vistaimp', :id => @proceso.id %></th></tr>
+  <tr>
+    <th>Anexo</th>
+    <th>Ren.</th>
+    <th>Part.</th>
+    <th>Clave</th>
+    <th>Descripcion</th>
+    <th>Pres.</th>
+    <th>Proveedor</th>
+    <th>Cantidad</th>
+    <th>Precio</th>
+    <th>IVA</th>
+  </tr>
 
-<p>
-  <strong>Proceso:</strong>
-  <%= @proceso.proceso %>
-</p>
+<% @propuestas.each do |propuesta| %>
+  <tr>
+    <td align='center'><%=h propuesta.anexo %></td>
+    <td align='center'><%=h propuesta.reng_id %></td>
+    <td align='center'><%=h propuesta.partida.partida %></td>
+    <td><% if propuesta.catalogo_id != nil %><%=h propuesta.catalogo.clave %><% end %></td>
+    <td><% if propuesta.catalogo_id != nil %><%=h propuesta.catalogo.descripcion %><% end %></td>
+    <td><% if propuesta.catalogo_id != nil %><%=h propuesta.catalogo.presentacion %><% end %></td>
+    <td><% if propuesta.provee_id != nil %><%=h Prov.find(:first, :conditions => {:id =>propuesta.provee_id}).nombre %><% end %></td>
+    <td align='right'><%=h propuesta.cantidad %></td>
+    <td align='right'><%=h propuesta.precio %></td>
+    <td align='right'><%=h propuesta.iva %></td>
+	<% if [10].include?(current_user.rol_id) %>
+    <td><%= link_to 'Mod.', edit_propuesta_path(propuesta) %></td>
+    <td><%= link_to 'X', propuesta, :confirm => 'Are you sure?', :method => :delete %></td>
+	<% end %>
+	</tr>
+<% end %>
+</table>
+<% end %>
 
-<p>
-  <strong>Fecha:</strong>
-  <%= @proceso.fecha %>
-</p>
+<% if @pedidos.count{ |x| !x.nil? } > 0%>
+<table border='10'>
+<THEAD>
+  <tr>
+    <th>Pedido</th>
+    <th>Proceso</th>
+    <th>Unidad</th>
+    <th>Part.</th>
+    <th>Clave</th>
+    <th>Descripcion</th>
+    <th>Presentacion</th>
+    <th>Cantidad</th>
+    <th>Precio s/IVA</th>
+    <th>Marca</th>
+    <th>Entrega</th>
+    <th>Almacen</th>
+    <th>Etiq.</th>
+    <th>Req.#</th>
+    <th>Fuente</th>
+    <th>Prog.</th>
+    <th>Proy.</th>
+    <th>Provee</th>
+  </tr>
+</THEAD>
 
-<p>
-  <strong>Tipopro:</strong>
-  <%= @proceso.tipopro_id %>
-</p>
-
-<p>
-  <strong>Partida:</strong>
-  <%= @proceso.partida_id %>
-</p>
-
-<p>
-  <strong>Observacion:</strong>
-  <%= @proceso.observacion %>
-</p>
-
-<p>
-  <strong>Estado:</strong>
-  <%= @proceso.estado_id %>
-</p>
-
-<p>
-  <strong>Pena:</strong>
-  <%= @proceso.pena %>
-</p>
-
-<p>
-  <strong>Sancionmax:</strong>
-  <%= @proceso.sancionmax %>
-</p>
-
-<p>
-  <strong>Tipo:</strong>
-  <%= @proceso.tipo_id %>
-</p>
-
-<%= link_to 'Edit', edit_proceso_path(@proceso) %> |
-<%= link_to 'Back', procesos_path %>
+<% @pedidos.each do |pedido| %>
+  <tr>
+    <td><%=h pedido.pedido %></td>
+    <td><%=h pedido.proceso %></td>
+    <td><%=h pedido.nombreuni %></td>
+    <td><%=h pedido.partida %></td>
+    <td><%=h pedido.articulo %></td>
+    <td><%=h pedido.descripcion %></td>
+    <td><%=h pedido.presentacion %></td>
+    <td align="right"><%=h pedido.cantidad %></td>
+    <td align="right"><%=h pedido.preciouni %></td>
+    <td><%=h pedido.marca %></td>
+    <td><%=h pedido.entrega %></td>
+    <td><%=h pedido.almacen %></td>
+    <td><%=h pedido.etiqueta %></td>
+    <td><%=h pedido.requisicion %></td>
+    <td><%=h pedido.fuente %></td>
+    <td><%=h pedido.programa+pedido.subprograma %></td>
+    <td><%=h pedido.proyecto %></td>
+    <td><%=h pedido.proveedor %></td>
+	<% if [10].include?(current_user.rol_id) %>
+		<td><%= link_to 'Show', pedido %></td>
+		<td><%= link_to 'Edit', edit_pedido_path(pedido) %></td>
+		<td><%= link_to 'Destroy', pedido, :confirm => 'Are you sure?', :method => :delete %></td>
+	<% end %>
+  </tr>
+<% end %>
+</table>
+<% end %>
+<% if @peds.size > 0 %>
+	<% if @resprovs.size > 0%>
+		<table border='10'>
+		<tr>
+			<th colspan="2">Resumen por Proveedor</th>
+		</tr>
+		<tr>
+			<th>Proveedor</th>
+			<th>Total</th>
+		</tr>
+		<% total = 0.0 %>
+		<% @resprovs.each do |resprovs| %>
+			<tr>
+				<td><%=resprovs.observaciones%></td>
+				<td align="right"><%=number_to_currency(resprovs.total, :unit => '$', :separator => ".", :delimiter => ",")%></td>
+			</tr>
+			<% total = total +resprovs.total %>
+		<% end %>
+			<tr>
+				<th>Gran Total</th>
+				<td align="right"><%=number_to_currency(total, :unit => '$', :separator => ".", :delimiter => ",")%></td>
+			</tr>
+		</table>
+	<% end %>
+<table border='10'>
+	<tr>
+		<th colspan="8">Relaci&oacute;n de Pedidos</th>
+	</tr>
+  <tr>
+    <th>No.</th>
+    <th>Clues</th>
+    <th>Fuente Fin.</th>
+    <th>Importe</th>
+    <th>Almacen</th>
+    <th>Entrega</th>
+    <th>Proveedor</th>
+    <th>Estado</th>
+  </tr>
+<% end %>
+<% @peds.each do |ped| %>
+	<% if [5,8,10,13,15].include?(current_user.rol_id) || [ped.user_id].include?(current_user.id) %>
+  <tr>
+    <td align="center" ><%=link_to ped.id, ped %>
+	<td align="center"><% if ped.clues_id != nil %>
+		<% clues = Clue.find(ped.clues_id ) %>
+		<%= clues.nomunidad %>-<%= clues.clues %>
+		<% end %>	
+    </td>
+	<td align="center">
+		<%  if ped.requisicion_id != nil 
+				requi = Requisicion.find(ped.requisicion_id)
+				if requi.fuente_id != nil
+					@fuente_id = requi.fuente_id
+				else 
+					@fuente_id = nil
+				end
+			else
+				@fuente_id = nil
+			end
+			if @fuente_id == nil && ped.fuente_id != nil
+				@fuente_id = ped.fuente_id
+			end	
+		%>
+		<%= @fuente_id =! nil ? Fuente.find(@fuente_id).fuente 	: 'SIN FUENTE' %>
+    </td>
+    <td align="right"><%=h number_to_currency(ped.total, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+	<td align="center">
+		<% if ped.almacen_id != nil %>
+			<% if current_user.id == 165 or ped.id > 367 %>
+				<% almacen = Almacen.find(ped.almacen_id) %>
+				<%=h almacen != nil ? almacen.nombre : '' %>
+			<% else %>
+				<% almacen = Clue.find(ped.almacen_id ) %>
+				<%=h almacen != nil ? almacen.nomunidad : '' %>
+			<% end %>	
+		<% end %>	
+    </td>
+    <td align="center"><%=h ped.entrega %></td>
+	<td align="center"><% if ped.proveedor_id != nil %>
+		<%=h Prov.find(ped.proveedor_id).fiscal %>
+		<% end %>	
+    </td>
+    <td align="center"><%=h ped.estado.estado %></td>
+  </tr>
+	<% end %>
+<% end %>
+</table>

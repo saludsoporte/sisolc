@@ -1,94 +1,217 @@
-<p id="notice"><%= notice %></p>
+<%= render :partial => '/navsol' %>
+<table border="0" width="100%">
+	<tr>
+		<td width ="230"><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center" width="300"><h3>DIRECCION ADMINISTRATIVA SUBDIRECCION OPERATIVA DEPARTAMENTO DE ADQUISICIONES</h3></td>
+		<td align="center"><h3>FORMATO FM-SO1 SOLICITUD DE BIENES Y CONTRATACION DE SERVICIOS FUERA DEL POA</h3></td>
+		<td align="right" width="200"><h3>FOLIO: <%=h @solicitud.id %></h3>Partida <%=h @solicitud.updated_at.year > 2010 ? @solicitud.partida.partida_armonizada : @solicitud.partida.partida %></td>
+	</tr>
+</table>
 
-<p>
-  <strong>Area:</strong>
-  <%= @solicitud.area_id %>
-</p>
+<table border="2" width="100%">
+	<tr>
+		<td><b>Area Solicitante:</b></td>
+		<td><%=h @solicitud.area.area %></td>
+		<td><b>No. de Requisicion:</b></td>
+		<td><% if @solicitud.requisicion_id != nil %>
+			<%= link_to String(@solicitud.requisicion_id < 201100000 ? @solicitud.requisicion_id : @solicitud.requisicion_id-201100000),
+			requisicions_path(@solicitud.requisicion_id) %>
+			<% end %>
+			<% if @solicitud.renglon != nil %><%=h @solicitud.renglon.renglon %></td><% end %>
+	</tr>
+	<tr>
+		<td><b>Nombre Solicitante:</b></td>
+		<td><%=h @solicitud.user.name %></td>
+		<td><b>Tipo de recurso:</b></td>
+		<td><%=h @solicitud.tipo.tipo %></td>
+	</tr>
+	<tr>
+		<td><b>Fecha de Solicitud:</b></td>
+		<td><%=h @solicitud.created_at.strftime('%Y/%m/%d') %></td>
+		<td><b>Fuente:</b></td>
+		<% if @solicitud.fuente_id != nil %>
+			<td><%= Fuente.find(@solicitud.fuente_id).name %></td>
+		<% else %>
+			<td><%=h @solicitud.fuente_id %></td>
+		<% end %>	
+	</tr>
+	<tr>
+		<td><b>Fecha Recep. Doc.:</b></td>
+		<td></td>
+		<td><b>Programa:</b></td>
+		<% if @solicitud.programa_id != nil %>
+			<td><%= Programa.find(@solicitud.programa_id).name %></td>
+		<% else %>
+			<td><%=h @solicitud.programa_id %></td>
+		<% end %>	
+	</tr>
+	<tr>
+		<td><b>Notas:</b></td>
+		<td><%=h @solicitud.notas %></td>
+		<td><b>Proyecto:</b></td>
+		<% if @solicitud.proyecto_id != nil %>
+			<td><%= Proyecto.find(@solicitud.proyecto_id).name %></td>
+		<% else %>
+			<td><%=h @solicitud.proyecto_id %></td>
+		<% end %>	
+	</tr>
+	<tr>
+		<td><b>Estado de Solicitud:</b></td>
+		<td><%=h @solicitud.estado.estado %></td>
+		<td><b>Importe:</b></td>
+		<td><%=h number_to_currency(@solicitud.importe, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+	</tr>
+	<tr>
+		<td><b>Instrucciones:</b></td>
+		<td><%=h @solicitud.tipotecho != nil ? Tipo.find(@solicitud.tipotecho).tipo : '' %></td>
+		<td><b>Techo Financiero:</b></td>
+		<td><%=h number_to_currency(@solicitud.techo, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+	</tr>
+</table>
+*Cualquier especificacion de marca y modelo debera adjuntarse con la justificacion tecnica respectiva.<br/>
+<table border="10" width="100%">
+  <THEAD>
+  <tr>
+    <th>Item#</th>
+    <th>Clues</th>
+    <th>Clave</th>
+    <th>Presentacion</th>
+    <th>Precio c/IVA</th>
+    <th>Marca mod</th>
+    <th>Cant.</th>
+    <th>Cad.</th>
+    <th>Alm.</th>
+    <th>Ent.</th>
+    <th>Req.</th>
+    <th>R</th>
+    <th>Capa.</th>
+    <th>Muestra</th>
+    <th>Notas</th>
+    <th>Monto</th>
+  </tr>
+  </THEAD>
 
-<p>
-  <strong>User:</strong>
-  <%= @solicitud.user_id %>
-</p>
+<%# for articulo in @articulos %> 
 
-<p>
-  <strong>Vobotecnico:</strong>
-  <%= @solicitud.vobotecnico_id %>
-</p>
+<% ret = Articulo.find_by_sql(["select * from articulos where solicitud_id = ?",@solicitud.id]) 
+   ret.each do |articulo|  %>
 
-<p>
-  <strong>Tipo:</strong>
-  <%= @solicitud.tipo_id %>
-</p>
-
-<p>
-  <strong>Partida:</strong>
-  <%= @solicitud.partida_id %>
-</p>
-
-<p>
-  <strong>Requisicion:</strong>
-  <%= @solicitud.requisicion_id %>
-</p>
-
-<p>
-  <strong>Renglon:</strong>
-  <%= @solicitud.renglon_id %>
-</p>
-
-<p>
-  <strong>Notas:</strong>
-  <%= @solicitud.notas %>
-</p>
-
-<p>
-  <strong>Anexos:</strong>
-  <%= @solicitud.anexos %>
-</p>
-
-<p>
-  <strong>Recepcion:</strong>
-  <%= @solicitud.recepcion %>
-</p>
-
-<p>
-  <strong>Estado:</strong>
-  <%= @solicitud.estado_id %>
-</p>
-
-<p>
-  <strong>Fuente:</strong>
-  <%= @solicitud.fuente_id %>
-</p>
-
-<p>
-  <strong>Programa:</strong>
-  <%= @solicitud.programa_id %>
-</p>
-
-<p>
-  <strong>Proyecto:</strong>
-  <%= @solicitud.proyecto_id %>
-</p>
-
-<p>
-  <strong>Importe:</strong>
-  <%= @solicitud.importe %>
-</p>
-
-<p>
-  <strong>Adqui:</strong>
-  <%= @solicitud.adqui_id %>
-</p>
-
-<p>
-  <strong>Techo:</strong>
-  <%= @solicitud.techo %>
-</p>
-
-<p>
-  <strong>Tipotecho:</strong>
-  <%= @solicitud.tipotecho %>
-</p>
-
-<%= link_to 'Edit', edit_solicitud_path(@solicitud) %> |
-<%= link_to 'Back', solicituds_path %>
+  <tr>
+    <td align="center"><%=h articulo.id %></td>
+	<% if articulo.clues_id != nil && articulo.clues_id != "" %>
+		<td align="center"><%=h Clue.find(articulo.clues_id).clues %></td>
+	<% end %>
+	<td align="center">
+		<% if articulo.clave_id != nil %>
+			<%cata= Catalogo.find(articulo.clave_id) %>
+			<%= cata != nil ? cata.clave : "WOW" %>
+		<% end %>	
+	</td>
+	<td align="center"><%=h articulo.presentacion %></td>
+	<td align="center"><%=h number_to_currency(articulo.precio, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+	<td align="center"><%=h articulo.marca_mod %></td>
+	<td align="center"><%=h articulo.cantidad %></td>
+	<td align="center"><%=h articulo.caducidad %></td>
+	<% if articulo.almacen_id != nil && articulo.almacen_id != "" %>
+		<td align="center"><%=h Clue.find(articulo.almacen_id).clues %></td>
+	<% end %>
+	<td align="center"><%=h articulo.entregas %></td>
+	<td align="center">
+		<% if articulo.requisicion_id != nil %>
+			<%# =TODO link_to String(articulo.requisicion_id),requisicion_path(articulo.requisicion_id) %>
+		<% else %>
+			<%# =TODO link_to "Nueva",new_requisicion_path(:fuente_id =>@solicitud.fuente_id, :clues_id =>articulo.clues_id, :articulo_id => articulo.id) %>
+		<% end %>
+	</td>	
+	<td align="center">
+		<% if articulo.renglon != nil %>
+			<%=h articulo.renglon.renglon %>
+		<% else %>
+			<% if articulo.requisicion_id != nil %>
+				<%= link_to "+",new_renglon_path(:requisicion_id =>articulo.requisicion_id, :clues_id =>articulo.clues_id, :proyecto_id =>@solicitud.proyecto_id, :programa_id => @solicitud.programa_id, :importe => articulo.importe, :partida_id => @solicitud.partida_id, :articulo_id => articulo.id)  %>
+			<% end %>
+		<% end %>
+	</td>	
+    <td align="center"><%=h articulo.capacitacion %></td>
+    <td align="center"><%=h articulo.muestra %></td>
+    <td align="center"><%=h articulo.notas %></td>
+    <td align="center"><%=h number_to_currency(articulo.importe, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+	<% if false %>	
+    <td align="center"><%= link_to 'Ver', articulo %></td>
+	<% end %>
+	<% if (current_user.id == @solicitud.user_id && [1,3].include?(@solicitud.estado_id)) || 
+		(current_user.id == @solicitud.vobotecnico_id && @solicitud.estado_id ==2) || 
+		[10,15].include?(current_user.rol_id) || @solicitud.adqui_id==current_user.id %>
+		<td><%= link_to 'Mod.', edit_articulos_path(articulo) %></td>
+		<% if (current_user.id == @solicitud.user_id && 
+			[1,3].include?(@solicitud.estado_id)) || 
+			(current_user.id == @solicitud.vobotecnico_id && @solicitud.estado_id ==2) || 
+			[10,15].include?(current_user.rol_id) %>
+			<td><%= link_to 'X', articulos_path, :confirm => 'Estas seguro(a)?', :method => :delete %></td>
+		<% end %>
+	<% end %>
+  </tr>
+  <tr>
+    <td align="center"><%=h articulo.id %></td>
+    <td colspan="2"><b>Descripcion</b></td>
+	<td align="center" colspan="14"><%=h articulo.descripcion %></td>
+  </tr>
+<% end %>
+</table>
+<br/>
+<table border="0" width="100%">
+	<tr>
+		<td align="center"><b>Firma Solicitante:</b></td>
+		<td align="center"><b>Vo.Bo. Area Tecnica:</b></td>
+	</tr>
+	<tr>
+		<td align="center"><%=h User.find(@solicitud.user_id).name %></td>
+		<td align="center"><%=h User.find(@solicitud.vobotecnico_id).name %></td>
+	</tr>
+</table>
+<br/>
+<table border="1" width="100%">
+<% @solnotas = Solnota.find_by_sql(["select * from solnotas where solicitud_id = ? ", @solicitud.id])
+   @solnotas.each do |solnota| %>
+	<tr>
+	<td><%=h solnota.fecha %></td>
+	<td align="center"><%=h User.find(solnota.user_id).name %></td>
+	<td><%=h solnota.comenta %></td>
+	<% if current_user.rol_id==10 %>
+		<td><%= link_to 'Mod.', edit_solnota_path(solnota) %></td>
+		<td><%= link_to 'X', solnota, :confirm => 'Seguro?', :method => :delete %></td>
+	<% end%>
+	</tr>
+<% end %>
+</table>
+<% if @peds != nil && @detpeds != nil %>
+	<table border="5" width="100%">
+	<THEAD>
+		<tr>
+			<th colspan="8">PEDIDOS</th>
+		</tr>
+		<tr>
+			<th>Pedido</th>
+			<th>Clave</th>
+			<th>Descripcion</th>
+			<th>Presentacion</th>
+			<th>Cantidad</th>
+			<th>Recibidos</th>
+			<th>Cancelados</th>
+			<th>Entrega</th>
+		</tr>
+	</THEAD>
+	<% @detpeds.each do |detped|  %>
+		<tr>
+		<td align="center"><%= link_to(detped.ped_id,peds_path(detped.ped_id)) %></td>
+		<td align="center"><%=h detped.clave_id %></td>
+		<td align="center"><%=h detped.descripcion %></td>
+		<td align="center"><%=h detped.presentacion %></td>
+		<td align="center"><%=h detped.cantidad %></td>
+		<td align="center"><%# TODO= detped.recibido > 0 ? link_to(detped.recibido,lotes_path(:ped=>detped.ped_id)) : detped.recibido %></td>
+		<td align="center"><%=h detped.cancelado %></td>
+		<td align="center"><%=h Ped.find(detped.ped_id).entrega %></td>
+		</tr>
+	<% end %>
+	</table>
+<% end %> 

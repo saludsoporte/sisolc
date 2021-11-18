@@ -1,194 +1,238 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Clues:</strong>
-  <%= @ped.clues_id %>
-</p>
-
-<p>
-  <strong>Proceso:</strong>
-  <%= @ped.proceso_id %>
-</p>
-
-<p>
-  <strong>Fecha:</strong>
-  <%= @ped.fecha %>
-</p>
-
-<p>
-  <strong>Proveedor:</strong>
-  <%= @ped.proveedor_id %>
-</p>
-
-<p>
-  <strong>Condiciones:</strong>
-  <%= @ped.condiciones_id %>
-</p>
-
-<p>
-  <strong>Almacen:</strong>
-  <%= @ped.almacen_id %>
-</p>
-
-<p>
-  <strong>Entrega:</strong>
-  <%= @ped.entrega %>
-</p>
-
-<p>
-  <strong>Requisicion:</strong>
-  <%= @ped.requisicion_id %>
-</p>
-
-<p>
-  <strong>Programa:</strong>
-  <%= @ped.programa_id %>
-</p>
-
-<p>
-  <strong>Observaciones:</strong>
-  <%= @ped.observaciones %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @ped.user_id %>
-</p>
-
-<p>
-  <strong>Jda:</strong>
-  <%= @ped.jda_id %>
-</p>
-
-<p>
-  <strong>So:</strong>
-  <%= @ped.so_id %>
-</p>
-
-<p>
-  <strong>Cp:</strong>
-  <%= @ped.cp_id %>
-</p>
-
-<p>
-  <strong>Da:</strong>
-  <%= @ped.da_id %>
-</p>
-
-<p>
-  <strong>Dg:</strong>
-  <%= @ped.dg_id %>
-</p>
-
-<p>
-  <strong>Adq:</strong>
-  <%= @ped.adq_id %>
-</p>
-
-<p>
-  <strong>Subtotal:</strong>
-  <%= @ped.subtotal %>
-</p>
-
-<p>
-  <strong>Iva:</strong>
-  <%= @ped.iva %>
-</p>
-
-<p>
-  <strong>Total:</strong>
-  <%= @ped.total %>
-</p>
-
-<p>
-  <strong>Estado:</strong>
-  <%= @ped.estado_id %>
-</p>
-
-<p>
-  <strong>Renglon:</strong>
-  <%= @ped.renglon_id %>
-</p>
-
-<p>
-  <strong>Tipo:</strong>
-  <%= @ped.tipo_id %>
-</p>
-
-<p>
-  <strong>Partida:</strong>
-  <%= @ped.partida_id %>
-</p>
-
-<p>
-  <strong>Pena:</strong>
-  <%= @ped.pena %>
-</p>
-
-<p>
-  <strong>Contrato:</strong>
-  <%= @ped.contrato %>
-</p>
-
-<p>
-  <strong>Fuente:</strong>
-  <%= @ped.fuente_id %>
-</p>
-
-<p>
-  <strong>Fianza:</strong>
-  <%= @ped.fianza_id %>
-</p>
-
-<p>
-  <strong>Facfianza:</strong>
-  <%= @ped.facfianza %>
-</p>
-
-<p>
-  <strong>Reqexterna:</strong>
-  <%= @ped.reqexterna %>
-</p>
-
-<p>
-  <strong>Requi2:</strong>
-  <%= @ped.requi2_id %>
-</p>
-
-<p>
-  <strong>Requi3:</strong>
-  <%= @ped.requi3_id %>
-</p>
-
-<p>
-  <strong>Requi4:</strong>
-  <%= @ped.requi4_id %>
-</p>
-
-<p>
-  <strong>Montoreq:</strong>
-  <%= @ped.montoreq %>
-</p>
-
-<p>
-  <strong>Montoreq2:</strong>
-  <%= @ped.montoreq2 %>
-</p>
-
-<p>
-  <strong>Montoreq3:</strong>
-  <%= @ped.montoreq3 %>
-</p>
-
-<p>
-  <strong>Montoreq4:</strong>
-  <%= @ped.montoreq4 %>
-</p>
-
-<p>
-  <strong>Requi5:</strong>
-  <%= @ped.requi5_id %>
-</p>
-
-<%= link_to 'Edit', edit_ped_path(@ped) %> |
-<%= link_to 'Back', peds_path %>
+<%= render :partial => '/navped' %>
+<table border="1" width="100%">
+	<tr><td colspan="8">
+	<table border="1" width="100%">
+<THEAD>
+		<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="left">
+		PROVEEDOR: 
+		<% if @ped.proveedor_id != nil %>	
+			<% proveedor = Prov.find(@ped.proveedor_id) %>
+			(#<%= proveedor.id %>)<br/>
+			<%= proveedor.fiscal %> <br/>
+			<%= proveedor.domicilio %> <br/>
+			<%= proveedor.colonia %> <br/>
+			<%= proveedor.ciudad %> C.P.<%= proveedor.cp %><br/>
+			<%= proveedor.telefonos %>
+			<% if proveedor.fax != nil %>
+				FAX: <%= proveedor.fax %>
+			<% end %> <br/>	
+			R.F.C. <%= proveedor.rfc %>
+		<% end %>	
+		</td>
+		<td align="left">EFECTUAR ENTREGA EN UNIDAD:<br/>
+		<% if @ped.almacen_id != nil %>
+			<% if current_user.id == 165 or @ped.id > 367 %>
+				<% almacen = Almacen.find(@ped.almacen_id) %>
+				<% codpos = almacen.cpostal %>
+				<%= almacen.nombre %><br/>
+			<% else %>	
+				<% almacen = Clue.find(@ped.almacen_id) %>
+				<% codpos = almacen.cp %>
+				<%= almacen.nomunidad %><br/>
+			<% end %>	
+			<% if almacen!= nil %>
+				<%= almacen.domicilio %><br/>
+				<%= almacen.municipio %>, S.L.P.
+				C.P. <%= codpos %>
+			<% end %>	
+		<% end %>	
+		</td>
+		<td align="left">
+		FACTURAR A:<br/>
+		SERVICIOS DE SALUD DE SAN LUIS POTOSI<br/>
+		Jesus Goytortua 340<br/>
+		Fracc. Tangamanga, S.L.P.<br/>
+		78269 San Luis Potosi, S.L.P.<br/>
+		RFC: SSS-960912-HW9
+		</td>
+	</tr>
+	<tr>
+		<td align="left">
+		Pedido: <b><%=h @ped.id %>/<%= @ped.fecha.year%></b> &nbsp; &nbsp; Fecha:<%=h @ped.fecha %><br/>
+		Unidad:<b><%= @ped.clues_id.blank? ? '' : Clue.find(@ped.clues_id).nomunidad %></b><br/>
+		Proceso:<%=h @ped.proceso.blank? ? @ped.tipo.tipo : @ped.proceso.proceso+" (#"+@ped.proceso.id.to_s+")" %>
+		</td>
+		<td align="center">
+			CONDICIONES DE PAGO:<b></b><br/><br/>
+			<% if @ped.tipo_id != 15 %>
+				<%=h @ped.condiciones_id == 1 ? 'CONTADO' : 'CREDITO A 20 DIAS' %><br/>		
+				<% tipo = Tipo.find(@ped.cp_id) %>
+				<%= tipo == nil ? '' : (@ped.cp_id == 6 || 
+					@ped.fianza_id == nil || @ped.fianza_id == 0 ? 
+					tipo.tipo + (@ped.fianza_id == 0 ? ' *' : '') : 
+					link_to(tipo.tipo,fianza_path(@ped.fianza_id))) %>
+			<% else %>
+				SIN OBLIGACION DE PAGO
+			<% end %>
+		</td>
+		<td align="center">
+		FECHA LIMITE DE ENTREGA:<b></b><br/>
+		<%=h @ped.entrega %>
+		<b></b><br/>
+		HORARIO DE RECEPCION<b></b><br/>
+		8:00 A 13:30 HORAS
+		</td>
+		<td align="center">
+		<% if @ped.tipo_id != 15 %>
+			REQUISICION/RECURSO:<br/>
+		<% end %>
+		<FONT face="arial" size="1">		
+		<% if @ped.requisicion != nil %>
+			<b><%= link_to (@ped.requisicion_id % 100000).to_s,requisicions_path+"/"+@ped.requisicion_id.to_s %>: </b>
+			<%=h @ped.requisicion.fuente.fuente %>
+			<% if @ped.montoreq != nil %>
+				<%=h number_to_currency(@ped.montoreq, :unit => '$', :separator => ".", :delimiter => ",")%>
+			<% end %>
+			<br/>
+		<% else %>
+			<% if @ped.reqexterna != nil %>
+				<b><%= @ped.reqexterna %></b> E:
+			<% else %>
+				SIN REQUISICION 
+			<% end %>
+			<%= @ped.fuente_id == nil ? 'SIN FUENTE' : Fuente.find(@ped.fuente_id).fuente %><br/>
+		<% end %>
+		<% if @ped.requi2_id != nil %>
+			<b><%= link_to(@ped.requi2_id % 100000 ,requisicions_path(@ped.requi2_id)) %>: </b>
+				<%=h Fuente.find(Requisicion.find(@ped.requi2_id).fuente_id).fuente %>
+			<% if @ped.montoreq2 != nil %>
+				<%=h number_to_currency(@ped.montoreq2, :unit => '$', :separator => ".", :delimiter => ",")%>
+			<% end %>
+			<br/>
+		<% end %>	
+		<% if @ped.requi3_id != nil %>
+			<b><%= link_to(@ped.requi3_id % 100000,requisicion_path(@ped.requi3_id)) %>: </b>
+				<%=h Fuente.find(Requisicion.find(@ped.requi3_id).fuente_id).fuente %>
+			<% if @ped.montoreq3 != nil %>
+				<%=h number_to_currency(@ped.montoreq3, :unit => '$', :separator => ".", :delimiter => ",")%>
+			<% end %>
+			<br/>
+		<% end %>	
+		<% if @ped.requi4_id != nil %>
+			<b><%= link_to(@ped.requi4_id % 100000,requisicion_path(@ped.requi4_id)) %>: </b><%=h 
+				Fuente.find(Requisicion.find(@ped.requi4_id).fuente_id).fuente %>
+			<% if @ped.montoreq4 != nil %>
+				<%=h number_to_currency(@ped.montoreq4, :unit => '$', :separator => ".", :delimiter => ",")%>
+			<% end %>
+			<br/>
+		<% end %>	
+		</FONT>
+		<% if @ped.proceso != nil || @ped.partida_id != nil %>
+			PARTIDA: <%=h partida = @ped.proceso == nil || 
+				@ped.partida_id != nil ? 
+				@ped.partida.partida_armonizada : 
+				Partida.find_by_sql(["select * from partidas where partida = ?",@ped.proceso.partida_id]).cog2011 %><br/>
+		<% end %>		
+		</td>
+	</tr>
+</table>
+		</td>
+	</tr>
+  <tr>
+    <th>CLAVE</th>
+    <th>DESCRIPCION</th>
+    <th>PRESENTACION</th>
+    <th>PRECIO<br/>UNITARIO</th>
+    <th>CANTIDAD</th>
+    <th>IMPORTE</th>
+  </tr>
+</THEAD>
+<TBODY>
+<tr>
+<% for detped in @detpeds %> 
+  <tr>
+	<td align="center">
+	<% if detped.clave_id != nil %>
+		<%=h Catalogo.find(detped.clave_id).clave %>
+		<% if detped.estado_id == 9 %>
+			<br/>Cancelado
+		<% end %>	
+	<% end %>	
+	</td>
+	<td align="center"><%=h detped.descripcion %> <b>MARCA: <%=h detped.marca_mod %></b></td>
+	<td align="center"><%=h detped.presentacion %></td>
+	<td align="center"><%=h number_to_currency(detped.precio, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+	<td align="center"><%=h detped.cantidad %>
+	<% if detped.cancelado != nil &&  detped.cancelado > 0.0 %>
+		<br/> - <%= detped.cancelado %>
+	<% end %>
+	<% if detped.recibido != nil &&  detped.recibido > 0.0 %>
+		<br/> Rec. <%= link_to(detped.recibido,lotes_path(:ped=>detped.ped_id)) %>
+	<% end %>
+	</td>
+    <td align="right"><%=h number_to_currency(detped.importe, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+	<% if false %>	
+    <td align="center"><%= link_to 'Ver', detped %></td>
+	<% end %>
+	<% if [1,3].include?(@ped.estado_id) || [10].include?(current_user.rol_id) %>
+		<td><%= link_to 'Mod.', edit_detped_path(detped) %></td>
+		<td><%= link_to 'X', detped, :confirm => 'Estas seguro(a)?', :method => :delete %></td>
+	<% end %>	
+  </tr>
+<% end %>
+   <td colspan="3">
+	<%=h @ped.observaciones %>
+	</td>
+	<td align=right>
+		<b>Subtotal:</b><br/>
+		<b>Iva:</b><br/>
+		<b>Total:</b>
+	</td>	
+    <td colspan="2" align="right">
+		<%=h number_to_currency(@ped.subtotal, :unit => '$', :separator => ".", :delimiter => ",")%><br/>
+		<%=h number_to_currency(@ped.iva, :unit => '$', :separator => ".", :delimiter => ",")%><br/>
+		<%=h number_to_currency(@ped.total, :unit => '$', :separator => ".", :delimiter => ",")%><br/>
+	</td>
+  </tr>
+</TBODY>
+<TFOOT>
+	<% if @ped.tipo_id != 15 && @ped.estado_id == 12 %>
+	<tr>
+	<td colspan="8">
+	<table border="1" width="100%">
+	<tr>
+		<% if @ped.adq_id != nil %>
+			<td align="center">
+			<%= User.find(@ped.adq_id ).puesto %><br/><br/>
+			<%= User.find(@ped.adq_id).name %>
+			</td>
+		<% end %>
+		<td align="center">
+		ADQUISICIONES<br/><br/>
+		<%= User.find(@ped.jda_id).name %>
+		</td>
+		<td align="center">
+		SUBDIRECCION OPERATIVA<br/><br/>
+		<%= User.find(@ped.so_id).name %>
+		</td>
+		<td align="center">
+		DIRECCION ADMINISTRATIVA<br/><br/>
+		<%= User.find(@ped.da_id).name %>
+		</td>
+		<% periodo = @ped.fecha.year.to_i %>
+		<% if @ped.subtotal != nil && ((@ped.subtotal >= 66465.00 && periodo == 2012) || 
+			(@ped.subtotal >= 50000.00 && periodo < 2012)) %>
+			<td align="center">
+			<% @director = User.find(@ped.dg_id) %>
+			<%= true ? 'DIRECCION GENERAL' : @director.puesto %><br/><br/>
+			<%= @director.name %>
+			</td>
+		<% end %>
+	</tr>
+	<% end %>
+	<tr>
+		<td colspan="6" align="center">
+			<b><FONT face="arial" size="1"> Pedido No. <%=h @ped.id %>/<%= @ped.fecha.year%>. Estado del pedido: <%= 
+				@ped.estado.estado %> / Elabora: <%= User.find(@ped.user_id).name %>
+			<%=(@ped.renglon_id != nil && 
+			@ped.renglon_id != 0 ? " / " + 
+			link_to("Solicitud No."+@ped.renglon_id.to_s,solicitud_path(@ped.renglon_id)) : "") %></b></FONT>
+		</td>
+	</tr>	
+	</table>
+	</td>
+	</tr>
+</TFOOT>
+</table>

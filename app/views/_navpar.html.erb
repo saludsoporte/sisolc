@@ -1,0 +1,20 @@
+<p>
+    <% if current_user.rol_id >= 0 %> 
+        <%= link_to "Inicio", root_path %> | 
+        <% if current_user.rol_id > 0 %>
+            <%= link_to "Solicitudes", solicituds_url %> | 
+            <%= link_to "Requisiciones", requisicions_url %> |
+        <% end %>	
+    <% end %>	
+    <%= link_to "Catalogos", partidas_url %>
+    <% if current_user %> 
+        | <%= link_to "Salir del Sistema", logout_path %>
+    <% end %>
+    <% if current_user.rol_id==10 %>
+        || <%= link_to 'Cambios datos generales', edit_partida_path(@partida) %>
+    <% end %>
+    <% if current_user.rol_id==10 || (11..14).include?(current_user.rol_id) %>
+        | <%= link_to 'Nuevo Articulo', new_catalogo_path(:partida => @partida.id) %>
+    <% end %>
+    </p>
+    <hr />

@@ -1,69 +1,93 @@
 class DomiciliosController < ApplicationController
-  before_action :set_domicilio, only: %i[ show edit update destroy ]
-
-  # GET /domicilios or /domicilios.json
+  before_action :login_required 
+  # GET /domicilios
+  # GET /domicilios.xml
   def index
-    @domicilios = Domicilio.all
+  	@paciente_id = params[:paciente]
+    if @paciente_id != nil
+		  @domicilios = Domicilio.find("paciente_id =?",@paciente_id).order(id: :DESC)
+    else
+		  if [10].include?(current_user.rol_id)
+			  @domicilios = Domicilio.all
+		  end    
+    end
+      respond_to do |format|
+        format.html # index.html.erb
+        format.xml  { render :xml => @domicilios }
+    end
   end
 
-  # GET /domicilios/1 or /domicilios/1.json
+  # GET /domicilios/1
+  # GET /domicilios/1.xml
   def show
+    @domicilio = Domicilio.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @domicilio }
+    end
   end
 
   # GET /domicilios/new
+  # GET /domicilios/new.xml
   def new
     @domicilio = Domicilio.new
+	@domicilio.paciente_id = params[:paciente]
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @domicilio }
+    end
   end
 
   # GET /domicilios/1/edit
   def edit
+    @domicilio = Domicilio.find(params[:id])
   end
 
-  # POST /domicilios or /domicilios.json
+  # POST /domicilios
+  # POST /domicilios.xml
   def create
-    @domicilio = Domicilio.new(domicilio_params)
+    @domicilio = Domicilio.new(params[:domicilio])
 
     respond_to do |format|
       if @domicilio.save
-        format.html { redirect_to @domicilio, notice: "Domicilio was successfully created." }
-        format.json { render :show, status: :created, location: @domicilio }
+        flash[:notice] = 'El domicilio fue creado.'
+        format.html { redirect_to(paciente_path(@domicilio.paciente_id)) }
+        format.xml  { render :xml => @domicilio, :status => :created, :location => @domicilio }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @domicilio.errors, status: :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @domicilio.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /domicilios/1 or /domicilios/1.json
+  # PUT /domicilios/1
+  # PUT /domicilios/1.xml
   def update
+    @domicilio = Domicilio.find(params[:id])
+
     respond_to do |format|
-      if @domicilio.update(domicilio_params)
-        format.html { redirect_to @domicilio, notice: "Domicilio was successfully updated." }
-        format.json { render :show, status: :ok, location: @domicilio }
+      if @domicilio.update_attributes(params[:domicilio])
+        flash[:notice] = 'Domicilio fue actualizado.'
+        format.html { redirect_to(paciente_path(@domicilio.paciente_id)) }
+        format.xml  { head :ok }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @domicilio.errors, status: :unprocessable_entity }
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @domicilio.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /domicilios/1 or /domicilios/1.json
+  # DELETE /domicilios/1
+  # DELETE /domicilios/1.xml
   def destroy
+    @domicilio = Domicilio.find(params[:id])
     @domicilio.destroy
+
     respond_to do |format|
-      format.html { redirect_to domicilios_url, notice: "Domicilio was successfully destroyed." }
-      format.json { head :no_content }
+      format.html { redirect_to(domicilios_url) }
+      format.xml  { head :ok }
     end
   end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_domicilio
-      @domicilio = Domicilio.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def domicilio_params
-      params.require(:domicilio).permit(:paciente_id, :entidad_id, :municipio, :calle, :numero, :colonia, :cp, :telefono, :observa, :user_id, :muni_id)
-    end
 end

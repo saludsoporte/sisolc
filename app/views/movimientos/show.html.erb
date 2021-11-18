@@ -1,124 +1,229 @@
-<p id="notice"><%= notice %></p>
+<table border="0" width="90%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+		<h2>Movimiento de Almacen<%= @movimiento.tipo_id == 4 && @movimiento.estado_id == 2 ? '<br/>Orden de Surtido' : '' %></h2>
+		<% @almacen = @movimiento.almacen %>
+			<%=raw link_to(@almacen.nombre,almacen_path(@movimiento.almacen_id,partida:@movimiento.partida_id,movimiento:@movimiento.id)) %>
+		<td align="center">
+			<%= link_to 'Inicio', url_for("/") %>
+			<% if false %>
+				<br/><br/><%=raw link_to 'Nuevo Lote', new_lote_path(movimiento:@movimiento.id) %>
+			<% end %>
+			<br/><br/><%=raw link_to 'Movimientos', movimientos_path(almacen:@movimiento.almacen_id) %>
+			<br/><br/><%=raw link_to 'Almacenes', almacens_path %>
+			<% if [10,13,21,22].include?(current_user.rol_id) &&  @almacen %>
+				<br/><br/><%=raw link_to 'Nuevo Movimiento', new_movimiento_path(almacen:@almacen.id) %>
+			<% end %>
+		</td>
+	</tr>
+</table>
+<table border="10" width="100%">
+  <tr>
+    <th>Folio</th>
+    <th>Fecha</th>
+    <th>Tipo</th>
+    <th>Part.</th>
+	<% if @movimiento.tipo_id == 3 && !(@movimiento.ped_id.blank? && @movimiento.pedido.blank?) %>
+		<th>Ped</th>
+	<% end %>
+    <th><%= @movimiento.tipo_id == 3 ? 'Origen' : 'Destino'%></th>
+    <th>Importe</th>
+    <th>Factura</th>
+    <th>Estado</th>
+  </tr>
+  <tr>
+    <td align="center"><b><%=raw @movimiento.consec %></b><br/><div style="font-size:8px;">#<%=raw @movimiento.id %></div></td>
+    <td align="center"><%=raw @movimiento.fecha %></td>
+    <td align="center"><b><%=raw @movimiento.tipo.tipo %></b></td>
+	<td align="center"><%= (@movimiento.partida_id.blank? ? "" : link_to(@movimiento.partida.partida, almacen_path(@movimiento.almacen_id,partida:@movimiento.partida_id,movimiento:@movimiento.id))) %></td>
+	<% if @movimiento.tipo_id == 3  && !(@movimiento.ped_id.blank? && @movimiento.pedido.blank?) %>
+		<% if !@movimiento.ped_id.blank? %>
+			<td align="center"><%= link_to(@movimiento.ped_id, ped_path(@movimiento.ped_id)) %></td>
+			<td align="center"><%=raw !@movimiento.ped_id.blank? ? Prov.find(@movimiento.ped.proveedor_id).fiscal+'/'+(@movimiento.oridest.blank? ? '' : Almacen.find(@movimiento.oridest).nombre) : @movimiento.oridest != nil ? Almacen.find(@movimiento.oridest).nombre : '' %></td>
+		<% else %>
+			<td align="center"><%=raw @movimiento.pedido.blank? ? '' : @movimiento.pedido.to_s+'/2010' %></td>
+			<% if !@movimiento.pedido.blank? %>
+				<% pedido = Pedido.find_by("pedido=?",@movimiento.pedido) %>
+				<% proveedor = Prov.find_by("cvealma_id=?",pedido.clavepro) %>
+				<td align="center"><%=raw !proveedor.blank? ? proveedor.fiscal+'/'+(@movimiento.oridest.blank? ? '' : Almacen.find(@movimiento.oridest).nombre) : @movimiento.oridest != nil ? Almacen.find(@movimiento.oridest).nombre : '' %></td>
+			<% end %>
+		<% end %>
+	<% else %>
+		<td align="center"><%=raw @movimiento.oridest.blank? ? "" : Almacen.find(@movimiento.oridest).nombre %>
+		<%= @movimiento.movimiento_id.blank? ? '' : '/'+Movimiento.find(@movimiento.movimiento_id).consec.to_s %></td>
+	<% end %>
+    <td align="center"><%=raw number_to_currency(@movimiento.importe, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+    <td align="center">No.<%=raw @movimiento.factura %><br/><%=raw @movimiento.fechafac %><br/><%=raw number_to_currency(@movimiento.impfac, :unit => '$', :separator => ".", :delimiter => ",") %><br/></td>
+    <td align="center"><%= [1,2,13].include?(@movimiento.estado_id) || (@movimiento.facrep == nil && @movimiento.tipo_id == 3 && @movimiento.nfacrep.blank?) ? link_to(@movimiento.estado.estado, edit_movimiento_path(@movimiento)) : @movimiento.estado.estado %></td>
+  </tr>
+  <tr>
+    <th>Descripcion</th>
+    <td align="center" colspan="8"><%=raw @movimiento.descripcion %></td>
+  </tr>
+</table>
+<table border="10" width="100%">
+  <tr>
+    <th>Clave</th>
+    <th>Piezas</th>
+    <th>Unid.</th>
+	<% if false %>
+    <th>Exist.</th>
+	<% end %>
+    <th>Caducidad</th>
+    <th>Lote</th>
+    <th>Fuente</th>
+    <th>Precio</th>
+    <th>Observ.</th>
+  </tr>
 
-<p>
-  <strong>Almacen:</strong>
-  <%= @movimiento.almacen_id %>
-</p>
-
-<p>
-  <strong>Movimiento:</strong>
-  <%= @movimiento.movimiento_id %>
-</p>
-
-<p>
-  <strong>Ped:</strong>
-  <%= @movimiento.ped_id %>
-</p>
-
-<p>
-  <strong>Oridest:</strong>
-  <%= @movimiento.oridest %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @movimiento.user_id %>
-</p>
-
-<p>
-  <strong>Descripcion:</strong>
-  <%= @movimiento.descripcion %>
-</p>
-
-<p>
-  <strong>Tipo:</strong>
-  <%= @movimiento.tipo_id %>
-</p>
-
-<p>
-  <strong>Consec:</strong>
-  <%= @movimiento.consec %>
-</p>
-
-<p>
-  <strong>Estado:</strong>
-  <%= @movimiento.estado_id %>
-</p>
-
-<p>
-  <strong>Fecha:</strong>
-  <%= @movimiento.fecha %>
-</p>
-
-<p>
-  <strong>Partida:</strong>
-  <%= @movimiento.partida_id %>
-</p>
-
-<p>
-  <strong>Sancion:</strong>
-  <%= @movimiento.sancion %>
-</p>
-
-<p>
-  <strong>Importe:</strong>
-  <%= @movimiento.importe %>
-</p>
-
-<p>
-  <strong>Factura:</strong>
-  <%= @movimiento.factura %>
-</p>
-
-<p>
-  <strong>Fechafac:</strong>
-  <%= @movimiento.fechafac %>
-</p>
-
-<p>
-  <strong>Impfac:</strong>
-  <%= @movimiento.impfac %>
-</p>
-
-<p>
-  <strong>Pedido:</strong>
-  <%= @movimiento.pedido %>
-</p>
-
-<p>
-  <strong>Facrepc:</strong>
-  <%= @movimiento.facrepc %>
-</p>
-
-<p>
-  <strong>Nfacrep:</strong>
-  <%= @movimiento.nfacrep %>
-</p>
-
-<p>
-  <strong>Tipo2:</strong>
-  <%= @movimiento.tipo2 %>
-</p>
-
-<p>
-  <strong>Notacre:</strong>
-  <%= @movimiento.notacre %>
-</p>
-
-<p>
-  <strong>Montonota:</strong>
-  <%= @movimiento.montonota %>
-</p>
-
-<p>
-  <strong>Cve factura sacp:</strong>
-  <%= @movimiento.cve_factura_sacp %>
-</p>
-
-<p>
-  <strong>Facrep:</strong>
-  <%= @movimiento.facrep %>
-</p>
-
-<%= link_to 'Edit', edit_movimiento_path(@movimiento) %> |
-<%= link_to 'Back', movimientos_path %>
+<% @lotes.each do |lote| %>
+	<% catalogo = Catalogo.find(lote.catalogo_id) %>
+  <tr>
+    <td align="center"><b><%=  catalogo != nil ? link_to(catalogo.clave, catalogo_path(catalogo,:acceso=>2,:almacen=>lote.almacen_id)) : '' %></b></td>
+    <td align="center"><%=raw lote.cantidadp %></td>
+    <td align="center"><%=raw lote.cantidadp != nil ? (catalogo != nil ? (lote.cantidadp * (catalogo.unidades == nil ? 1.0 : catalogo.unidades)).round.to_i : '') : '' %></td>
+    <td align="center"><%=raw lote.caducidad %></td>
+    <td align="center"><%=raw lote.lote %></td>
+    <td align="center"><%=raw lote.fuente_id != nil ? lote.fuente.fuente : ''%></td>
+	<% if [10,13].include?(current_user.rol_id) %>
+		<td align="center"><%=raw lote.precio %></td>
+	<% else %>	
+		<td align="center"><%=raw number_to_currency(lote.precio, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+	<% end %>	
+	<% if @movimiento.tipo_id == 3 %>
+		<td align="center"><%= ([1,13].include?(lote.estado_id) || [10].include?(current_user.rol_id)) ? link_to(lote.observacion.blank? ? 'Mod.' : lote.observacion,edit_lote_path(lote.id,:movimiento=>(@movimiento.tipo_id == 4 ? lote.salida_id : lote.movimiento_id))) : lote.observacion %></td>
+    <% else %>		
+		<td align="center"><%= ([1,2].include?(lote.estado_id)  || [10].include?(current_user.rol_id)) ? link_to(lote.observsal.blank? ? 'Mod.' : lote.observsal,edit_lote_path(lote.id,:movimiento=>(@movimiento.tipo_id == 4 ? lote.salida_id : lote.movimiento_id))) : lote.observsal %></td>
+    <% end %>		
+	<% if false && [10].include?(current_user.rol_id) %>
+		<td align="center"><%= link_to 'V', lote %></td>
+		<td align="center"><%= link_to 'Mod.', edit_lote_path(lote) %></td>
+	<% end %>
+	<% if @movimiento.estado_id == 1 && ([10].include?(current_user.rol_id) || [@movimiento.user_id,@almacen.user_id].include?(current_user.id) || [13].include?(current_user.rol_id))%>
+		<td align="center"><%= link_to 'X', lote, :confirm => 'Estas seguro(a)?', :method => :delete %></td>
+	<% end %>
+  </tr>
+  <tr>
+	<td align="center">l#<%= lote.id %></td>
+    <% if lote.catalogo_id != nil %>
+    <td align="center" colspan="5"><%=raw lote.catalogo.descripcion%></td>
+	<th>Pres.</th>
+    <td align="center"><%=raw lote.catalogo.presentacion%></td>
+	<% end %>
+  </tr>
+<% end %>
+</table>
+<% if @movimiento.tipo_id == 3 && [1].include?(@movimiento.estado_id) && ((@detpeds != nil && @detpeds.size > 0) || (@pedidos != nil && @pedidos.size > 0))%>
+	<table border="1" width="100%">
+	<tr>
+		<th align="center" colspan="6">PENDIENTE POR RECIBIR</th>
+	</tr>
+	<tr>
+		<th>CLAVE</th>
+		<th>DESCRIPCION</th>
+		<th>PRESENTACION</th>
+		<th>PRECIO<br/>UNITARIO</th>
+		<th>PRECIO<br/>CON IVA</th>
+		<th>CANTIDAD<br/>PENDIENTE</th>
+	</tr>
+	<% if @detpeds %>
+		<% for detped in @detpeds %> 
+			<tr>
+			<td align="center">
+			<% if detped.clave_id != nil %>
+				<%=raw Catalogo.find(detped.clave_id).clave %>
+			<% end %>	
+			</td>
+			<td align="center"><%=raw detped.descripcion %> <b>MARCA: <%=raw detped.marca_mod %></b></td>
+			<td align="center"><%=raw detped.presentacion %></td>
+			<td align="center"><%=raw number_to_currency(detped.precio, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<td align="center"><%=raw number_to_currency(detped.precio*detped.iva, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<% pendiente = detped.cantidad-(detped.recibido+detped.cancelado) %>
+			<td align="center"><%= @movimiento.estado_id == 1 ? link_to(pendiente, new_lote_path(:movimiento=>@movimiento.id,:detped=>detped.id,:clave=>detped.clave_id,:per=>11)) : pendiente %></td>
+			</tr>
+		<% end %>
+	<% else %>	
+		<% for detped in @pedidos %> 
+			<% catalogo = Catalogo.where("clave=? and partida = ?",detped.articulo,detped.partida) %>
+			<tr>
+			<td align="center"><%=raw catalogo.clave %></td>
+			<td align="center"><%=raw catalogo.descripcion %> <b>MARCA: <%=raw detped.marca %></b></td>
+			<td align="center"><%=raw catalogo.presentacion %></td>
+			<td align="center"><%=raw number_to_currency(detped.preciouni, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<td align="center"><%=raw number_to_currency(detped.preciouni*(((detped.iva.blank? ? 0 : detped.iva)/100.0)+1), :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<% pendiente = detped.cantidad-(detped.cantfac+detped.cantcanc) %>
+			<td align="center"><%= @movimiento.estado_id == 1 ? link_to(pendiente, new_lote_path(:movimiento=>@movimiento.id,:detped=>detped.id,:clave=>catalogo.id,:per=>10,:prov_id=>proveedor.id)) : pendiente %></td>
+			</tr>
+		<% end %>
+	<% end %>
+	</table>
+<% end %>
+<br/>
+<% if [2,12].include?(@movimiento.estado_id) %>
+	<b><FONT face="arial" size="1">Fecha de aplicado: <%=raw @movimiento.updated_at.to_date %></b></FONT>
+	<table border="0" width="100%">
+		<tr>
+			<td align="center"><b>Elabora:</b></td>
+			<td align="center"><b><%= [1716].include?(@movimiento.almacen_id) ? 'Recibe:' : 'Autoriza:' %></b></td>
+			<td align="center"><b><%= @movimiento.tipo_id == 3 ? ([1716].include?(@movimiento.almacen_id) ? 'Sello:' : 'Responsable Almacen:') : (@movimiento.estado_id == 12 ? 'RECIBI' : 'SURTE') %></b></td>
+		</tr>
+		<tr>
+			<td align="center"><%=raw User.find(@movimiento.user_id).nompos %></td>
+			<td align="center"><%=raw User.find(@almacen.user_id).nompos %></td>
+			<td align="center">______________________________<br/><%=  @movimiento.estado_id == 12 ? ([1716].include?(@movimiento.almacen_id) ? '' : 'NOMBRE Y FIRMA') : 'RESPONSABLE DE AREA' %></td>
+		</tr>
+	</table>
+<% end %>	
+	<% if @movimiento.tipo_id == 4 && @movimiento.estado_id == 1 %>
+		<% articulo = nil %>
+		<table border="1" width="100%">
+		<tr>
+			<th align="center" colspan="9">EXISTENCIAS DISPONIBLES DE LA PARTIDA</th>
+		</tr>
+		<% @existencias.each do |lote| %>
+			<% if articulo != lote.catalogo_id %>
+				<% @catalogo = Catalogo.find(lote.catalogo_id) %>
+				<tr>
+					<th align="center" colspan="6">Descripcion</th>
+					<th align="center" colspan="3">Presentaci&oacute;n</th>
+				</tr>
+				<tr>
+					<% if @catalogo %>
+						<td align="center" colspan="6"><%= @catalogo.descripcion %></td>
+						<td align="center" colspan="3"><%= @catalogo.presentacion %></td>
+					<% end %>
+				</tr>
+				<tr>
+					<th>Clave</th>
+					<th>Piezas</th>
+					<th>Unid.</th>
+					<th>Caducidad</th>
+					<th>Lote</th>
+					<th>Fuente</th>
+					<th>Precio</th>
+					<th>Observ.</th>
+					<th>Mov.</th>
+				</tr>
+				<% articulo = lote.catalogo_id %>
+			<% end %>	
+			<tr>
+					<% if @catalogo != nil %>
+						<td align="center"><%= [5,6,7,8,10,13,16,24].include?(current_user.rol_id) ? link_to(@catalogo.clave, catalogo_path(@catalogo,:acceso=>2)) : @catalogo.clave %></td>
+						<td align="center"><%= lote.estado_id == 12 ? link_to(lote.existencia,new_lote_path(:movimiento=>@movimiento.id,:tipo=>4,:lote=>lote.id,:clave=>@catalogo.id)) : lote.existencia %></td>
+						<td align="center"><%=raw [nil,0,1].include?(@catalogo.unidades) ? lote.existencia : lote.existencia*@catalogo.unidades %></td>
+					<% else %>
+						<td align="center">REVISAR <%= lote.id %></td>
+						<td align="center">REVISAR <%= lote.id %></td>
+						<td align="center"><%=raw lote.existencia %></td>
+					<% end %>
+				<td align="center"><%=raw lote.caducidad %></td>
+				<td align="center"><%=raw lote.lote %></td>
+				<td align="center"><%=raw lote.fuente_id != nil ? lote.fuente.fuente : 'FALTANTE' %></td>
+				<td align="center"><%=raw number_to_currency(lote.precio, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+				<td align="center"><%=raw lote.observacion %></td>
+				<td align="center"><%= link_to 'Ver',movimiento_path(lote.movimiento_id) %></td>
+			</tr>
+		<% end %>
+		</table>
+<% end %>

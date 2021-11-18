@@ -1,69 +1,86 @@
 class ContabilidadsController < ApplicationController
-  before_action :set_contabilidad, only: %i[ show edit update destroy ]
-
-  # GET /contabilidads or /contabilidads.json
+  before_action :login_required 
+  # GET /contabilidads
+  # GET /contabilidads.xml
   def index
-    @contabilidads = Contabilidad.all
+    @contabilidads = Contabilidad.all()
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @contabilidads }
+    end
   end
 
-  # GET /contabilidads/1 or /contabilidads/1.json
+  # GET /contabilidads/1
+  # GET /contabilidads/1.xml
   def show
+    @contabilidad = Contabilidad.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @contabilidad }
+    end
   end
 
   # GET /contabilidads/new
+  # GET /contabilidads/new.xml
   def new
     @contabilidad = Contabilidad.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @contabilidad }
+    end
   end
 
   # GET /contabilidads/1/edit
   def edit
+    @contabilidad = Contabilidad.find(params[:id])
   end
 
-  # POST /contabilidads or /contabilidads.json
+  # POST /contabilidads
+  # POST /contabilidads.xml
   def create
-    @contabilidad = Contabilidad.new(contabilidad_params)
+    @contabilidad = Contabilidad.new(params[:contabilidad])
 
     respond_to do |format|
       if @contabilidad.save
-        format.html { redirect_to @contabilidad, notice: "Contabilidad was successfully created." }
-        format.json { render :show, status: :created, location: @contabilidad }
+        flash[:notice] = 'Cuenta fue creada.'
+        format.html { redirect_to(contabilidads_path) }
+        format.xml  { render :xml => @contabilidad, :status => :created, :location => @contabilidad }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @contabilidad.errors, status: :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @contabilidad.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /contabilidads/1 or /contabilidads/1.json
+  # PUT /contabilidads/1
+  # PUT /contabilidads/1.xml
   def update
+    @contabilidad = Contabilidad.find(params[:id])
+
     respond_to do |format|
-      if @contabilidad.update(contabilidad_params)
-        format.html { redirect_to @contabilidad, notice: "Contabilidad was successfully updated." }
-        format.json { render :show, status: :ok, location: @contabilidad }
+      if @contabilidad.update_attributes(params[:contabilidad])
+        flash[:notice] = 'Cuenta fue actualizada.'
+        format.html { redirect_to(contabilidads_path) }
+        format.xml  { head :ok }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @contabilidad.errors, status: :unprocessable_entity }
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @contabilidad.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /contabilidads/1 or /contabilidads/1.json
+  # DELETE /contabilidads/1
+  # DELETE /contabilidads/1.xml
   def destroy
+    @contabilidad = Contabilidad.find(params[:id])
     @contabilidad.destroy
+
     respond_to do |format|
-      format.html { redirect_to contabilidads_url, notice: "Contabilidad was successfully destroyed." }
-      format.json { head :no_content }
+      format.html { redirect_to(contabilidads_url) }
+      format.xml  { head :ok }
     end
   end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_contabilidad
-      @contabilidad = Contabilidad.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def contabilidad_params
-      params.require(:contabilidad).permit(:cuenta, :sistema_id, :fuente_id, :partida_id, :almacen_id, :prov_id, :tipo_id, :user_id, :programa_id, :proyecto_id)
-    end
 end

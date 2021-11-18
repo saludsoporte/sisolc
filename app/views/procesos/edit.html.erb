@@ -1,6 +1,31 @@
-<h1>Editing Proceso</h1>
+<h1>Modificar proceso</h1>
 
-<%= render 'form', proceso: @proceso %>
+<% form_for(@proceso) do |f| %>
+  <%= f.error_messages %>
 
-<%= link_to 'Show', @proceso %> |
-<%= link_to 'Back', procesos_path %>
+  <p>
+    <%= f.label :proceso %><br />
+    <%= f.text_field :proceso,:size=>64 %>
+  </p>
+  <p>
+    <%= f.label :fecha %><br />
+    <%= f.date_select :fecha %>
+  </p>
+  <p>
+    <%= f.label :tipopro_id %><br />
+    <%= f.text_field :tipopro_id %>
+  </p>
+  <p>
+    <%= f.label :partida_id %><br />
+    <%= f.text_field :partida_id %>
+  </p>
+  <p>
+    <%= f.label :observacion %><br />
+    <%= f.text_field :observacion %>
+  </p>
+  <p>
+    <%= f.submit 'Actualizar' %>
+  </p>
+<% end %>
+
+<%= link_to 'Regresar', procesos_path %>

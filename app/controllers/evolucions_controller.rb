@@ -1,69 +1,106 @@
 class EvolucionsController < ApplicationController
-  before_action :set_evolucion, only: %i[ show edit update destroy ]
-
-  # GET /evolucions or /evolucions.json
+  before_action :login_required 
+  # GET /evolucions
+  # GET /evolucions.xml
   def index
-    @evolucions = Evolucion.all
+  	@paciente_id = params[:paciente]
+    if @paciente_id != nil
+		  @evolucions = Evolucion.find(:all, :conditions=>{:paciente_id => @paciente_id}, :order=>"id DESC")
+    else
+        if [7,8,10,18,19,20].include?(current_user.rol_id)
+        @evolucions = Evolucion.find(:all, :order=>"id DESC")
+        end	
+    end
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @evolucions }
+    end
   end
 
-  # GET /evolucions/1 or /evolucions/1.json
+  # GET /evolucions/1
+  # GET /evolucions/1.xml
   def show
+    @evolucion = Evolucion.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @evolucion }
+    end
   end
 
   # GET /evolucions/new
+  # GET /evolucions/new.xml
   def new
     @evolucion = Evolucion.new
+	@evolucion.paciente_id = params[:paciente]
+	@evolucion.atencion_id = params[:atencion]
+	if @evolucion.paciente_id == nil 
+		redirect_to ("/")
+	else
+		if @evolucion.atencion_id == nil
+			aten = Atencion.find(:last, :conditions=>{:paciente_id=>@evolucion.paciente_id, :fechaeg=>nil}, :order=>"id")
+			if aten == nil 
+				redirect_to(new_atencion_path(:paciente=>@evolucion.paciente_id))
+				return
+			else
+				@evolucion.atencion_id = aten.id
+			end	
+		end
+		respond_to do |format|
+		format.html # new.html.erb
+		format.xml  { render :xml => @evolucion }
+		end
+	end
   end
 
   # GET /evolucions/1/edit
   def edit
+    @evolucion = Evolucion.find(params[:id])
   end
 
-  # POST /evolucions or /evolucions.json
+  # POST /evolucions
+  # POST /evolucions.xml
   def create
-    @evolucion = Evolucion.new(evolucion_params)
+    @evolucion = Evolucion.new(params[:evolucion])
 
     respond_to do |format|
       if @evolucion.save
-        format.html { redirect_to @evolucion, notice: "Evolucion was successfully created." }
-        format.json { render :show, status: :created, location: @evolucion }
+        flash[:notice] = 'Evolucion fue creada.'
+        format.html { redirect_to(paciente_path(@evolucion.paciente_id)) }
+        format.xml  { render :xml => @evolucion, :status => :created, :location => @evolucion }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @evolucion.errors, status: :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @evolucion.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /evolucions/1 or /evolucions/1.json
+  # PUT /evolucions/1
+  # PUT /evolucions/1.xml
   def update
+    @evolucion = Evolucion.find(params[:id])
+
     respond_to do |format|
-      if @evolucion.update(evolucion_params)
-        format.html { redirect_to @evolucion, notice: "Evolucion was successfully updated." }
-        format.json { render :show, status: :ok, location: @evolucion }
+      if @evolucion.update_attributes(params[:evolucion])
+        flash[:notice] = 'Evolucion fue actualizada.'
+        format.html { redirect_to(paciente_path(@evolucion.paciente_id)) }
+        format.xml  { head :ok }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @evolucion.errors, status: :unprocessable_entity }
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @evolucion.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /evolucions/1 or /evolucions/1.json
+  # DELETE /evolucions/1
+  # DELETE /evolucions/1.xml
   def destroy
+    @evolucion = Evolucion.find(params[:id])
     @evolucion.destroy
+
     respond_to do |format|
-      format.html { redirect_to evolucions_url, notice: "Evolucion was successfully destroyed." }
-      format.json { head :no_content }
+      format.html { redirect_to(evolucions_url) }
+      format.xml  { head :ok }
     end
   end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_evolucion
-      @evolucion = Evolucion.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def evolucion_params
-      params.require(:evolucion).permit(:paciente_id, :atencion_id, :fecha, :diagnosticos, :ta, :fr, :fc, :temp, :condiciones, :pendientes, :pronostico, :user_id, :tipo_id, :fechaeg)
-    end
 end

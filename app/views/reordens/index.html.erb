@@ -1,49 +1,58 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Reordens</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Partida</th>
-      <th>Catalogo</th>
-      <th>Punto</th>
-      <th>Tipo</th>
-      <th>Almacen</th>
-      <th>User</th>
-      <th>Notifica</th>
-      <th>Vigenciai</th>
-      <th>Vigenciaf</th>
-      <th>Estado</th>
-      <th>Existencia</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @reordens.each do |reorden| %>
-      <tr>
-        <td><%= reorden.nombre %></td>
-        <td><%= reorden.partida_id %></td>
-        <td><%= reorden.catalogo_id %></td>
-        <td><%= reorden.punto %></td>
-        <td><%= reorden.tipo_id %></td>
-        <td><%= reorden.almacen_id %></td>
-        <td><%= reorden.user_id %></td>
-        <td><%= reorden.notifica_id %></td>
-        <td><%= reorden.vigenciai %></td>
-        <td><%= reorden.vigenciaf %></td>
-        <td><%= reorden.estado_id %></td>
-        <td><%= reorden.existencia %></td>
-        <td><%= link_to 'Show', reorden %></td>
-        <td><%= link_to 'Edit', edit_reorden_path(reorden) %></td>
-        <td><%= link_to 'Destroy', reorden, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
+<table border="0" width="90%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+		<h2>Alertas</h2>
+		<td align="center">
+			<%= link_to 'Inicio', url_for("/") %>
+			<br/><br/><%= link_to 'Almacenes', almacens_path %>
+			<% if [5].include?(current_user.rol_id) %>
+				<br/><br/><%= link_to 'Nueva Alerta', new_reorden_path %>
+			<% end %>
+		</td>
+	</tr>
 </table>
+<table border="10" width="100%">
+  <tr>
+    <th>Almacen</th>
+    <th>Nombre</th>
+    <th>Partida</th>
+    <th>Clave</th>
+    <th>Tipo</th>
+    <th>Cant.</th>
+    <th>Exis.</th>
+    <th>Desv.</th>
+    <th>Vigencia</th>
+  </tr>
 
-<br>
-
-<%= link_to 'New Reorden', new_reorden_path %>
+<% @reordens.each do |reorden| %>
+    <% desvia = (reorden.existencia == nil || reorden.punto == nil) ? nil : reorden.existencia-reorden.punto %></td>
+	<% tono = 	case
+					when desvia == nil 
+						'#E0E0E0'
+					when reorden.tipo_id == 14 && desvia < 0.0 
+						'#FF3333'
+					when reorden.tipo_id == 15 && desvia > 0.0 
+						'#FFCC66'
+					when reorden.tipo_id == 13 && desvia < 0.0 
+						'#FFFF99'
+					else 
+						desvia = 0.0
+						'#FFFFFF'
+				end %>
+  <tr>
+    <td align="center" bgcolor=<%= tono %>><%=raw reorden.almacen_id.blank? ? 'TODOS' : reorden.almacen.nombre %></td>
+    <td align="center" bgcolor=<%= tono %>><%=raw reorden.nombre %></td>
+    <td align="center" bgcolor=<%= tono %>><%=raw reorden.partida_id.blank? ? '' : reorden.partida.partida_armonizada %></td>
+    <td align="center" bgcolor=<%= tono %>><%= link_to (reorden.catalogo_id.blank? ? '' : reorden.catalogo.clave), catalogo_path(reorden.catalogo_id,:acceso=>2) %></td>
+    <td align="center" bgcolor=<%= tono %>><%=raw reorden.tipo_id.blank? ? '' : reorden.tipo.tipo %></td>
+    <td align="center" bgcolor=<%= tono %>><%=raw reorden.punto %></td>
+    <td align="center" bgcolor=<%= tono %>><%=raw reorden.existencia %></td>
+	
+    <td align="center" bgcolor=<%= tono %>><%=raw desvia %></td>
+    <td align="center" bgcolor=<%= tono %>><%=raw reorden.vigenciai %>-<%=raw reorden.vigenciaf %></td>
+    <td align="center" bgcolor=<%= tono %>><%= link_to 'Mod.', edit_reorden_path(reorden) %></td>    
+    <td align="center" bgcolor=<%= tono %>><%= link_to 'X', reorden_path(reorden), data: { :confirm => '¿Estas seguro de eliminar el registro?'}, method: :delete %></td>
+  </tr>
+<% end %>
+</table>

@@ -1,39 +1,43 @@
-<p id="notice"><%= notice %></p>
-
 <p>
-  <strong>Paciente:</strong>
-  <%= @nacido.paciente_id %>
+  <b>Paciente:</b>
+  <%=h @nacido.paciente_id %>
 </p>
 
 <p>
-  <strong>Atencion:</strong>
-  <%= @nacido.atencion_id %>
+  <b>Atencion:</b>
+  <%=h @nacido.atencion_id %>
 </p>
 
 <p>
-  <strong>Evolucion:</strong>
-  <%= @nacido.evolucion %>
+  <b>Evolucion:</b>
+  <%=h @nacido.evolucion %>
 </p>
 
 <p>
-  <strong>Atencion:</strong>
-  <%= @nacido.atencion %>
+  <b>Atencion:</b>
+  <%=h @nacido.atencion %>
 </p>
 
 <p>
-  <strong>Egreso:</strong>
-  <%= @nacido.egreso %>
+  <b>Egreso:</b>
+  <%=h @nacido.egreso %>
 </p>
 
 <p>
-  <strong>Defuncion:</strong>
-  <%= @nacido.defuncion %>
+  <b>Defuncion:</b>
+  <%=h @nacido.defuncion %>
 </p>
 
 <p>
-  <strong>User:</strong>
-  <%= @nacido.user_id %>
+  <b>Defuncion:</b>
+  <%=h @nacido.defuncion %>
 </p>
+
+<p>
+  <b>User:</b>
+  <%=h @nacido.user_id %>
+</p>
+
 
 <%= link_to 'Edit', edit_nacido_path(@nacido) %> |
 <%= link_to 'Back', nacidos_path %>

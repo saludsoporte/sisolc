@@ -1,0 +1,26 @@
+<h1>Listing reqnotas</h1>
+
+<table>
+  <tr>
+    <th>Requisicion</th>
+    <th>User</th>
+    <th>Fecha</th>
+    <th>Comenta</th>
+  </tr>
+
+<% @reqnotas.each do |reqnota| %>
+  <tr>
+    <td><%=h reqnota.requisicion_id %></td>
+    <td><%=h reqnota.user_id %></td>
+    <td><%=h reqnota.fecha %></td>
+    <td><%=h reqnota.comenta %></td>
+    <td><%= link_to 'Show', reqnota %></td>
+    <td><%= link_to 'Edit', edit_reqnota_path(reqnota) %></td>
+    <td><%= link_to 'Destroy', reqnota, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New reqnota', new_reqnota_path %>

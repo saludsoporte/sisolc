@@ -1,6 +1,102 @@
-<h1>Editing Atencion</h1>
+<% form_for(@atencion) do |f| %>
+  <%= f.error_messages %>
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp-smp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Seguimiento a Pacientes con Complicaciones durante el Embarazo y/o Puerperio</b></br><hr/>
+							<h2>Modificar Atencion Medica</h2></td>
+		<td align="center"><b>Medico:</b><br />
+			<%= f.select :user_id, User.find(:all , :conditions => { :id => current_user.id}, :order => "nombre").collect {|s| [s.name, s.id]} %>
+			<b>Paciente:</b><br />
+			<%= f.select :paciente_id, Paciente.find(:all , :conditions => { :id => @atencion.paciente_id }).collect {|s| [s.name, s.id]} %>
+		</td>	
+	</tr>
+</table>
+<table>
+<tr>
+	<td>
+		<%= f.label :tipo_id %><br />
+		<%= f.select :tipo_id, Tipo.find(:all , :conditions=>{:id =>(23..24)}).collect {|s| [s.tipo, s.id]} %>
+	</td>
+</tr>
+<tr>
+  <td>
+    CLUES (Unidades de los SSSLP)<br />
+	<%= f.select :clue_id, Clue.find(:all ,:conditions=>{:tipounidad=>'UNIDAD DE HOSPITALIZACION 1'}, :order => "nomunidad").collect {|s| [(s.nomunidad+" "+String(s.clues)), s.id]} %>  </p>
+  </td>
+  <td>
+    Semanas G.<br />
+    <%= f.text_field :semanas, :size =>14  %>
+  </td>
+</tr>
+<tr>
+  <td>
+    Unidad (Para unidades fuera de los SSSLP)<br />
+    <%= f.text_field :unidad, :size =>97 %>
+  </td>
+  <td>
+    <%= f.label :gesta %><br />
+    <%= f.text_field :gesta, :size =>14 %>
+  </td>
+</tr>
+<tr>
+  <td>
+    <%= f.label :fecha %><br />
+    <%= f.datetime_select :fecha %>
+  </td>
+  <td>
+    <%= f.label :para %><br />
+    <%= f.text_field :para, :size=>14 %>
+  </td>
+</tr>
+<tr>
+  <td rowspan="6">
+    <%= f.label :diagnosticos %><br />
+    <%= f.text_area :diagnosticos, :cols=>48, :rows=>14 %>
+  </td>
+  <td>
+    <%= f.label :aborto %><br />
+    <%= f.text_field :aborto, :size=>14 %>
+  </td>
+</tr>
+<tr>
+  <td>
+    <%= f.label :cesareas %><br />
+    <%= f.text_field :cesareas, :size=>14 %>
+  </td>
+</tr>
+<tr>
+  <td>
+  </td>
+</tr>
+<tr>
+  <td>
+    Fecha Termino:<br />
+    <%= f.date_select :termino, :include_blank=>true %>
+  </td>
+</tr>
+<tr>
+  <td>
+    Alta por:<br />
+    <%= f.text_field :altapor, :size=>84 %>
+  </td>
+</tr>
+<tr>
+  <td>
+    Fecha Egreso:<br />
+    <%= f.datetime_select :fechaeg, :include_blank=>true %>
+  </td>
+</tr>
+<tr>
+  <td>
+    Tipo Atencion:<br />
+    <%= f.text_field :tipoat, :size =>97 %>
+  </td>
+  <td align="center">
+    <%= f.submit 'Actualizar' %>
+	<%= link_to 'Datos Paciente', paciente_path(@atencion.paciente_id) %></table>
+  </td>
+</tr>
+</table>
+<% end %>
 
-<%= render 'form', atencion: @atencion %>
-
-<%= link_to 'Show', @atencion %> |
-<%= link_to 'Back', atencions_path %>

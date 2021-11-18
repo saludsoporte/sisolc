@@ -1,85 +1,67 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Lotes</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Catalogo</th>
-      <th>Ped</th>
-      <th>Cantidadp</th>
-      <th>Cantidadu</th>
-      <th>Existencia</th>
-      <th>Caducidad</th>
-      <th>Almacen</th>
-      <th>Fecha</th>
-      <th>Lote</th>
-      <th>Fuente</th>
-      <th>Precio</th>
-      <th>Observacion</th>
-      <th>Estado</th>
-      <th>Movimiento</th>
-      <th>Barras</th>
-      <th>Requisicion</th>
-      <th>Programa</th>
-      <th>Proyecto</th>
-      <th>Partida</th>
-      <th>Etiqueta</th>
-      <th>Detped</th>
-      <th>Lote</th>
-      <th>Renglon</th>
-      <th>Salida</th>
-      <th>Cargo</th>
-      <th>Abono</th>
-      <th>Observsal</th>
-      <th>Prov</th>
-      <th>Iva</th>
-      <th>Cartacom</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @lotes.each do |lote| %>
-      <tr>
-        <td><%= lote.catalogo_id %></td>
-        <td><%= lote.ped_id %></td>
-        <td><%= lote.cantidadp %></td>
-        <td><%= lote.cantidadu %></td>
-        <td><%= lote.existencia %></td>
-        <td><%= lote.caducidad %></td>
-        <td><%= lote.almacen_id %></td>
-        <td><%= lote.fecha %></td>
-        <td><%= lote.lote %></td>
-        <td><%= lote.fuente_id %></td>
-        <td><%= lote.precio %></td>
-        <td><%= lote.observacion %></td>
-        <td><%= lote.estado_id %></td>
-        <td><%= lote.movimiento_id %></td>
-        <td><%= lote.barras %></td>
-        <td><%= lote.requisicion_id %></td>
-        <td><%= lote.programa_id %></td>
-        <td><%= lote.proyecto_id %></td>
-        <td><%= lote.partida_id %></td>
-        <td><%= lote.etiqueta_id %></td>
-        <td><%= lote.detped_id %></td>
-        <td><%= lote.lote_id %></td>
-        <td><%= lote.renglon_id %></td>
-        <td><%= lote.salida_id %></td>
-        <td><%= lote.cargo %></td>
-        <td><%= lote.abono %></td>
-        <td><%= lote.observsal %></td>
-        <td><%= lote.prov_id %></td>
-        <td><%= lote.iva %></td>
-        <td><%= lote.cartacom_id %></td>
-        <td><%= link_to 'Show', lote %></td>
-        <td><%= link_to 'Edit', edit_lote_path(lote) %></td>
-        <td><%= link_to 'Destroy', lote, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
+<table border="0" width="100%">
+	<tr>
+		<td><a href="<%=url_for("/")%>"><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101"></a></td>
+		<td align="center"><b><%= @tipo != 3 ? 'SISOLC/SIECI' : 'Sistema Integral Estatal de Control de Inventarios' %></b><hr/>
+		<h2><%=raw case
+					when @tipo == 0 
+						'Dispersi&oacute;n de Pedido'
+					when @tipo == 2 
+						'Lotes sin fuente' 
+					when @tipo == 3 
+						'Lotes por caducar en el periodo'
+				end %></h2>
+			<%= @tipo == 3 ? Almacen.find(@reporte.rango1).nombre : '' %>
+		</td>		
+		<td align="center" valign="center">
+			</br></br>Fecha Reporte:</br> <%= Date.today %>
+		</td>
+		<td align="center">
+		<% if @tipo != 3 %>
+			Nota: El objetivo de &eacute;ste reporte<br/>es seguir la ruta de los bienes.<br/>Las existencias s&oacute;lo ser&aacute;n reales<br/>en almacenes donde se registran<br/>las salidas o bajas en el SIECI.
+		<% else %>
+			Periodo:</br></br>
+		  	<%= 'Desde: '+@reporte.desde.to_s %><br/><br/>
+			<%= 'Hasta: '+@reporte.hasta.to_s %>  
+		<% end %>
+		</td>
+	</tr>
 </table>
 
-<br>
+<table border="10" width="100%">
+  <tr>
+    <th>Part.</th>
+    <th>Clave</th>
+    <th>Ped.</th>
+	<% if @tipo != 3 %> <th>Piezas</th>
+	<% else %> <th>Descripci&oacute;n</th>
+	<% end %>	
+    <th>Exist.</th>
+    <th>Caducidad</th>
+    <th><%= @tipo != 3 ? 'Almacen' : 'D&iacute;as' %></th>
+    <th>Lote</th>
+    <th>Fuente</th>
+    <th>Precio</th>
+    <th>Obs.</th>
+    <th>Mov.</th>
+  </tr>
 
-<%= link_to 'New Lote', new_lote_path %>
+<% @lotes.each do |lote| %>
+	<% catalogo = Catalogo.where("id=?",lote.catalogo_id).first() %>
+  <tr>
+    <td align="center"><%=h !catalogo ? '' : catalogo.partida.cog2011 %></td>
+    <td align="center"><%=h !catalogo ? '' : catalogo.clave %></td>
+    <td align="center"><%=h lote.ped_id %></td>
+    <% if @tipo != 3 %> <td align="center"><%=h lote.cantidadp %></td>
+	<% else %> <td align="center"><%=h !catalogo ? '' : catalogo.descripcion %></td>
+	<% end %>
+    <td align="center"><%=h lote.existencia %></td>
+    <td align="center"><%=h lote.caducidad %></td>
+    <td align="center"><%=h @tipo == 3 ? lote.caducidad - Date.today : (lote.almacen_id.blank? ? '' : lote.almacen.nombre) %></td>
+    <td align="center"><%=h lote.lote %></td>
+    <td align="center"><%=h lote.fuente_id.blank? ? '' : lote.fuente.fuente%></td>
+    <td align="center"><%=h number_to_currency(lote.precio, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+    <td align="center"><%=h lote.observacion %></td>
+    <td align="center"><%= lote.movimiento_id.blank? ? (lote.salida_id.blank? ? '' : link_to('SAL',movimiento_path(lote.salida_id))) : link_to(lote.movimiento.consec,movimiento_path(lote.movimiento_id)) %></td>
+  </tr>
+<% end %>
+</table>

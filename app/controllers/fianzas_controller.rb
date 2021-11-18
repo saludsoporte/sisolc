@@ -1,69 +1,129 @@
 class FianzasController < ApplicationController
-  before_action :set_fianza, only: %i[ show edit update destroy ]
-
-  # GET /fianzas or /fianzas.json
+ # GET /fianzas
+  # GET /fianzas.xml
   def index
-    @fianzas = Fianza.all
+    @fianzas = Fianza.all().order(:id)
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @fianzas }
+    end
   end
 
-  # GET /fianzas/1 or /fianzas/1.json
+  # GET /fianzas/1
+  # GET /fianzas/1.xml
   def show
+    @fianza = Fianza.find(params[:id])
+	proceso = Proceso.find(@fianza.proceso_id).proceso
+	@procesos = Proceso.find_by_sql ["select id from procesos where proceso = ?",proceso]
+	if [1,3].include?(@fianza.estado_id)
+		@peds = Ped.where("proceso_id in(?) and proveedor_id = ? and estado_id = 12 and (fianza_id is null or fianza_id = 0) and cp_id = 7",@procesos,@fianza.prov_id).order(:id)
+	else
+		@peds = Ped.where("fianza_id=?",@fianza.id).order(:id)
+	end	
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @fianza }
+    end
   end
 
   # GET /fianzas/new
+  # GET /fianzas/new.xml
   def new
     @fianza = Fianza.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @fianza }
+    end
   end
 
   # GET /fianzas/1/edit
   def edit
+    @fianza = Fianza.find(params[:id])
   end
 
-  # POST /fianzas or /fianzas.json
+  # POST /fianzas
+  # POST /fianzas.xml
   def create
-    @fianza = Fianza.new(fianza_params)
+    @fianza = Fianza.new(params[:fianza])
 
     respond_to do |format|
       if @fianza.save
-        format.html { redirect_to @fianza, notice: "Fianza was successfully created." }
-        format.json { render :show, status: :created, location: @fianza }
+        flash[:notice] = 'Fianza fue creada.'
+        format.html { redirect_to(@fianza) }
+        format.xml  { render :xml => @fianza, :status => :created, :location => @fianza }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @fianza.errors, status: :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @fianza.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /fianzas/1 or /fianzas/1.json
+  # PUT /fianzas/1
+  # PUT /fianzas/1.xml
   def update
+    @fianza = Fianza.find(params[:id])
+	  nuevoest = params[:fianza][:estado_id].to_i
+	  nuevotipo = params[:fianza][:tipo_id].to_i
+	  nuevomonto = params[:fianza][:monto].to_f
+	  nuevasituacion = params[:fianza][:situacion].to_i
+	  proceso = (@fianza.proceso_id != nil ? Proceso.find(@fianza.proceso_id).proceso : nil)
+	  @procesos = Proceso.find_by_sql ["select id from procesos where proceso = ?",proceso]
+	  if nuevasituacion == 35 || nuevasituacion == nil
+	  if [1,3].include?(@fianza.estado_id)
+	  	@peds = Ped.find(:all,:conditions=>["proceso_id in(?) and proveedor_id = ? and estado_id = 12 and (fianza_id is null or fianza_id = 0) and cp_id = 7",@procesos,@fianza.prov_id])
+		if nuevoest == 12 
+			montopeds = 0.0
+			@peds.each do |ped|
+				if nuevotipo != 1
+					montopeds= montopeds+ped.subtotal
+				else
+					montopeds= montopeds+ped.total
+				end
+			end
+			if montopeds > (nuevomonto/(nuevotipo == 1 ? 0.3 : 0.1))+0.51
+				flash[:notice] = 'ERROR: Fianza no cubre el total del monto necesario. No fue aplicada.'
+				redirect_to(@fianza)
+				return
+			else
+				@peds.each do |ped|
+					ped.fianza_id = @fianza.id
+					ped.save
+				end
+			end
+		end 
+	else
+		if @fianza.estado_id == 12 && nuevoest != 12
+			@peds = Ped.find(:all,:conditions=>{:fianza_id=>@fianza.id})
+			@peds.each do |ped|
+				ped.fianza_id = nil
+				ped.save
+			end
+		end	
+	end
+	end
     respond_to do |format|
-      if @fianza.update(fianza_params)
-        format.html { redirect_to @fianza, notice: "Fianza was successfully updated." }
-        format.json { render :show, status: :ok, location: @fianza }
+      if @fianza.update_attributes(params[:fianza])
+        flash[:notice] = 'Fianza fue actualizada.'
+        format.html { redirect_to(@fianza) }
+        format.xml  { head :ok }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @fianza.errors, status: :unprocessable_entity }
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @fianza.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /fianzas/1 or /fianzas/1.json
+  # DELETE /fianzas/1
+  # DELETE /fianzas/1.xml
   def destroy
+    @fianza = Fianza.find(params[:id])
     @fianza.destroy
+
     respond_to do |format|
-      format.html { redirect_to fianzas_url, notice: "Fianza was successfully destroyed." }
-      format.json { head :no_content }
+      format.html { redirect_to(fianzas_url) }
+      format.xml  { head :ok }
     end
   end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_fianza
-      @fianza = Fianza.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def fianza_params
-      params.require(:fianza).permit(:user_id, :fecha, :vence, :observa, :proceso_id, :prov_id, :monto, :estado_id, :tipo_id, :contratos, :contrato_id, :imp_peds, :clave, :situacion)
-    end
 end

@@ -1,0 +1,69 @@
+<% if @current_user && ((1..16).include?(@current_user.rol_id) || (18..20).include?(@current_user.rol_id) || [22,23,25].include?(@current_user.rol_id)) %> 
+	<p>SISOLC |
+	<%= link_to "Inicio", root_path %> | 
+	<% if @current_user.rol_id > 0 %>
+		<%= link_to "Solicitudes", solicituds_url %> |
+		<%= link_to "Requisiciones", requisicions_url %> |
+	<% end %>	
+	<%= link_to "Catalogos", partidas_url %> |
+	<%= link_to "Procesos", procesos_url %>
+	<% if [4,5,6,7,8,9,10,11,12,15,16,21,22].include?(current_user.rol_id) %>
+		| <%= link_to "Pedidos", peds_url %>
+		<% if [5,8,9,10,11,12,15,16].include?(current_user.rol_id ) %>
+			| <%= link_to "Proveedores", provs_url %>
+			| <%= link_to "Reportes", reportes_path(:tipo=>1) %>
+		<% end %>
+	<% end %>
+	<% if [5,10,15].include?(current_user.rol_id) || [156,178,194,203].include?(current_user.id) %>
+	| <%= link_to "Fianzas", fianzas_url %>
+	<% end %>
+	| <b><%= link_to "Salir", logout_path %></b>
+	| <%= link_to "SHCP C.O.G. 2011", "http://www.apartados.hacienda.gob.mx/presupuesto/temas/programacion/2011/lineamientos/anexo1_lineamientos_pef_2011.pdf", :popup => 'yes' %>
+	</p> 
+	
+	<hr />
+<% end %>
+
+<% if current_user && ([17,18,19,20,28].include?(current_user.rol_id) || [7,8,10].include?(current_user.rol_id))  %> 
+	<p>SMP |
+	<%= link_to "Inicio", root_path %> | 
+	<%= link_to "Pacientes", pacientes_url %> | 
+	<%= link_to "Pac.en GyO", pacientes_path(:tipo=>24) %> | 
+	<%= link_to "Pac.en UCI", pacientes_path(:tipo=>23) %> | 
+	<% if [7,8,10,18,19].include?(current_user.rol_id) %>
+		<%= link_to "Atencion", atencions_url %> |
+		<%= link_to "Evolucion", evolucions_url %> |
+		<%= link_to "Nacidos", nacidos_url %> |
+		<%= link_to "Seguimientos", pacnotas_path %> |
+		<%= link_to "Reportes", reportes_path(:tipo=>2) %> |
+	<% end %>	
+	<%= link_to "Mi SMP", user_path(current_user.id) %> |
+	<%= link_to "Contacto", smpnotas_url %>
+	| <b><%= link_to "Salir", logout_path %></b>
+	</p> 
+	<hr />
+	<img src="/images/slp-smp.jpg" alt="Servicios de Salud de S.L.P." />
+<% end %>
+
+<% if current_user && ([10].include?(current_user.rol_id) || [5,13,21,22,23,24,25,26,27].include?(current_user.rol_id)) %> 
+	<p>SIECI |
+		<%= link_to "Inicio", root_path %> | 
+		<%= link_to "Almacenes", almacens_path %> |
+		<%= link_to "Reportes", reportes_path(:tipo=>3) %> |
+		<%= link_to "Alertas", reordens_path %> |
+	<% if [5,10,13,21,22,24].include?(current_user.rol_id) %>
+		<%= link_to "Pedidos", peds_url %> |
+	<% end %>	
+	<% if [5,10,13,24].include?(current_user.rol_id) || [156,178,194,195,203].include?(current_user.id) %>
+		<%= link_to "Proveedores", provs_url %> |
+		<%= link_to "Contabilidad", contabilidads_url %> | 
+		<%= link_to "Fianzas", fianzas_url %> |
+	<% end %>
+	<% if ![22,23].include?(current_user.rol_id) %>
+		<%= link_to "Ajustes", ajustes_path %> | 
+	<% end %>	
+	<%= link_to "Catalogos", partidas_url %> | 
+	<b><%= link_to "Salir", logout_path %></b>
+	</p>
+	<hr />
+<% end %>

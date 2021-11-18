@@ -1,0 +1,31 @@
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><h2>Nuevo Comentario</h2></td>
+<% form_for(@solnota) do |f| %>
+  <%= f.error_messages %>
+		<td align="center">
+		<b>Solicitud:</b><br/>
+		<%= f.select :solicitud_id, Solicitud.find(:all ,:conditions => { :id => @solicitud }, :order => "id").collect {|s| [String(s.id)+'-'+s.notas[0,20], s.id]} %>  </p>
+		<br/><br/><b>Fecha:</b><br/>
+		<%= f.date_select :fecha, :use_month_numbers => true, :disabled => true %>
+		</td>
+		<td align="center">
+		<b>Usuario:</b><br/>
+		<%= f.select :user_id, User.find(:all , :conditions => { :id => current_user.id}, :order => "nombre").collect {|s| [s.name, s.id]} %>  </p>
+		</td>
+	</tr>
+</table>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :comenta %><br />
+    <%= f.text_area :comenta %>
+  </p>
+  <p>
+    <%= f.submit 'Crear' %>
+  </p>
+<% end %>
+
+<%= link_to 'Regresar a Solicitud', solicitud_path(@solicitud) %> |
+<%= link_to 'Solicitudes', solicituds_path %>

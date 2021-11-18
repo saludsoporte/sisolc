@@ -1,6 +1,135 @@
-<h1>Editing Movimiento</h1>
+<%= form_for(@movimiento) do |f| %>
+    <% if @movimiento.errors.any? %>
+        <% @movimiento.errors.full_messages.each do |message|%>\
+            <h3><%= message %> </h3>
+        <%end%>
+	<%end%>
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+							<h2>Cambios Movimiento de Almacen</h2></td>
+		<td align="center"><b>Almacenista:</b><br />
+			<%= logger.debug "************"+current_user.rol_id.to_s %>
+			<% if [10].include?(current_user.rol_id) %>
+				<%= f.select :user_id, User.all().order(:nombre).collect {|s| [s.name, s.id]} %>
+			<% else %>
+				<%= f.select :user_id, User.where("id =?",current_user.id).order(:nombre).collect {|s| [s.name, s.id]} %>
+			<% end %>
+			<br /><b>Almacen:</b><br />
+			<% if [10].include?(current_user.rol_id) %>
+				<%= f.select :almacen_id, Almacen.all().order(:nombre).collect {|s| [s.nombre, s.id]} %>
+			<% else %>
+				<%= f.select :almacen_id, Almacen.where("id =?",@movimiento.almacen_id).collect {|s| [s.nombre, s.id]} %>
+			<% end %>
+		</td>	
+	</tr>
+</table>
+<% if [10].include?(current_user.rol_id) %>
+  <p>
+    ID<br />
+    <%= @movimiento.id %>
+  </p>
+   <p>
+    Mov.Origen<br />
+    <%= f.text_field :movimiento_id %>
+  </p>
+  <p>
+    Consecutivo<br />
+    <%= f.text_field :consec %>
+  </p>
+  <p>
+    Sancion<br />
+    <%= f.text_field :sancion %>
+  </p>
+<% end %>
+<% if [10].include?(current_user.rol_id) || @movimiento.user_id == current_user.id || [13].include?(current_user.rol_id) || [13].include?(@movimiento.estado_id) || @almacentral.include?(current_user.id) %>
+	<% if [1,2,13].include?(@movimiento.estado_id) || [10].include?(current_user.rol_id) %> 
+		<% if [1,2].include?(@movimiento.estado_id) || [10].include?(current_user.rol_id) %> 
+			<% if @tiene == nil || [10].include?(current_user.rol_id) %>
+				<% if @almacen.tipo > 0 %>
+				<p>
+					<%= f.label :tipo %><br />
+					<%= f.select :tipo_id, Tipo.where("id = ?",(@almacen.tipo < 4 && ![10].include?(current_user.rol_id) ? (3..4) : (3..4))).collect {|s| [s.tipo, s.id]} %>
+				</p>
+				<% end %>
+				<p>
+					<%= f.label :partida_id %><br />
+					<%= f.select :partida_id, Partida.all().order(:partida).collect {|s| [(String(s.partida)+"/"+(s.cog2011 == nil ? 'Pend.' : String(s.cog2011))+" "+(s.descripcion2.blank? ? s.descripcion : s.descripcion2)), s.id]}, :include_blank => true %>
+				</p>
+				<p>
+					Pedido 2010<br />
+					<%= f.text_field :pedido %>
+				</p>
+				<p>
+					Pedido<br />
+					<%= case
+						when [10].include?(current_user.rol_id) || [165].include?(current_user.id)
+							f.select :ped_id, Ped.where("estado_id = 12").order(id: :DESC).collect {|s| [s.id, s.id]},:include_blank=>true
+						when [203].include?(current_user.id)
+							f.select :ped_id, Ped.where("estado_id = 12 and (cp_id <> 7 or fianza_id is not null)").order(id: :DESC).collect {|s| [s.id, s.id]},:include_blank=>true
+						else
+							f.select :ped_id, Ped.find("estado_id = 12 and (cp_id <> 7 or fianza_id is not null) and ((almacen_id = ? or (? = 4 and clues_id = ?)) or (? = 178 and id in (177)))",@movimiento.almacen_id,@almacen.tipo,@almacen.clue_id,current_user.id).order(id: :DESC).collect {|s| [s.id, s.id]},:include_blank=>true
+					end %>
+				</p>
+			<% else %>	
+				<p>
+				Los datos de Tipo de movimiento, Partida y Pedido son editables solo cuando el movimiento no tiene lotes.
+				</p>
+			<% end %>	
+			<p>
+				Origen/Destino<br />
+				<%= f.select :oridest, Almacen.all().order(:nombre).collect {|s| [s.nombre, s.id]},:include_blank=>true %>
+			</p>
+		<% end %>	
+  <p>
+    <%= f.label :estado_id %><br />
+	<% if [10].include?(current_user.rol_id) %>
+		<%= f.select :estado_id, Estado.where("id  in (1,2,12,13)").collect {|s| [s.estado, s.id]} %>
+	<% else %>
+		<% if @movimiento.estado_id == 13 %>
+			<%= f.select :estado_id, Estado.where("id in (12,13)").collect {|s| [s.estado, s.id]} %>
+		<% else %>
+			<%= f.select :estado_id, Estado.find("id = ?",(@movimiento.tipo_id == 4 ? [1,2,12] : [1,12])).collect {|s| [s.estado, s.id]} %>
+		<% end %>
+	<% end %>
+  </p>
+  <p>
+    Fecha de Recepci&oacute;n<br />
+    <%= f.date_select :fecha %>
+  </p>
+	<% end %>
+  <p>
+    Observaci&oacute;n<br />
+    <%= f.text_field :descripcion, :size=>128, :maxlength=>255 %>
+  </p>
+	<% if ![13].include?(@movimiento.estado_id) %>
+  <p>
+    No. Factura<br />
+    <%= f.text_field :factura %>
+  </p>
+  <p>
+    Fecha Factura<br />
+    <%= f.date_select :fechafac, :include_blank=>true %>
+  </p>
+  <p>
+    Importe Factura<br />
+    <%= f.text_field :impfac %>
+  </p>
+  <p>
+    Fecha reporte factura<br />
+    <%= f.date_select :facrep, :include_blank=>true %>
+  </p>
+  <p>
+    Numero de reporte<br />
+    <%= f.text_field :nfacrep %>
+  </p>
+	<% end %>
+<% end %>
+  <p>
+    <%= f.submit 'Actualizar' %>
+  </p>
+<% end %>
 
-<%= render 'form', movimiento: @movimiento %>
-
-<%= link_to 'Show', @movimiento %> |
-<%= link_to 'Back', movimientos_path %>
+<%= link_to 'Movimiento', @movimiento %> |
+<%= link_to 'Movimientos', movimientos_path(:almacen=>@movimiento.almacen_id) %>

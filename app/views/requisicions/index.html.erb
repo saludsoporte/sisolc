@@ -1,45 +1,51 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Requisicions</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Fecha</th>
-      <th>Clues</th>
-      <th>Fuente</th>
-      <th>User</th>
-      <th>Autoriza</th>
-      <th>Estado</th>
-      <th>Anexos</th>
-      <th>Etiqueta</th>
-      <th>Importe</th>
-      <th>Vobo</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @requisicions.each do |requisicion| %>
-      <tr>
-        <td><%= requisicion.fecha %></td>
-        <td><%= requisicion.clues_id %></td>
-        <td><%= requisicion.fuente_id %></td>
-        <td><%= requisicion.user_id %></td>
-        <td><%= requisicion.autoriza_id %></td>
-        <td><%= requisicion.estado_id %></td>
-        <td><%= requisicion.anexos %></td>
-        <td><%= requisicion.etiqueta %></td>
-        <td><%= requisicion.importe %></td>
-        <td><%= requisicion.vobo_id %></td>
-        <td><%= link_to 'Show', requisicion %></td>
-        <td><%= link_to 'Edit', edit_requisicion_path(requisicion) %></td>
-        <td><%= link_to 'Destroy', requisicion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
+<%= render :partial => '/navigation' %>
+<table border='0' width='86%'>
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><h2>Requisiciones</h2></td>
+		<td align="center">
+		<% if current_user.rol_id==10 || current_user.rol_id > 0 %>
+			<%= link_to 'Nueva requisicion', new_requisicion_path %> <br><br>
+			<%= link_to 'Requisiciones Aut.', url_for('/requisicions/reqaut'),{:action=>'reqaut'} %>
+		<% end %>
+		</td>
+	</tr>
 </table>
+<table border="10" width='100%'>
+  <tr>
+    <th>Clave</th>
+    <th>Fecha</th>
+    <th>Solicitante</th>
+    <th>Fuente</th>
+    <th>Elabora</th>
+    <th>Solicita</th>
+    <th>Autoriza</th>
+    <th>Estado</th>
+    <th>+</th>
+  </tr>
 
-<br>
-
-<%= link_to 'New Requisicion', new_requisicion_path %>
+<% @requisicions.each do |requisicion| %>
+	<% if requisicion.estado_id != 6 %>
+	<% if [5,6,8,10,15].include?(current_user.rol_id) || current_user.id==requisicion.user_id || current_user.id==requisicion.vobo_id || ((current_user.id==requisicion.autoriza_id || [4].include?(current_user.rol_id))&& [2,6,8,10].include?(requisicion.estado_id)) %>
+	<tr>
+		<td align="center"><%= link_to (requisicion.id < 201100000 ? requisicion.id : requisicion.id % 100000), requisicion %>
+			<% if  [10].include?(current_user.rol_id) ||(current_user.id==requisicion.user_id && [1,3].include?(requisicion.estado_id)) || ((current_user.id == requisicion.autoriza_id || [4].include?(current_user.rol_id)) && [2,10].include?(requisicion.estado_id)) ||(current_user.id==requisicion.vobo_id && [11].include?(requisicion.estado_id)) %>
+				<%= link_to 'Mod.', edit_requisicion_path(requisicion) %>
+			<% end %>	
+		</td>
+		<td><%=h requisicion.fecha %></td>
+		<td><% if requisicion.clues_id!=nil%><%=h  Clue.where("id = ?",requisicion.clues_id).first.nomunidad%><% end %></td>
+		<td><%=h Fuente.where("id=?",requisicion.fuente_id).first.fuente %></td>	
+		<td><%=h User.where("id=?",requisicion.user_id).first.name %></td>
+		<td><% if requisicion.vobo_id != nil %><%=h User.where("id=?",requisicion.vobo_id).first.name %> <% end %></td>
+		<td><%=h User.where("id=?",requisicion.autoriza_id).first.name%></td>
+		<td><%=h Estado.where("id=?",requisicion.estado_id).first.estado %></td>		
+		<td><%=h (requisicion.anexos ? 'Si' : 'No') %></td>
+		<% if current_user.rol_id==10 %>
+			<td><%= link_to 'X', requisicion, :confirm => 'Are you sure?', :method => :delete %></td>
+		<% end %>	
+	</tr>
+	<% end %>	
+	<% end %>	
+<% end %>
+</table>

@@ -1,59 +1,1892 @@
-<p id="notice"><%= notice %></p>
+<HEAD>
+<STYLE TYPE="text/css">
+     P.breakhere {page-break-before: always}
+</STYLE>
+</HEAD>
+<% if @reporte.id == 1 %>
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp-smp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Seguimiento a Pacientes con Complicaciones durante el Embarazo o Puerperio</b><hr/>
+							<h2><%= @reporte.reporte %></h2>
+		
+        </td>
+		<td align="center">
+			<%= link_to 'Inicio', url_for("/") %>
+			<br/><br/><%= link_to 'Reportes', reportes_path %>
+		</td>	
+	</tr>
+</table>
+<table border='10' width='100%'>
+  <tr>
+    <th>Atn.</th>
+    <th>CLUES</th>
+    <th>Unidad</th>
+    <th>DerechoHab.</th>
+	<th>Pac.</th>
+	<th>Nombre</th>
+    <th>Ed.</th>
+    <th>Ingreso</th>
+    <th>Egreso</th>
+    <th>Alta Por</th>
+    <th>Diagnosticos</th>
+    <th>Terminacion</th>
+    <th>SG</th>
+    <th>G</th>
+    <th>P</th>
+    <th>A</th>
+    <th>C</th>
+    <th>MD</th>
+  </tr>
 
-<p>
-  <strong>Reporte:</strong>
-  <%= @reporte.reporte %>
-</p>
+<% @atencions.each do |atencion| %>
+	<% paciente = Paciente.find(atencion.paciente_id) %>
+	<% direccion = Domicilio.where("paciente_id=?",atencion.paciente_id).order(:id) %>
+	<% afiliacion = Afiliacion.find("paciente_id=?",atencion.paciente_id).order(:id).last %>
+  <tr>
+    <td align="center"><%=raw atencion.id %></td>
+	<td align="center"><%=raw atencion.clue_id %></td>
+    <td align="center"><%=raw atencion.clue_id == nil ? atencion.unidad : Clue.find(atencion.clue_id).nomunidad %></td>
+    <td align="center"><%=raw afiliacion == nil ? "" : afiliacion.afiliacion %>
+	<td align="center"><%=raw atencion.paciente_id %></td>
+	<td align="center"><%=raw paciente.name %></td>
+    <td align="center"><%=raw Date.today == paciente.nacimiento ? 0 : ((Date.today-paciente.nacimiento).to_i/365) %></td>
+    <td align="center"><%=raw atencion.fecha.to_date %></td>
+    <td align="center"><%=raw atencion.fechaeg == nil ? "" :atencion.fechaeg.to_date %></td>
+    <td align="center"><%=raw atencion.altapor %></td>
+    <td align="center"><%=raw atencion.diagnosticos %></td>
+    <td align="center"><%=raw atencion.terminacion %></td>
+    <td align="center"><%=raw atencion.semanas %></td>
+    <td align="center"><%=raw atencion.gesta %></td>
+    <td align="center"><%=raw atencion.para %></td>
+    <td align="center"><%=raw atencion.aborto %></td>
+    <td align="center"><%=raw atencion.cesareas %></td>
+	<td align="center"><%=raw atencion.user_id %></td>
+  </tr>
+<% end %>
+</table>
+<% end %>
+<% if [2,3,6].include?(@reporte.id) %>
+<table border="0" width="90%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Sistema Estatal Integral de Control de Inventarios</b><hr/>
+		<h2><%=@reporte.reporte%></h2>
+		<td align="center">
+		<% if [6].include?(@reporte.id) %>
+			<%= Date.today %><br/><br/>
+			Pendientes desde <%= @reporte.desde %>
+		<% else %>
+			<%= 'Desde: '+@reporte.desde.to_s %><br/><br/>
+			<%= 'Hasta: '+@reporte.hasta.to_s %>
+			<% if !@reporte.rango1.blank? %>
+				<br/><br/>Del <%= @reporte.rango1 %> Al <%= @reporte.rango2 %>
+			<% end %>
+		<% end %>
+		</td>
+	</tr>
+</table>
+<% end %>
+<% if @reporte.id == 2 %>
+<table border="10" width="100%">
+	<tr>
+		<th>ALMACEN</th>
+		<th>MOV.</th>
+		<th>FECHA</th>
+		<th>FUENTE</th>
+		<th>CARGO</th>
+		<th>ABONO</th>
+		<th>IMPORTE</th>
+		<th>PAR.</th>
+		<th>CLAVE</th>
+		<th>CANTIDAD</th>
+		<th>PRECIO</th>
+	</tr>
+	<% @movimientos.each do |movimiento| %>
+		<% @lotes = Lote.find(:all, :conditions=>{:movimiento_id=> movimiento.id}) %>
+		<% @lotes.each do |lote| %>
+			<tr>
+			<td align="center"><%=raw movimiento.almacen_id.blank? ? '' : Almacen.find(movimiento.almacen_id).nombre %></td>
+			<td align="center"><%= movimiento.consec %></td>
+			<td align="center"><%= movimiento.fecha %></td>
+			<td align="center"><%=raw lote.fuente_id.blank? ? '' : Fuente.find(lote.fuente_id).fuente %></td>
+			<td align="center"><%= lote.cargo %></td>
+			<% abono = Contabilidad.find(:first, :conditions=>["tipo_id = 6 and (partida_id is null or partida_id = ?) and (almacen_id is null or almacen_id = ?) and (prov_id is null or prov_id = ?) and (fuente_id is null or fuente_id = ?)",lote.partida_id,movimiento.oridest,lote.prov_id,lote.fuente_id]) %>
+			<td align="center"><%= abono == nil ? lote.abono : abono[:cuenta] %></td>
+			<td align="center"><%= lote.cantidadp*lote.precio %></td>
+			<td align="center"><%=raw lote.partida_id.blank? ? '' : Partida.find(lote.partida_id).cog2011 %></td>
+			<td align="center"><%= lote.catalogo_id.blank? ? '' : Catalogo.find(lote.catalogo_id).clave %></td>
+			<td align="center"><%= lote.cantidadp %></td>
+			<td align="center"><%= lote.precio %></td>
+			</tr>
+		<% end %>
+	<% end %>
+</table>
+<% end %>
+<% if @reporte.id == 3 %>
+<table border="10" width="100%">
+	<tr>
+		<th>Mov/Alm.</th>
+		<th>PROVEEDOR</th>
+		<th>N.C.</th>
+		<th>PENA CONV.</th>
+		<th>FAC.#</th>
+		<th>IMPORTE</th>
+		<th>TOTAL</th>
+		<th>PART.</th>
+		<th>REQUISICION</th>
+		<th>PR|SP</th>
+		<th>PEDIDO</th>
+		<th>PRESUPUESTO</th>
+		<th>FECHA FAC.</th>
+		<th>FECHA R.ALM.</th>
+		<th>ENVIO</th>
+		<th>PROCESO</th>
+		<th>CAPTURA</th>
+		<th>ELAB.PEDIDO</th>
+	</tr>
+	<% @movimientos.each do |movimiento| %>
+	    <% @ped = movimiento.ped %>
+		<% @prov = Prov.find(@ped.proveedor_id) %>
+		<tr>
+			<td align="center"><%=raw movimiento.consec %>/<%=raw movimiento.almacen.nombre %></td>
+			<td align="center"><%=raw @prov.fiscal %></td>
+			<td align="center"></td>
+			<td align="center"><%=raw number_to_currency(movimiento.sancion, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<td align="center"><%=raw movimiento.factura %></td>
+			<td align="center"><%=raw number_to_currency(movimiento.impfac, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<td align="center"><%=raw number_to_currency(movimiento.impfac-(movimiento.sancion == nil ? 0.0 : movimiento.sancion), :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<td align="center"><%=raw movimiento.partida_id != nil ? movimiento.partida.partidas : 'FALTA PARTIDA' %></td>
+			<% @req = @ped.requisicion %>
+			<% if @req %>
+				<% @renglons = Renglon.where("requisicion_id=?",@req.id) %>
+				<td align="center"><%=raw @req.id < 201100000 ? @req.id.to_s+'/2010' : ((@req.id % 100000).to_s)+'/'+((@req.id-(@req.id % 100000))/100000).to_s %></td>
+				<td align="center">
+					<% @renglons.each do |renglon| %>
+						<%= renglon.programa.clave %>
+					<% end %>
+				</td>
+				<td align="center"><%=raw movimiento.ped_id %></td>
+				<td align="center"><%=raw @req.fuente ? @req.fuente.fuente : 'REQUISICION SIN FUENTE EN PEDIDO' %></td>
+			<% else %>
+				<% if @ped.reqexterna %>
+					<td align="center"><%=raw @ped.reqexterna > 201100000 ? (@ped.reqexterna % 100000).to_s+'/'+((@ped.reqexterna-(@ped.reqexterna % 100000))/100000).to_s : @ped.reqexterna.to_s+'/2010' %></td>
+					<td align="center">REQUISICION EXTERNA</td>
+					<td align="center"><%=raw movimiento.ped_id %></td>
+					<td align="center"><%=raw @ped.fuente_id ? Fuente.find(@ped.fuente_id).fuente : 'PEDIDO SIN FUENTE' %></td>
+				<% else %>
+					<td align="center" colspan="2">PEDIDO SIN REQUISICION</td>
+					<td align="center"><%=raw movimiento.ped_id %></td>
+					<td align="center"><%=raw @ped.fuente_id ? Fuente.find(@ped.fuente_id).fuente : 'PEDIDO SIN FUENTE' %></td>
+				<% end %>
+			<% end %>
+			<td align="center"><%=raw movimiento.fechafac %></td>
+			<td align="center"><%=raw movimiento.fecha %></td>
+			<td align="center"><%=raw movimiento.facrep %></td>
+			<td align="center"><%=raw @ped.proceso ? @ped.proceso.proceso : 'PROCESO FALTANTE' %></td>
+			<td align="center"><%=raw User.find(:first,:conditions=>{:id=>movimiento.user_id}).name %></td>
+			<td align="center"><%=raw User.find(:first,:conditions=>{:id=>movimiento.ped.user_id}).name %></td>
+		</tr>
+	<% end %>
+</table>
+<% end %>
+<% if @reporte.id == 4 %>
+	<% if @reporte.cpini? %>
+	<table border="0" width="70%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><h2>Pedidos</h2></td>
+	</tr>
+</table>
+<table border='10'>
+<% if @peds.size > 0 %>
+  <tr>
+    <th>No.</th>
+    <th>Proveedor</th>
+    <th>Clues</th>
+	<th>Proceso</th>
+    <th>Fecha</th>
+    <th>Almacen</th>
+    <th>Entrega</th>
+    <th>Elabora</th>
+    <th>Estado</th>
+  </tr>
+<% end %>
+<% @peds.each do |ped| %>
+  <tr>
+    <td align="center" ><%=link_to ped.id, ped %>
+	<td align="center">
+		<% if ped.proveedor_id != nil %>	
+			<% proveedor = Prov.find(ped.proveedor_id) %>
+			<%= proveedor.fiscal %>
+			<% end %>
+	</td>		
+	<td align="center"><% if ped.clues_id != nil %>
+		<% clues = Clue.find(ped.clues_id ) %>
+		<%= clues.nomunidad %>-<%= clues.clues %>
+		<% end %>	
+    </td>
+	<td align="center">
+		<% if ped.proceso_id != nil %>
+			<%=raw Proceso.find(ped.proceso_id ).proceso %>
+		<% else %>
+			<%=raw ped.tipo.tipo %>
+		<% end %>	
+    </td>
+    <td align="center"><%=raw ped.fecha %></td>
+	<td align="center">
+		<% if ped.almacen_id != nil %>
+			<% if current_user.id == 165 or ped.id > 367 %>
+				<% almacen = Almacen.find(ped.almacen_id) %>
+				<%=raw almacen != nil ? almacen.nombre : '' %>
+			<% else %>
+				<% almacen = Clue.find(ped.almacen_id ) %>
+				<%=raw almacen != nil ? almacen.nomunidad : '' %>
+			<% end %>	
+		<% end %>	
+    </td>
+    <td align="center"><%=raw ped.entrega %></td>
+	<td align="center"><% if ped.user_id != nil %>
+		<%=raw User.find(ped.user_id ).name %>
+		<% end %>	
+    </td>
+    <td align="center"><%=raw ped.estado.estado %></td>
+  </tr>
+<% end %>
+</table>
+<% else %>
+<% @peds.each do |ped| %>
+    <% @ped = Ped.find(:first, :conditions=>{:id=>ped.id}) %>
+    <% @detpeds = Detped.where("ped_id =?",@ped.id).order(:descripcion) %>
+<table border="1" width="100%">
+	<tr><td colspan="8">
+	<table border="1" width="100%">
+<THEAD>
+		<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="left">
+		PROVEEDOR: 
+		<% if @ped.proveedor_id != nil %>	
+			<% proveedor = Prov.find(@ped.proveedor_id) %>
+			(#<%= proveedor.id %>)<br/>
+			<%= proveedor.fiscal %> <br/>
+			<%= proveedor.domicilio %> <br/>
+			<%= proveedor.colonia %> <br/>
+			<%= proveedor.ciudad %> C.P.<%= proveedor.cp %><br/>
+			<%= proveedor.telefonos %>
+			<% if proveedor.fax != nil %>
+				FAX: <%= proveedor.fax %>
+			<% end %> <br/>	
+			R.F.C. <%= proveedor.rfc %>
+		<% end %>	
+		</td>
+		<td align="left">EFECTUAR ENTREGA EN UNIDAD:<br/>
+		<% if @ped.almacen_id != nil %>
+			<% if current_user.id == 165 or @ped.id > 367 %>
+				<% almacen = Almacen.find(@ped.almacen_id) %>
+				<% codpos = almacen.cpostal %>
+				<%= almacen.nombre %><br/>
+			<% else %>	
+				<% almacen = Clue.find(@ped.almacen_id) %>
+				<% codpos = almacen.cp %>
+				<%= almacen.nomunidad %><br/>
+			<% end %>	
+			<% if almacen!= nil %>
+				<%= almacen.domicilio %><br/>
+				<%= almacen.municipio %>, S.L.P.
+				C.P. <%= codpos %>
+			<% end %>	
+		<% end %>	
+		</td>
+		<td align="left">
+		FACTURAR A:<br/>
+		SERVICIOS DE SALUD DE SAN LUIS POTOSI<br/>
+		Jesus Goytortua 340<br/>
+		Fracc. Tangamanga, S.L.P.<br/>
+		78269 San Luis Potosi, S.L.P.<br/>
+		RFC: SSS-960912-HW9
+		</td>
+	</tr>
+	<tr>
+		<td align="left">
+		Pedido: <b><%=raw @ped.id %>/<%= @ped.fecha.year%></b><br/>
+		Unidad:<b><%= @ped.clues_id.blank? ? '' : Clue.find(@ped.clues_id).nomunidad %></b><br/>
+		Proceso:<%=raw @ped.proceso.blank? ? @ped.tipo.tipo : @ped.proceso.proceso %><br/>
+		Fecha: <%=raw @ped.fecha %>
+		</td>
+		<td align="center">
+			CONDICIONES DE PAGO:<b></b><br/><br/>
+			<% if @ped.tipo_id != 15 %>
+				<%=raw @ped.condiciones_id == 1 ? 'CONTADO' : 'CREDITO A 20 DIAS' %><br/>		
+				<% tipo = Tipo.find(@ped.cp_id) %>
+				<%= tipo == nil ? '' : tipo.tipo %>
+			<% else %>
+				SIN OBLIGACION DE PAGO
+			<% end %>
+		</td>
+		<td align="center">
+		FECHA LIMITE DE ENTREGA:<b></b><br/>
+		<%=raw @ped.entrega %>
+		<b></b><br/>
+		HORARIO DE RECEPCION<b></b><br/>
+		8:00 A 13:30 HORAS
+		</td>
+		<td align="center">
+		<% if @ped.tipo_id != 15 %>
+			REQUISICION/RECURSO:<br/>
+		<% end %>
+		<FONT face="arial" size="1">		
+		<% if @ped.requisicion != nil %>
+			<b><%=raw @ped.requisicion_id % 100000 %>: </b><%=raw @ped.requisicion.fuente.fuente %>
+			<% if @ped.montoreq != nil %>
+				<%=raw number_to_currency(@ped.montoreq, :unit => '$', :separator => ".", :delimiter => ",")%>
+			<% end %>
+			<br/>
+		<% else %>
+			<% if @ped.reqexterna != nil %>
+				<b><%= @ped.reqexterna %></b> E:
+			<% else %>
+				SIN REQUISICION 
+			<% end %>
+			<%= @ped.fuente_id == nil ? 'SIN FUENTE' : Fuente.find(@ped.fuente_id).fuente %><br/>
+		<% end %>
+		<% if @ped.requi2_id != nil %>
+			<b><%=raw @ped.requi2_id % 100000 %>: </b><%=raw Fuente.find(Requisicion.find(@ped.requi2_id).fuente_id).fuente %>
+			<% if @ped.montoreq2 != nil %>
+				<%=raw number_to_currency(@ped.montoreq2, :unit => '$', :separator => ".", :delimiter => ",")%>
+			<% end %>
+			<br/>
+		<% end %>	
+		<% if @ped.requi3_id != nil %>
+			<b><%=raw @ped.requi3_id % 100000 %>: </b><%=raw Fuente.find(Requisicion.find(@ped.requi3_id).fuente_id).fuente %>
+			<% if @ped.montoreq3 != nil %>
+				<%=raw number_to_currency(@ped.montoreq3, :unit => '$', :separator => ".", :delimiter => ",")%>
+			<% end %>
+			<br/>
+		<% end %>	
+		<% if @ped.requi4_id != nil %>
+			<b><%=raw @ped.requi4_id % 100000 %>: </b><%=raw Fuente.find(Requisicion.find(@ped.requi4_id).fuente_id).fuente %>
+			<% if @ped.montoreq4 != nil %>
+				<%=raw number_to_currency(@ped.montoreq4, :unit => '$', :separator => ".", :delimiter => ",")%>
+			<% end %>
+			<br/>
+		<% end %>	
+		</FONT>
+		<% if @ped.proceso != nil || @ped.partida_id != nil %>
+			PARTIDA: <%=raw partida = @ped.proceso == nil || @ped.partida_id != nil ? @ped.partida.partidas : Partida.where("partida=?",@ped.proceso.partida_id).cog2011 %><br/>
+		<% end %>		
+		</td>
+	</tr>
+</table>
+		</td>
+	</tr>
+  <tr>
+    <th>CLAVE</th>
+    <th>DESCRIPCION</th>
+    <th>PRESENTACION</th>
+    <th>PRECIO<br/>UNITARIO</th>
+    <th>CANTIDAD</th>
+    <th>IMPORTE</th>
+  </tr>
+</THEAD>
+<TBODY>
+<tr>
+<% for detped in @detpeds %> 
+  <tr>
+	<td align="center">
+	<% if detped.clave_id != nil %>
+		<%=raw Catalogo.find(detped.clave_id).clave %>
+		<% if detped.estado_id == 9 %>
+			<br/>Cancelado
+		<% end %>	
+	<% end %>	
+	</td>
+	<td align="center"><%=raw detped.descripcion %> <b>MARCA: <%=raw detped.marca_mod %></b></td>
+	<td align="center"><%=raw detped.presentacion %></td>
+	<td align="center"><%=raw number_to_currency(detped.precio, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+	<td align="center"><%=raw detped.cantidad.to_i %>
+	<% if detped.cancelado > 0.0 %>
+		<br/> - <%= detped.cancelado %>
+	<% end %>
+	</td>
+    <td align="right"><%=raw number_to_currency(detped.importe, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+  </tr>
+<% end %>
+   <td colspan="3">
+	<%=raw @ped.observaciones %>
+	</td>
+	<td align=right>
+		<b>Subtotal:</b><br/>
+		<b>Iva:</b><br/>
+		<b>Total:</b>
+	</td>	
+    <td colspan="2" align="right">
+		<%=raw number_to_currency(@ped.subtotal, :unit => '$', :separator => ".", :delimiter => ",")%><br/>
+		<%=raw number_to_currency(@ped.iva, :unit => '$', :separator => ".", :delimiter => ",")%><br/>
+		<%=raw number_to_currency(@ped.total, :unit => '$', :separator => ".", :delimiter => ",")%><br/>
+	</td>
+  </tr>
+</TBODY>
+<TFOOT>
+	<% if @ped.tipo_id != 15 %>
+	<tr>
+	<td colspan="8">
+	<table border="1" width="100%">
+	<tr>
+		<% if @ped.adq_id != nil %>
+			<td align="center">
+			LABORATORIO ESTATAL<br/><br/>
+			<%= User.find(@ped.adq_id).name %>
+			</td>
+		<% end %>
+		<td align="center">
+		ADQUISICIONES<br/><br/>
+		<%= User.find(@ped.jda_id ).name %>
+		</td>
+		<td align="center">
+		SUBDIRECCION OPERATIVA<br/><br/>
+		<%= User.find(@ped.so_id ).name %>
+		</td>
+		<td align="center">
+		DIRECCION ADMINISTRATIVA<br/><br/>
+		<%= User.find(@ped.da_id ).name %>
+		</td>
+		<% periodo = @ped.fecha.year.to_i %>
+		<% if @ped.total != nil && ((@ped.subtotal >= 66465.00 && periodo == 2012) || (@ped.subtotal >= 50000.00 && periodo < 2012)) %>
+			<td align="center">
+			DIRECTOR GENERAL<br/><br/>
+			<%= User.find(@ped.dg_id).name %>
+			</td>
+		<% end %>
+	</tr>
+	<% end %>
+	<tr>
+		<td colspan="6" align="center">
+			<b><FONT face="arial" size="1"> Pedido No. <%=raw @ped.id %>/<%= @ped.fecha.year%>. Estado del pedido: <%= @ped.estado.estado %> / Consult&oacute;: <%= User.find(@ped.user_id ).name %></b></FONT>
+		</td>
+	</tr>	
+	</table>
+	</td>
+	</tr>
+</TFOOT>
+</table>
+<P CLASS="breakhere">
+<% end %>
+<% end %>
+<% end %>
+<% if @reporte.id == 5 %>
+<% @requisicions.each do | requisicion| %>
+<table border="1" width="100%">
+	<tr>
+		<td width ="230"><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><h4>DIRECCION: PLANEACION, EVALUACION Y PROYECTOS ESPECIALES<br/>DEPARTAMENTO DE CONTROL PRESUPUESTAL</h4><h3>REQUISICION DE EJERCICIO</h3></td>
+		<td align="center" width="100"><h3>FOLIO: <%= requisicion.id < 201100000 ? requisicion.id : requisicion.id-201100000 %></h3><br/>
+		<%= Estado.find(requisicion.estado_id).estado %>
+		</td>
+	</tr>
+</table>
+<br/>
+<table border="2" width="100%">
+	<tr>
+		<td><b>Unidad Solicitante:</b></td>
+		<td><% if @requisicion.clues_id != nil %><%=raw Clue.find(@requisicion.clues_id).name %><% end %></td>
+		<% if @requisicion.etiqueta != nil && @requisicion.etiqueta != 0 %><td align="center"><b>ETIQUETA</b></td><% end %>
+		<td align="center"><b>IMPORTE</b></td>
+		<td align="center"><b>AAAA-MM-DD</b></td>
+	</tr>
+	<tr>
+		<td><b>Financiamiento:</b></td>
+		<td><%=raw Fuente.find(@requisicion.fuente_id ).name %></td>
+		<% if @requisicion.etiqueta != nil && @requisicion.etiqueta != 0 %><td align="center"><%= @requisicion.etiqueta %></td><% end %>
+		<td align="center"><%=raw number_to_currency @requisicion.importe, :unit => '$', :separator => ".", :delimiter => "," %></td>
+		<td align="center"><%=raw @requisicion.fecha %></td>
+	</tr>
+</table>
+<table border="10" width="100%">
+  <THEAD>
+  <tr>
+    <th>No.</th>
+    <th>Proyecto</th>
+    <th>Prog.</th>
+    <th>Aplica</th>
+    <th>Part.</th>
+    <th>Mes</th>
+    <th>Descripcion del Gasto</th>
+    <th>Importe</th>
+  </tr>
+  </THEAD>
+<br/>
+<%	@renglons = Renglon.where("requisicion_id =?",@requisicion.id).order(:renglon) %>
+<%	@reqnotas = Reqnota.where("requisicion_id =?",@requisicion.id) %>
+<% for renglon in @renglons %> 
+  <tr>
+    <td align="center"><%=raw renglon.renglon %></td>
+    <td align="center"><% if renglon.proyecto != nil %><%=raw renglon.proyecto.name %><% end %></td>
+    <td align="center"><%=raw renglon.programa.clave %></td>
+    <td align="center"><% if renglon.clues_id != nil %><%=raw Clue.find(renglon.clues_id).name %><% end %></td>
+    <td align="center"><%=raw @requisicion.fecha > '2010-12-31'.to_date ? renglon.partida.partidas : renglon.partida.partida %></td>
+    <td align="center"><% if renglon.ejercicio != nil %><%=raw renglon.ejercicio.year %>-<%=raw renglon.ejercicio.month %><% end %></td>
+    <td align="center"><%=raw renglon.descripcion %></td>
+    <td align="center"><%=raw number_to_currency renglon.importe, :unit => '$', :separator => ".", :delimiter => "," %></td>
+  </tr>
+<% end %>
+</table>
+<br/>
+<table border="1" width="100%">
+<% if @reqnotas != nil %>
+	<THEAD>	
+	<th>FECHA</th>
+	<th>NOMBRE</th>
+	<th>OBSERVACIONES REQUISICION # <%= @requisicion.id %></th>
+	</THEAD>
+<% end %>	
+<% for reqnota in @requisicion.reqnotas %>
+	<tr>
+	<td align="center"><%=raw reqnota.fecha %></td>
+	<td align="center"><%=raw User.find(reqnota.user_id).name %></td>
+	<td><%=raw reqnota.comenta %></td>
+	</tr>
+<% end %>
+</table>
+<br/>
+<table border="0" width="100%">
+	<tr>
+		<td align="center"><b>Consult&oacute;:</b></td>
+		<td align="center"><b>Solicita:</b></td>
+	</tr>
+	<tr>
+		<td align="center"><%= User.find(@requisicion.user_id).nompos %></td>
+		<td align="center"><% if @requisicion.vobo_id != nil %><%= User.find(@requisicion.vobo_id ).nompos %><% end %></td>
+	</tr>
+</table>
+<P CLASS="breakhere">
+<% end %>
+<% end %>
 
-<p>
-  <strong>Desde:</strong>
-  <%= @reporte.desde %>
-</p>
+<% if [6].include?(@reporte.id) %>
+	<table border="10" width="100%">
+	<tr>
+		<th>Pedido</th>
+		<th>Fecha Ent.</th>
+		<th>Proceso</th>
+		<th>Proveedor</th>
+		<th>Almacen</th>
+		<th>Unidad</th>
+		<th>Partida</th>
+		<th>Clave</th>
+		<th>Descripcion</th>
+		<th>Pres.</th>
+		<th>Cant.Pend.</th>
+		<th>Dias</th>
+		<th>Importe c/IVA</th>
+	</tr>
+	<% @peds.each do |ped| %>
+		<% @detpeds = Detped.where("ped_id = ? and detpeds.cantidad > (recibido+cancelado)",ped.id) %>
+		<% @detpeds.each do |detped| %>
+			<% @prov = Prov.find(ped.proveedor_id) %>
+			<% @clue = Clue.find(ped.clues_id) %>
+			<% @catalogo = Catalogo.find(detped.clave_id) %>
+			<tr>
+				<td align="center"><%=raw ped.id %></td>
+				<td align="center"><%=raw ped.entrega.to_s+(@reporte.rango2 != nil ? '+('+@reporte.rango2.to_s+')' : '')%></td>
+				<td align="center"><%=raw ped.proceso != nil ? ped.proceso.proceso : '' %>
+				<td align="center"><%=raw @prov != nil ? @prov.fiscal : '' %></td>
+				<% if current_user.id == 165 or ped.id > 367 %>
+					<td align="center"><%=raw ped.almacen_id != nil ? ped.almacen.nombre : "ALMACEN FALTANTE EN PEDIDO" %></td>
+				<% else %>
+					<% @almacen = Clue.find(ped.almacen_id ) %>
+					<td align="center"><%=raw @almacen != nil ? @almacen.nomunidad : '' %></td>
+				<% end %>	
+				<td align="center"><%=raw @clue.nomunidad %></td>
+				<% if @catalogo %>
+					<td align="center"><%=raw @catalogo.partida.partida_armonizada %></td>
+					<td align="center"><%=raw @catalogo.clave %></td>
+				<% else %>
+					<td align="center" colspan="2">CLAVE DE ARTICULO FALTANTE</td>
+				<% end %>
+				<td align="center"><%=raw detped.descripcion %></td>
+				<td align="center"><%=raw detped.presentacion %></td>
+				<% pendiente = detped.cantidad-(detped.recibido+detped.cancelado) %>
+				<td align="center"><%=raw pendiente %></td>
+				<td align="center"><%=raw Date.today-ped.entrega %></td>
+				<td align="center"><%=raw pendiente == nil || detped.precio == nil || detped.iva == nil ? 'FALTAN DATOS' : number_to_currency(pendiente * detped.precio * detped.iva, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			</tr>
+		<% end %>
+	<% end %>
+	</table>
+<% end %>
 
-<p>
-  <strong>Hasta:</strong>
-  <%= @reporte.hasta %>
-</p>
+<% if [7,8].include?(@reporte.id) %>
+    <% fuente = nil %>
+	<% movim = 0 %>
+	<% subtotmov = 0.0 %>
+	<% totmovs = 0.0 %>
+	<% totfuente = 0.0 %>
+	<% subtotfuente = 0.0 %>
+	<% @lotes.each do |lote| %>
+		<% if @reporte.id == 8 %>
+			<% @catalogo = Catalogo.find(lote.catalogo_id) %>
+		<% end %>
+	<% if movim == 0
+		movim = lote.movimiento_id
+	end %>
+	<% @movimiento = Movimiento.find(lote.movimiento_id) %>
+	<% totmovs = totmovs+(lote.precio * lote.cantidadp) %>
+	<% totfuente = totfuente+(lote.precio * lote.cantidadp) %>
+	<% if movim != lote.movimiento_id || (fuente != lote.fuente_id && fuente != nil) %>	
+		<tr>
+			<td align="right" colspan="7">Total Movimiento:</td><td align="right"><%= number_to_currency(subtotmov, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<% movim = lote.movimiento_id %>
+			<% subtotmov = 0.0 %>
+		</tr>
+		<% if fuente != lote.fuente_id && fuente != nil %>
+			<tr>
+				<td align="right" colspan="7">Total fuente:</td><td align="right"><%= number_to_currency(subtotfuente, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+				<% subtotfuente = 0.0 %>
+			</tr>
+		<% end %>
+	<% end %>
+	<% subtotmov = subtotmov + (lote.precio * lote.cantidadp) %>
+	<% subtotfuente = subtotfuente + (lote.precio * lote.cantidadp) %>
+	<% if fuente != lote.fuente_id %>
+		<% fuente = lote.fuente_id %>
+		<table border="0" width="90%">
+			<tr>
+				<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+				<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+				<h3><%=@reporte.reporte%></h3><%= lote.fuente_id != nil ? Fuente.find(lote.fuente_id).fuente : 'FUENTE FALTANTE' %></td>
+				<td align="center">
+					<%= [6].include?(@reporte.id) ? Date.today : 'Desde: '+@reporte.desde.to_s %><br/><br/>
+					<%= [6].include?(@reporte.id) ? '' : 'Hasta: '+@reporte.hasta.to_s %>
+					<% if !@reporte.rango1.blank? %>
+						<br/><br/><%= @almacen.nombre %>
+					<% end %>
+				</td>
+			</tr>
+		</table>
+		<table border="10" width="100%">
+		<tr>
+			<th>Folio</th>
+			<th>Fecha</th>
+			<th>Factura</th>
+			<th>Pedido</th>
+			<th>Proveedor</th>
+			<th>Partida</th>
+			<th>Destino</th>
+			<th>Importe</th>
+		</tr>
+	<% end %>
+			<tr>
+				<td align="center"><%=raw @movimiento.consec %></td>
+				<td align="center"><%=raw @movimiento.fecha %>
+				<td align="center"><%=raw @movimiento.factura %></td>
+				<% if @movimiento.ped_id != nil %>
+					<% @ped = Ped.find(@movimiento.ped_id) %>
+					<% @prov = Prov.find(@ped.proveedor_id).fiscal %>
+					<td align="center"><%=raw @movimiento.ped_id %></td>
+				<% else %>
+					<% @prov = nil %>
+					<% @ped = nil %>
+					<td align="center"><%=raw @movimiento.pedido == nil ? '' : @movimiento.pedido.to_s+'/2010' %></td>
+				<% end %>
+				<td align="center"><%=raw @prov != nil ? @prov : @movimiento.descripcion %></td>
+				<td align="center"><%=raw lote.partida.cog2011 %></td>
+				<td align="center"><%=raw @movimiento.oridest == nil ? '' : Almacen.find(@movimiento.oridest).nombre %></td>
+				<td align="right"><%=raw number_to_currency(lote.precio * lote.cantidadp, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			</tr>
+		<% if @reporte.id == 8 && @catalogo != nil %>
+			<tr>
+				<td align="center" colspan="6"><%=raw @catalogo.descripcion %></td>
+				<td align="center" colspan="2"><%=raw @catalogo.presentacion %></td>
+			</tr>
+		<% end %>
+	<% end %>
+	<tr>
+		<td align="right" colspan="7">Total Movimiento:</td><td align="right"><%= number_to_currency(subtotmov, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+	</tr>
+	<tr>
+		<td align="right" colspan="7">Total Fuente:</td><td align="right"><%= number_to_currency(subtotfuente, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+	</tr>
+<TFOOT>
+	<tr>
+	<td colspan="8">
+	<table border="1" width="100%">
+	<tr>
+		<td align="center">
+			JEFE DE ALMACEN<br/><br/>
+			<%= User.find(@almacen.user_id ).name %>
+		</td>
+		<td align="center">
+			ADMINISTRADOR<br/><br/>
+			<%= @almacen.admoru != nil ? User.find(@almacen.admoru).name : ''%>
+		</td>
+		<td align="center">
+			JEFE O DIRECTOR DE LA UNIDAD<br/><br/>
+			<%= @almacen.jefeu != nil ? User.find(@almacen.jefeu).name : ''%>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="8" align="center">
+			<b><FONT face="arial" size="1"><%=@reporte.reporte%> / <%= @almacen.nombre %> / <%= 'Desde: '+@reporte.desde.to_s %> <%= 'Hasta: '+@reporte.hasta.to_s %> / Consult&oacute;: <%= User.find(current_user.id ).name %> / Fecha: <%= Date.today %></b></FONT>
+		</td>
+	</tr>	
+	</table>
+	</td>
+	</tr>
+</TFOOT>
+	</table>
+	Total Entradas:<%= number_to_currency(totmovs, :unit => '$', :separator => ".", :delimiter => ",") %>
+<% end %>
 
-<p>
-  <strong>Unidad:</strong>
-  <%= @reporte.unidad %>
-</p>
+<% if [9,10].include?(@reporte.id) %>
+    <% fuente = nil %>
+	<% movim = 0 %>
+	<% partida = 0 %>
+	<% subtotmov = 0.0 %>
+	<% totmovs = 0.0 %>
+	<% totfuente = 0.0 %>
+	<% subtotfuente = 0.0 %>
+	<% subtotpartida = 0.0 %>
+	<% @lotes.each do |lote| %>
+		<% if @reporte.id == 9 %>
+			<% @catalogo = Catalogo.find(lote.catalogo_id) %>
+		<% end %>
+	<% if movim == 0
+		movim = lote.salida_id
+	end %>
+	<% if partida == 0
+		partida = lote.partida_id
+	end %>
+	<% @movimiento = Movimiento.find(lote.salida_id) %>
+	<% totmovs = totmovs+(lote.precio * lote.cantidadp) %>
+	<% totfuente = totfuente+(lote.precio * lote.cantidadp) %>
+	<% if movim != lote.salida_id || (fuente != lote.fuente_id && fuente != nil) || partida != lote.partida_id %>	
+		<tr>
+			<td align="right" colspan="6">Total Movimiento:</td><td align="right"><%= number_to_currency(subtotmov, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<% movim = lote.salida_id %>
+			<% subtotmov = 0.0 %>
+		</tr>
+		<% if (partida != lote.partida_id) || (fuente != lote.fuente_id && fuente != nil) %>
+			<tr>
+				<td align="right" colspan="6">Total Partida:</td><td align="right"><%= number_to_currency(subtotpartida, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+				<% partida = lote.partida_id %>
+				<% subtotpartida = 0.0 %>
+			</tr>
+		<% end %>
+		<% if fuente != lote.fuente_id && fuente != nil %>
+			<tr>
+				<td align="right" colspan="6">Total fuente:</td><td align="right"><%= number_to_currency(subtotfuente, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+				<% subtotfuente = 0.0 %>
+			</tr>
+		<% end %>
+	<% end %>
+	<% subtotmov = subtotmov + (lote.precio * lote.cantidadp) %>
+	<% subtotfuente = subtotfuente + (lote.precio * lote.cantidadp) %>
+	<% subtotpartida = subtotpartida + (lote.precio * lote.cantidadp) %>
+	<% if fuente != lote.fuente_id %>
+		<% fuente = lote.fuente_id %>
+		<table border="0" width="90%">
+			<tr>
+				<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+				<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+				<h3><%=@reporte.reporte%></h3><%= lote.fuente_id == nil ? 'FUENTE FALTANTE' : Fuente.find(lote.fuente_id).fuente %></td>
+				<td align="center">
+					<%= [6].include?(@reporte.id) ? Date.today : 'Desde: '+@reporte.desde.to_s %><br/><br/>
+					<%= [6].include?(@reporte.id) ? '' : 'Hasta: '+@reporte.hasta.to_s %>
+					<% if !@reporte.rango1.blank? %>
+						<br/><br/><%= @almacen.nombre %>
+					<% end %>
+				</td>
+			</tr>
+		</table>
+		<table border="10" width="100%">
+		<tr>
+			<th>Folio</th>
+			<th>Fecha</th>
+			<th>Descrip.</th>
+			<th>Partida</th>
+			<th>Destino</th>
+			<th>Almacen</th>
+			<th>Importe</th>
+		</tr>
+	<% end %>
+			<tr>
+				<td align="center"><%=raw @movimiento.consec %></td>
+				<td align="center"><%=raw @movimiento.fecha %>
+				<td align="center"><%=raw @movimiento.descripcion %></td>
+				<td align="center"><%=raw lote.partida.cog2011 %></td>
+				<% almacen = Almacen.find(@movimiento.oridest) %>
+				<td align="center"><%=raw almacen.clue_id == nil ? '' : Clue.find(almacen.clue_id).nomunidad %></td>
+				<td align="center"><%=raw almacen == nil ? '' : almacen.nombre %></td>
+				<td align="right"><%=raw number_to_currency(lote.precio * lote.cantidadp, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			</tr>
+		<% if @reporte.id == 9 && @catalogo != nil %>
+			<tr>
+				<td align="center" colspan="5"><%=raw @catalogo.descripcion %></td>
+				<td align="center" colspan="2"><%=raw @catalogo.presentacion %></td>
+			</tr>
+		<% end %>
+	<% end %>
+	<tr>
+		<td align="right" colspan="6">Total Movimiento:</td><td align="right"><%= number_to_currency(subtotmov, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+	</tr>
+	<tr>
+		<td align="right" colspan="6">Total Partida:</td><td align="right"><%= number_to_currency(subtotpartida, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+	</tr>
+	<tr>
+		<td align="right" colspan="6">Total Fuente:</td><td align="right"><%= number_to_currency(subtotfuente, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+	</tr>
+<TFOOT>
+	<tr>
+	<td colspan="8">
+	<table border="1" width="100%">
+	<tr>
+		<td align="center">
+			JEFE DE ALMACEN<br/><br/>
+			<%= User.find(@almacen.user_id).name %>
+		</td>
+		<td align="center">
+			ADMINISTRADOR<br/><br/>
+			<%= @almacen.admoru != nil ? User.find(@almacen.admoru).name : ''%>
+		</td>
+		<td align="center">
+			JEFE O DIRECTOR DE LA UNIDAD<br/><br/>
+			<%= @almacen.jefeu != nil ? User.find(@almacen.jefeu).name : ''%>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="8" align="center">
+			<b><FONT face="arial" size="1"><%=@reporte.reporte%> / <%= @almacen.nombre %> / <%= 'Desde: '+@reporte.desde.to_s %> <%= 'Hasta: '+@reporte.hasta.to_s %> / Consult&oacute;: <%= User.find(current_user.id).name %> / Fecha: <%= Date.today %></b></FONT>
+		</td>
+	</tr>	
+	</table>
+	</td>
+	</tr>
+</TFOOT>
+	</table>
+	Total Salidas:<%= number_to_currency(totmovs, :unit => '$', :separator => ".", :delimiter => ",") %>
+<% end %>
+<% if @reporte.id == 11 %>
+		<table border="0" width="100%">
+			<tr>
+				<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+				<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+				<h3><%=@reporte.reporte%></h3></td>
+				<td align="center">
+					<%= 'Desde: '+@reporte.desde.to_s %><br/><br/>
+					<%= 'Hasta: '+@reporte.hasta.to_s %>
+					<% if !@reporte.rango1.blank? %>
+						<br/><br/><%= @almacen.nombre %>
+					<% end %>
+				</td>
+			</tr>
+		</table>
+	<table border="10" width="100%">
+		<tr>
+			<th>Fuente</th>
+			<th>Partida</th>
+			<th>Inicial</th>
+			<th>Entradas</th>
+			<th>Salidas</th>
+			<th>Final</th>
+		</tr>
+		<% fuenteant = 0 %>
+		<% totini = 0.0 %>
+		<% totent = 0.0 %>
+		<% totsal = 0.0 %>
+		<% totfin = 0.0 %>
+		<% @resultados.each do |resultado| %>
+			<% if fuenteant == 0 || fuenteant != resultado.fuente %>
+				<% if fuenteant != 0 %>
+					<tr>
+						<th align="right" colspan="2"><%= 'Subtotales' %></th>
+						<td align="right"><%= number_to_currency(@fuenteini, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+						<td align="right"><%= number_to_currency(@fuenteent, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+						<td align="right"><%= number_to_currency(@fuentesal, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+						<td align="right"><%= number_to_currency(@fuentefin, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+					</tr>
+				<% end %>
+				<% fuenteant = resultado.fuente %>
+				<% @fuenteini = 0.0 %>
+				<% @fuenteent = 0.0 %>
+				<% @fuentesal = 0.0 %>
+				<% @fuentefin = 0.0 %>
+			<% end %>
+			<tr>
+				<td align="center"><%= resultado.fuente == nil ? 'FUENTE FALTANTE' : resultado.fuente.fuente %></td>
+				<td align="center"><%= resultado.partida.partidas %></td>
+				<td align="right"><%= number_to_currency(resultado.inicial, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+				<td align="right"><%= number_to_currency(resultado.entradas, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+				<td align="right"><%= number_to_currency(resultado.salidas, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+				<td align="right"><%= number_to_currency(resultado.final, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			</tr>
+			<% @fuenteini = @fuenteini+resultado.inicial.to_f %>
+			<% @fuenteent = @fuenteent+resultado.entradas.to_f %>
+			<% @fuentesal = @fuentesal+resultado.salidas.to_f %>
+			<% @fuentefin = @fuentefin+resultado.final.to_f %>
+			<% totini = totini+resultado.inicial.to_f %>
+			<% totent = totent+resultado.entradas.to_f %>
+			<% totsal = totsal+resultado.salidas.to_f %>
+			<% totfin = totfin+resultado.final.to_f %>
+		<% end %>
+		<tr>
+			<th align="right" colspan="2"><%= 'Subtotales' %></th>
+			<td align="right"><%= number_to_currency(@fuenteini, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<td align="right"><%= number_to_currency(@fuenteent, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<td align="right"><%= number_to_currency(@fuentesal, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<td align="right"><%= number_to_currency(@fuentefin, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+		</tr>
+		<tr>
+			<th align="right" colspan="2"><%= 'Totales' %></th>
+			<td align="right"><%= number_to_currency(totini, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<td align="right"><%= number_to_currency(totent, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<td align="right"><%= number_to_currency(totsal, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<td align="right"><%= number_to_currency(totfin, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+		</tr>
+		<TFOOT>
+			<tr>
+				<td colspan="6">
+					<table border="1" width="100%">
+						<tr>
+							<td align="center">
+								JEFE DE ALMACEN<br/><br/>
+								<%= User.find(@almacen.user_id).name %>
+							</td>
+							<td align="center">
+								ADMINISTRADOR<br/><br/>
+								<%= @almacen.admoru != nil ? User.find(@almacen.admoru ).name : ''%>
+							</td>
+							<td align="center">
+								JEFE O DIRECTOR DE LA UNIDAD<br/><br/>
+								<%= @almacen.jefeu != nil ? User.find(@almacen.jefeu ).name : ''%>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="6" align="center">
+								<b><FONT face="arial" size="1"><%=@reporte.reporte%> / <%= @almacen.nombre %> / <%= 'Desde: '+@reporte.desde.to_s %> <%= 'Hasta: '+@reporte.hasta.to_s %> / Consult&oacute;: <%= User.find(current_user.id).name %> / Fecha: <%= Date.today %></b></FONT>
+							</td>
+						</tr>	
+					</table>
+				</td>
+			</tr>
+		</TFOOT>
+	</table>
+<% end %>
 
-<p>
-  <strong>Cpini:</strong>
-  <%= @reporte.cpini %>
-</p>
+<% if [12].include?(@reporte.id) %>
+	<% inicial = true %>
+	<% @catalogo = nil %>
+    <% fuente = nil %>
+    <% loteant = nil %>
+	<% corte = 0 %>
+	<% exislote = 0.0 %>
+	<% exisfuente = 0.0 %>
+	<% exisclave = 0.0 %>
 
-<p>
-  <strong>Cpfin:</strong>
-  <%= @reporte.cpfin %>
-</p>
+	<% @lotes.each do |lote| %>
+		<% @movimiento = Movimiento.find(lote.almacen_id == @almacen.id && lote.renglon_id == nil ? lote.movimiento_id : lote.salida_id) %>
+		<% cantidad =  (lote.almacen_id == @almacen.id && lote.renglon_id == nil ? 1.0 : -1.0) * lote.cantidadp %>
+		<% if @catalogo == nil || lote.catalogo_id != @catalogo.id %>
+			<% corte = 3 %>
+		<% else %>
+			<% if fuente == nil || lote.fuente_id != fuente %>
+				<% corte = 2 %>
+			<% else %>
+				<% if loteant == nil || lote.lote != loteant %>
+					<% corte = 1 %>
+				<% end %>
+			<% end %>
+		<% end %>
+		<% if corte > 0 && !inicial && !(corte==1 && loteant==nil && lote.lote == nil) %>	
+			<tr>
+				<td colspan="10">
+					<table border="1" width="100%">
+						<tr>
+							<td>
+								<% if corte > 0 %>
+									Existencia Lote(<%= loteant %>): <%= number_to_currency(exislote,:unit => '',:separator => ".", :delimiter => ",") %>
+									<% exislote = 0.0 %>
+									<% loteant = lote.lote %>
+								<% end %>	
+							</td>
+							<td>
+								<% if corte > 1 %>
+									Existencia Fuente: <%= number_to_currency(exisfuente,:unit => '',:separator => ".", :delimiter => ",") %>
+									<% exisfuente = 0.0 %>
+									<% fuente = lote.fuente_id %>
+								<% end %>	
+							</td>
+							<td>
+								<% if corte > 2 %>
+									Existencia Clave: <%= number_to_currency(exisclave,:unit => '',:separator => ".", :delimiter => ",") %>
+									<% exisclave = 0.0 %>
+									<% @catalogo = Catalogo.find(lote.catalogo_id) %>
+								<% end %>	
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		<% else %>
+			<% if inicial %>
+				<% inicial = false %>
+				<% loteant = lote.lote %>
+				<% fuente = lote.fuente_id %>
+				<% @catalogo = Catalogo.find(lote.catalogo_id) %>
+			<% end %>
+		<% end %>
+		<% if corte > 1 %>
+			<table border="0" width="90%">
+				<tr>
+					<td><%= link_to('<img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" />',url_for("/")) %></td>
+					<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+					<h3><%=@reporte.reporte%></h3><%= lote.fuente_id != nil ? Fuente.find(lote.fuente_id).fuente : 'FUENTE FALTANTE' %></td>
+					<td align="center">
+						<%= 'Hasta: '+@reporte.hasta.to_s %>
+						<% if !@reporte.rango1.blank? %>
+							<br/><br/><%= @almacen.nombre %>
+						<% end %>
+					</td>
+				</tr>
+			</table>
+			<table border="10" width="100%">
+				<tr>
+					<td align="center" colspan="6"><%=raw @catalogo.descripcion %></td>
+					<td align="center" colspan="2"><%=raw @catalogo.presentacion %></td>
+				</tr>
+			<tr>
+				<th>Partida</th>
+				<th>#Mov.</th>
+				<th>#Lote</th>
+				<th>Fecha</th>
+				<th>Clave</th>
+				<th>Lote</th>
+				<th>Caducidad</th>
+				<th>Orig./Dest.</th>
+				<th>Cantidad</th>
+				<th>Existencia</th>
+			</tr>
+		<% end %>
+			<tr>
+				<td align="center"><%=raw lote.partida.cog2011 %></td>
+				<td align="center"><%=raw @movimiento.consec %></td>
+				<% if lote.etiqueta_id == nil %>
+					<td align="center" bgcolor="#FFFFFF"><%= link_to(lote.id,new_ajuste_path(:lote=>lote.id,:hasta=>@reporte.hasta)) %></td>
+				<% else %>
+					<td align="center" bgcolor="#FF99FF"><%= (Ajuste.find(lote.etiqueta_id).estado_id == 12 && ![10].include?(current_user.rol_id)) ? lote.id : link_to(lote.id,edit_ajuste_path(:ajuste=>lote.etiqueta_id,:hasta=>@reporte.hasta)) %></td>
+				<% end %>	
+				<td align="center"><%=raw lote.fecha %></td>
+				<td align="center"><%=raw @catalogo.clave %></td>
+				<td align="center"><%=raw lote.lote %></td>
+				<td align="center"><%=raw lote.caducidad %></td>
+				<td align="center">
+					<% if lote.almacen_id != @almacen.id || lote.lote_id != nil %>
+						<%=raw @movimiento.oridest == nil ? 'ERROR:M'+@movimiento.id.to_s : Almacen.find(@movimiento.oridest).nombre %>
+					<% else %>
+						<%=raw !@movimiento.ped_id.blank? ? Prov.find(@movimiento.ped.proveedor_id).fiscal+'/'+@movimiento.ped_id.to_s : ((@movimiento.descripcion == nil || @movimiento.descripcion == '') && (@movimiento.pedido != 0 || @movimiento.pedido != nil) ? 'Ped.'+@movimiento.pedido.to_s+'/2010' : @movimiento.descripcion) %>
+					<% end %>
+				</td>
+				<td align="right"><%=raw cantidad %></td>
+				<td align="right"><%=raw exislote = exislote + cantidad %></td>
+				<% exisfuente = exisfuente + cantidad %>
+				<% exisclave = exisclave + cantidad %>
+			</tr>
+		<% corte = 0 %>
+	<% end %>
+<TFOOT>
+	<tr>
+	<td colspan="10">
+	<table border="1" width="100%">
+	<tr>
+		<td align="center">
+			JEFE DE ALMACEN<br/><br/>
+			<%= User.find(@almacen.user_id ).name %>
+		</td>
+		<td align="center">
+			ADMINISTRADOR<br/><br/>
+			<%= @almacen.admoru != nil ? User.find(@almacen.admoru).name : ''%>
+		</td>
+		<td align="center">
+			JEFE O DIRECTOR DE LA UNIDAD<br/><br/>
+			<%= @almacen.jefeu != nil ? User.find(@almacen.jefeu ).name : ''%>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="8" align="center">
+			<b><FONT face="arial" size="1"><%=@reporte.reporte%> / <%= @almacen.nombre %> / <%= 'Hasta: '+@reporte.hasta.to_s %> / Consult&oacute;: <%= User.find(current_user.id ).name %> / Fecha: <%= Date.today %></b></FONT>
+		</td>
+	</tr>	
+	</table>
+	</td>
+	</tr>
+</TFOOT>
+	<tr>
+	<td colspan="10">
+		<table border="1" width="100%">
+			<tr>
+				<td>
+					Existencia Lote(<%= loteant %>): <%= number_to_currency(exislote,:unit => '',:separator => ".", :delimiter => ",") %>
+				</td>
+				<td>
+					Existencia Fuente: <%= number_to_currency(exisfuente,:unit => '',:separator => ".", :delimiter => ",") %>
+				</td>
+				<td>
+					Existencia Clave: <%= number_to_currency(exisclave,:unit => '',:separator => ".", :delimiter => ",") %>
+				</td>
+			</tr>
+		</table>
+	</td>
+	</tr>
+	</table>
+<% end %>
 
-<p>
-  <strong>Usuario:</strong>
-  <%= @reporte.usuario %>
-</p>
+<% if [13].include?(@reporte.id) %>
+	<% inicial = true %>
+	<% encabeza = true %>
+	<% @catalogo = nil %>
+    <% fuente = nil %>
+    <% loteant = nil %>
+	<% corte = 0 %>
+	<% exislote = 0.0 %>
+	<% exisfuente = 0.0 %>
+	<% exisclave = 0.0 %>
+	<% montolote = 0.0 %>
+	<% montofuente = 0.0 %>
+	<% montoclave = 0.0 %>
+	<% montotal = 0.0 %>
 
-<p>
-  <strong>Texto:</strong>
-  <%= @reporte.texto %>
-</p>
+	<% @lotes.each do |lote| %>
+		<% @movimiento = Movimiento.find(lote.almacen_id == @almacen.id && lote.renglon_id == nil ? lote.movimiento_id : lote.salida_id) %>
+		<% cantidad =  (lote.almacen_id == @almacen.id && lote.renglon_id == nil ? 1.0 : -1.0) * lote.cantidadp %>
+		<% monto = cantidad * lote.precio %>
+		<% montotal = montotal + monto %>
+		<% if @catalogo == nil || lote.catalogo_id != @catalogo.id %>
+			<% corte = 3 %>
+		<% else %>
+			<% if fuente == nil || lote.fuente_id != fuente %>
+				<% corte = 2 %>
+			<% else %>
+				<% if loteant == nil || lote.lote != loteant %>
+					<% corte = 1 %>
+				<% end %>
+			<% end %>
+		<% end %>
+		<% if corte > 0 && !inicial && !(corte==1 && loteant==nil && lote.lote == nil) %>
+			<% if corte == 1 %>
+				<% exislote = 0.0 %>
+				<% montolote = 0.0 %>
+				<% loteant = lote.lote %>
+			<% else %>
+			<tr>
+				<td colspan="10">
+					<table border="1" width="100%">
+						<tr>
+							<td>
+								<% if corte > 0 %>
+									Existencia Lote(<%= loteant %>): <%= number_to_currency(exislote,:unit => '',:separator => ".", :delimiter => ",") %>
+									<% exislote = 0.0 %>
+									<% montolote = 0.0 %>
+									<% loteant = lote.lote %>
+								<% end %>	
+							</td>
+							<td>
+								<% if corte > 1 %>
+									Existencia Fuente: <%= number_to_currency(exisfuente,:unit => '',:separator => ".", :delimiter => ",") %>
+									Monto: <%= number_to_currency(montofuente,:unit => '$',:separator => ".", :delimiter => ",") %>
+									<% exisfuente = 0.0 %>
+									<% montofuente = 0.0 %>
+									<% fuente = lote.fuente_id %>
+								<% end %>	
+							</td>
+							<td>
+								<% if corte > 2 %>
+									Existencia Clave: <%= number_to_currency(exisclave,:unit => '',:separator => ".", :delimiter => ",") %>
+									Monto: <%= number_to_currency(montoclave,:unit => '$',:separator => ".", :delimiter => ",") %>
+									<% exisclave = 0.0 %>
+									<% montoclave = 0.0 %>
+									<% @catalogo = Catalogo.find(lote.catalogo_id) %>
+								<% end %>	
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<% end %>
+		<% else %>
+			<% if inicial %>
+				<% inicial = false %>
+				<% loteant = lote.lote %>
+				<% fuente = lote.fuente_id %>
+				<% @catalogo = Catalogo.find(lote.catalogo_id) %>
+			<% end %>
+		<% end %>
+		<% if corte > 1 %>
+			<% if encabeza %>
+			<table border="0" width="90%">
+				<tr>
+					<td><%= link_to('<img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" />',url_for("/")) %></td>
+					<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+					<h3><%=@reporte.reporte%></h3><%= lote.fuente_id != nil ? Fuente.find(lote.fuente_id).fuente : 'FUENTE FALTANTE' %></td>
+					<td align="center">
+						<%= 'Hasta: '+@reporte.hasta.to_s %>
+						<% if !@reporte.rango1.blank? %>
+							<br/><br/><%= @almacen.nombre %>
+						<% end %>
+						<% if @reporte.rango2.blank? || @reporte.rango2 == nil %>
+							<br/><br/>PARTIDA: <%= lote.partida.cog2011 %>
+						<% end %>
+					</td>
+				</tr>
+			</table>
+			<% encabeza = false %>
+			<% end %>
+			<table border="10" width="100%">
+				<tr>
+					<td align="center"><%=raw @catalogo.clave%></td>
+					<td align="center" colspan="6"><%=raw @catalogo.descripcion %></td>
+					<td align="center" colspan="2"><%=raw @catalogo.presentacion %></td>
+				</tr>
+			<% if false %>	
+			<tr>
+				<th>Partida</th>
+				<th>#Mov.</th>
+				<th>#Lote</th>
+				<th>Fecha</th>
+				<th>Clave</th>
+				<th>Lote</th>
+				<th>Caducidad</th>
+				<th>Orig./Dest.</th>
+				<th>Cantidad</th>
+				<th>Existencia</th>
+			</tr>
+			<% end %>
+		<% end %>
+			<% if false %>	
+			<tr>
+				<td align="center"><%=raw lote.partida.cog2011 %></td>
+				<td align="center"><%=raw @movimiento.consec %></td>
+				<% if lote.etiqueta_id == nil %>
+					<td align="center" bgcolor="#FFFFFF"><%= link_to(lote.id,new_ajuste_path(:lote=>lote.id,:hasta=>@reporte.hasta)) %></td>
+				<% else %>
+					<td align="center" bgcolor="#FF99FF"><%= (Ajuste.find(lote.etiqueta_id).estado_id == 12 && ![10].include?(current_user.rol_id)) ? lote.id : link_to(lote.id,edit_ajuste_path(:ajuste=>lote.etiqueta_id,:hasta=>@reporte.hasta)) %></td>
+				<% end %>	
+				<td align="center"><%=raw lote.fecha %></td>
+				<td align="center"><%=raw @catalogo.clave %></td>
+				<td align="center"><%=raw lote.lote %></td>
+				<td align="center"><%=raw lote.caducidad %></td>
+				<td align="center">
+					<% if lote.almacen_id != @almacen.id || lote.lote_id != nil %>
+						<%=raw @movimiento.oridest == nil ? 'ERROR:M'+@movimiento.id.to_s : Almacen.find(@movimiento.oridest).nombre %>
+					<% else %>
+						<%=raw !@movimiento.ped_id.blank? ? Prov.find(@movimiento.ped.proveedor_id).fiscal+'/'+@movimiento.ped_id.to_s : ((@movimiento.descripcion == nil || @movimiento.descripcion == '') && (@movimiento.pedido != 0 || @movimiento.pedido != nil) ? 'Ped.'+@movimiento.pedido.to_s+'/2010' : @movimiento.descripcion) %>
+					<% end %>
+				</td>
+				<td align="right"><%=raw cantidad %></td>
+				<td align="right"><%=raw exislote = exislote + cantidad %></td>
+			</tr>
+			<% end %>	
+			<% exislote = exislote + cantidad %>
+			<% exisfuente = exisfuente + cantidad %>
+			<% exisclave = exisclave + cantidad %>
+			<% montolote = montolote + monto %>
+			<% montofuente = montofuente + monto %>
+			<% montoclave = montoclave + monto %>
+		<% corte = 0 %>
+	<% end %>
+<TFOOT>
+	<tr>
+	<td colspan="10">
+	<table border="1" width="100%">
+	<tr>
+		<td align="center">
+			JEFE DE ALMACEN<br/><br/>
+			<%= User.find(@almacen.user_id ).name %>
+		</td>
+		<td align="center">
+			ADMINISTRADOR<br/><br/>
+			<%= @almacen.admoru != nil ? User.find(@almacen.admoru ).name : ''%>
+		</td>
+		<td align="center">
+			JEFE O DIRECTOR DE LA UNIDAD<br/><br/>
+			<%= @almacen.jefeu != nil ? User.find(@almacen.jefeu ).name : ''%>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="8" align="center">
+			<b><FONT face="arial" size="1"><%=@reporte.reporte%> / <%= @almacen.nombre %> / <%= 'Hasta: '+@reporte.hasta.to_s %> / Consult&oacute;: <%= User.find(current_user.id ).name %> / Fecha: <%= Date.today %></b></FONT>
+		</td>
+	</tr>	
+	</table>
+	</td>
+	</tr>
+</TFOOT>
+	<tr>
+	<td colspan="10">
+		<table border="1" width="100%">
+			<tr>
+			<% if false %>	
+				<td>
+					Existencia Lote(<%= loteant %>): <%= number_to_currency(exislote,:unit => '',:separator => ".", :delimiter => ",") %>
+				</td>
+			<% end %>	
+				<td>
+					Existencia Fuente: <%= number_to_currency(exisfuente,:unit => '',:separator => ".", :delimiter => ",") %>
+					Monto: <%= number_to_currency(montofuente,:unit => '$',:separator => ".", :delimiter => ",") %>
+				</td>
+				<td>
+					Existencia Clave: <%= number_to_currency(exisclave,:unit => '',:separator => ".", :delimiter => ",") %>
+					Monto: <%= number_to_currency(montoclave,:unit => '$',:separator => ".", :delimiter => ",") %>
+				</td>
+				<td>
+					Monto Total: <%= number_to_currency(montotal,:unit => '$',:separator => ".", :delimiter => ",") %>
+				</td>
+			</tr>
+		</table>
+	</td>
+	</tr>
+	</table>
+<% end %>
 
-<p>
-  <strong>Rango1:</strong>
-  <%= @reporte.rango1 %>
-</p>
+<% if [14].include?(@reporte.id) %>
+<table border="0" width="80%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><h2><%= @reporte.reporte %></h2></td>
+		<td align="center"><%= Date.today %></td>	
+	</tr>
+</table>
+<table border='10' width='100%'>
+  <tr>
+    <th>No.</th>
+    <th>Area</th>
+    <th>Solicitante</th>
+    <th>Vobotecnico</th>
+    <th>Adquisiciones</th>
+    <th>Recurso</th>
+    <th>Part.</th>
+    <th>Modificado</th>
+    <th>Estado</th>
+    <th>+</th>
+  </tr>
 
-<p>
-  <strong>Rango2:</strong>
-  <%= @reporte.rango2 %>
-</p>
+<% @solicituds.each do |solicitud| %>
+<% if solicitud.adqui_id == nil %>
+	<% if [10].include?(current_user.rol_id) || Solnota.where("solicitud_id =? and user_id=?",solicitud.id,current_user.id) != nil || ([5,8,15].include?(current_user.rol_id) && (@soltipo == '2' ? true : [4,5,6,7,8].include?(solicitud.estado_id))) || ([7].include?(current_user.rol_id) && solicitud.area_id == 3) || ([11].include?(current_user.rol_id) && solicitud.area_id == 4) || ([6].include?(current_user.rol_id) && solicitud.area_id == 2) || ([16].include?(current_user.rol_id) && solicitud.area_id == 5) || [solicitud.user_id,solicitud.vobotecnico_id,solicitud.adqui_id].include?(current_user.id) || ([11].include?(current_user.rol_id) && [184,185,191,194,196].include?(solicitud.fuente_id)) %>
+	<tr>
+	<% comenta = Solnota.where("solicitud_id =?",solicitud.id).order(:id).last() %>
+	<% difecha = comenta ? (Date.today - comenta.updated_at.to_date).to_i : nil %>
+	<% tono = 	case
+					when difecha == nil || difecha > 7
+						'#FFFFFF'
+					when difecha == 0 
+						'#FF99FF'
+					when difecha == 1 
+						'#FFCC66'
+					when difecha == 2 
+						'#FFFF99'
+					when difecha == 3
+						'#CCFFCC'
+					else 
+						'#E0E0E0'
+				end %>
+    <td align="center" rowspan='2' bgcolor=<%= tono %>><%=link_to solicitud.id, solicitud %>
+		<% if (current_user.id == solicitud.user_id && [1,3].include?(solicitud.estado_id)) || (current_user.id == solicitud.vobotecnico_id && solicitud.estado_id ==2) || [10,15].include?(current_user.rol_id) || current_user.id == solicitud.adqui_id  || ([5].include?(current_user.rol_id) && [15].include?(current_user.dato2)) %>
+			<br /><%= link_to 'Mod.', edit_solicitud_path(solicitud) %>
+		<% end%>	
+	</td>
+    <td align="center"><%=raw solicitud.area.area_abrev %></td>
+	<td><%=raw solicitud.user.name %></td>
+	<td><%=raw User.find(solicitud.vobotecnico_id ).name %></td>
+	<td align="center"<%= solicitud.estado_id == 4 && !solicitud.adqui_id ? ' bgcolor="#FF6666"' : '' %>>
+		<% if solicitud.adqui_id != nil %>
+			<%=raw User.find(solicitud.adqui_id ).name %>
+		<% else %>
+			<%=solicitud.estado_id == 4 ? Date.today-solicitud.updated_at.to_date : '' %>
+		<% end %>	
+	</td>
+    <td><%=raw solicitud.tipo.tipo %></td>
+    <td><%=raw solicitud.partida.partida_armonizada %></td>
+    <td><% if solicitud.updated_at != nil %><%=raw solicitud.updated_at %><% end %></td>
+    <td align="center"><%= solicitud.estado.estado %></td>
+	<td><%=raw (solicitud.anexos ? 'Si' : 'No') %></td>
+	<% if [10].include?(current_user.rol_id) %>
+		<td><%= link_to 'X', solicitud, :confirm => 'Are you sure?', :method => :delete %></td>
+	<% end%>
+	</tr>
+	<tr>
+		<th align='center'>Notas</th>
+		<td align='left' colspan='11'><%=raw solicitud.notas %></td>
+	</tr>
+	<% end %>
+<% end %>	
+<% end %>
+</table>
+<% end %>
 
-<p>
-  <strong>Sistema:</strong>
-  <%= @reporte.sistema_id %>
-</p>
+<% if @reporte.id == 16 %>
+		<table border="0" width="100%">
+			<tr>
+				<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+				<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+				<h3><%=@reporte.reporte%></h3><%=@partida.descripcion2%></td>
+				<td align="center">
+					<%= 'Fecha: '+Date.today.to_s %><br/><br/>
+					<%= 'Partida: '+@partida.partidas %>
+						<br/><br/><%= @almacen.nombre %>
+				</td>
+			</tr>
+		</table>
+	<table border="10" width="100%">
+		<tr>
+			<th>#Art.</th>
+			<th>Part.</th>
+			<th>Clave</th>
+			<th>Descripcion</th>
+			<th>Presentacion</th>
+			<th>Precio</th>
+			<th>Proceso</th>
+			<th>-</th>
+			<th>Exist.</th>
+		</tr>
+		<% @resultados.each do |resultado| %>
+			<tr>
+				<td align="center"><%= resultado.id %></td>
+				<td align="center"><%= @partida.cog2011 %></td>
+				<td align="center"><%= resultado.clave %></td>
+				<td align="center"><%= resultado.descripcion %></td>
+				<td align="center"><%= resultado.presentacion %></td>
+				<td align="center"><%= resultado.precio %></td>
+				<td align="center"><%= resultado.proceso %></td>
+				<td align="center">-</td>
+				<td align="right"><%= resultado.existencia %></td>
+			</tr>
+		<% end %>
+	</table>
+<% end %>
 
-<%= link_to 'Edit', edit_reporte_path(@reporte) %> |
-<%= link_to 'Back', reportes_path %>
+<% if @reporte.id == 18 %>
+		<table border="0" width="100%">
+			<tr>
+				<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+				<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+				<h3><%=@reporte.reporte%></h3></td>
+				<td align="center">
+					<%= 'Desde: '+@reporte.desde.to_s %><br/><br/>
+					<%= 'Hasta: '+@reporte.hasta.to_s %>
+					<% if !@reporte.rango1.blank? %>
+						<br/><br/><%= @almacen.nombre %>
+					<% end %>
+				</td>
+			</tr>
+		</table>
+	<table border="10" width="100%">
+		<tr>
+			<th>Partida</th>
+			<th>Art&iacute;culo</th>
+			<th>Inicial</th>
+			<th>Entradas</th>
+			<th>Salidas</th>
+			<th>Final</th>
+		</tr>
+		<% @resultados.each do |resultado| %>
+			<tr>
+				<td align="center"><%= resultado.partida.partidas %></td>
+				<td align="center"><%= resultado.catalogo_id == nil ? resultado.clave : link_to(resultado.clave,catalogo_path(resultado.catalogo_id),:popup=>true)  %></td>
+				<td align="right"><%= number_to_currency(resultado.inicial, :unit => '', :separator => ".", :delimiter => ",") %></td>
+				<td align="right"><%= number_to_currency(resultado.entradas, :unit => '', :separator => ".", :delimiter => ",") %></td>
+				<td align="right"><%= number_to_currency(resultado.salidas, :unit => '', :separator => ".", :delimiter => ",") %></td>
+				<td align="right"><%= number_to_currency(resultado.final, :unit => '', :separator => ".", :delimiter => ",") %></td>
+			</tr>
+		<% end %>
+		<TFOOT>
+			<tr>
+				<td colspan="6">
+					<table border="1" width="100%">
+						<tr>
+							<td align="center">
+								JEFE DE ALMACEN<br/><br/>
+								<%= User.find(@almacen.user_id).name %>
+							</td>
+							<td align="center">
+								ADMINISTRADOR<br/><br/>
+								<%= @almacen.admoru != nil ? User.find(@almacen.admoru).name : ''%>
+							</td>
+							<td align="center">
+								JEFE O DIRECTOR DE LA UNIDAD<br/><br/>
+								<%= @almacen.jefeu != nil ? User.find(@almacen.jefeu).name : ''%>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="6" align="center">
+								<b><FONT face="arial" size="1"><%=@reporte.reporte%> / <%= @almacen.nombre %> / <%= 'Desde: '+@reporte.desde.to_s %> <%= 'Hasta: '+@reporte.hasta.to_s %> / Consult&oacute;: <%= User.find(current_user.id ).name %> / Fecha: <%= Date.today %></b></FONT>
+							</td>
+						</tr>	
+					</table>
+				</td>
+			</tr>
+		</TFOOT>
+	</table>
+<% end %>
+
+
+<% if [19].include?(@reporte.id) %>
+<table border="0" width="90%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Sistema de Solicitud de Compras</b><hr/>
+		<h3><%=@reporte.reporte%></h3>
+		<h5>(EN REVISION, EN PROCESO Y ADJUDICADAS)</h5>
+		<td align="center">
+			<%=  Date.today  %>
+		</td>
+	</tr>
+</table>
+<table border='10' width='100%'>
+  <tr>
+    <th>No.</th>
+    <th>Area</th>
+    <th>Solicitante</th>
+    <th>Vobotecnico</th>
+    <th>Adquisiciones</th>
+    <th>Recurso</th>
+    <th>Part.</th>
+    <th>Modificado</th>
+    <th>Estado</th>
+    <th>+</th>
+    <th>F.F.</th>
+    <th>Importe</th>
+    <th>Techo F.</th>
+  </tr>
+
+<% @solicituds.each do |solicitud| %>
+	<% if [10].include?(current_user.rol_id) || Solnota.where("solicitud_id =? and user_id=?",solicitud.id,current_user.id ) != nil || ([5,8,15].include?(current_user.rol_id) && (@soltipo == '2' ? true : [4,5,6,7,8].include?(solicitud.estado_id))) || ([7].include?(current_user.rol_id) && solicitud.area_id == 3) || ([11].include?(current_user.rol_id) && solicitud.area_id == 4) || ([6].include?(current_user.rol_id) && solicitud.area_id == 2) || ([16].include?(current_user.rol_id) && solicitud.area_id == 5) || [solicitud.user_id,solicitud.vobotecnico_id,solicitud.adqui_id].include?(current_user.id) || ([11].include?(current_user.rol_id) && [184,185,191,194,196].include?(solicitud.fuente_id)) %>
+	<tr>
+	<% comenta = Solnota.where("solicitud_id =?",solicitud.id).order(:id).last %>
+	<% difecha = comenta ? (Date.today - comenta.updated_at.to_date).to_i : nil %>
+	<% tono = 	case
+					when difecha == nil || difecha > 7
+						'#FFFFFF'
+					when difecha == 0 
+						'#FF99FF'
+					when difecha == 1 
+						'#FFCC66'
+					when difecha == 2 
+						'#FFFF99'
+					when difecha == 3
+						'#CCFFCC'
+					else 
+						'#E0E0E0'
+				end %>
+    <td align="center" rowspan='2' bgcolor=<%= tono %>><%=link_to solicitud.id, solicitud %>
+		<% if (current_user.id == solicitud.user_id && [1,3].include?(solicitud.estado_id)) || (current_user.id == solicitud.vobotecnico_id && solicitud.estado_id ==2) || [10,15].include?(current_user.rol_id) || current_user.id == solicitud.adqui_id  || ([5].include?(current_user.rol_id) && [15].include?(current_user.dato2)) %>
+			<br /><%= link_to 'Mod.', edit_solicitud_path(solicitud) %>
+		<% end%>	
+	</td>
+    <td align="center"><%=raw solicitud.area.area_abrev %></td>
+	<td><%=raw solicitud.user.name %></td>
+	<td><%=raw User.find(solicitud.vobotecnico_id ).name %></td>
+	<td align="center"<%= solicitud.estado_id == 4 && !solicitud.adqui_id ? ' bgcolor="#FF6666"' : '' %>>
+		<% if solicitud.adqui_id != nil %>
+			<%=raw User.find(solicitud.adqui_id ).name %>
+		<% else %>
+			<%=solicitud.estado_id == 4 ? Date.today-solicitud.updated_at.to_date : '' %>
+		<% end %>	
+	</td>
+    <td><%=raw solicitud.tipo.tipo %></td>
+    <td><%=raw solicitud.partida.partidas %></td>
+    <td><% if solicitud.updated_at != nil %><%=raw solicitud.updated_at %><% end %></td>
+    <td align="center"><%= solicitud.estado.estado %></td>
+	<td><%=raw (solicitud.anexos ? 'Si' : 'No') %></td>
+	<td align="center"><%=raw solicitud.fuente_id != nil ? Fuente.find(solicitud.fuente_id).fuente : 'FUENTE FALTANTE'%></td>
+	<td align="right"><%=raw (solicitud.importe) %></td>
+	<td align="right"><%=raw (solicitud.techo) %></td>
+	<% if [10].include?(current_user.rol_id) %>
+		<td><%= link_to 'X', solicitud, :confirm => 'Are you sure?', :method => :delete %></td>
+	<% end%>
+	</tr>
+	<tr>
+		<th align='center'>Notas</th>
+		<td align='left' colspan='11'><%=raw solicitud.notas %></td>
+	</tr>
+	<% end %>
+<% end %>
+</table>
+<% end %>
+
+<% if [20].include?(@reporte.id) %>
+<table border="0" width="90%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+		<h3><%=@reporte.reporte%></h3>
+			<%= @almacen.nombre %>
+		<td align="center">
+			<%= @reporte.hasta == nil ? Date.today : @reporte.hasta %>
+		</td>
+	</tr>
+</table>
+<table border="10" width="100%">
+<% articulo = nil %>
+<% @existencia = 0.0 %>
+<% @valor = 0.0 %>
+<% @existencias.each do |lote| %>
+	<% if articulo != lote.catalogo_id %>
+		<% @catalogo = Catalogo.find(lote.catalogo_id) %>
+		<% if articulo != nil %>
+			<tr>
+				<td align="left" colspan="4"><b>Existencia Total: </b><%= @existencia %></td>
+				<td align="left" colspan="4"><b>Valor Total: </b><%= number_to_currency(@valor, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+				<td align="left" colspan="4"><b>Valor Promedio: </b><%= number_to_currency(@valor/@existencia, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			</tr>
+		<% end %>
+		<tr>
+			<th align="center" colspan="8">Descripcion</th>
+			<th align="center" colspan="4">Presentaci&oacute;n</th>
+		</tr>
+		<tr>
+			<td align="center" colspan="8"><%= @catalogo ? @catalogo.descripcion : lote.observacion %></td>
+			<td align="center" colspan="4"><%= @catalogo ? @catalogo.presentacion : '' %></td>
+		</tr>
+		<tr>
+			<th>#Lote</th>
+			<th>Part.</th>
+			<th>Clave</th>
+			<th>Fuente</th>
+			<th>Lote</th>
+			<th>Exist.</th>
+			<th>Precio</th>
+			<th>Valor</th>
+			<th>Caducidad</th>
+			<th>Ped.</th>
+			<th>Entr&oacute;</th>
+		</tr>
+		<% @existencia = 0.0 %>
+		<% @valor = 0.0 %>
+		<% articulo = lote.catalogo_id %>
+	<% end %>	
+	<% @existencia = @existencia + (lote.existencia.blank? ? 0.0 : lote.existencia)  %>
+	<% @valor = @valor + ((lote.existencia.blank? ? 0.0 : lote.existencia) * (lote.precio.blank? ? 0.0 : lote.precio))  %>
+  <tr>
+    <td align="center"><%= lote.id %></td>
+    <td align="center"><%= lote.partida.cog2011 %></td>
+    <td align="center"><%= @catalogo ? @catalogo.clave : lote.observacion %></td>
+    <td align="center"><%=raw lote.fuente == nil ? 'FALTANTE' : lote.fuente.fuente%></td>
+    <td align="center"><%=raw lote.lote %></td>
+    <td align="center"><%= lote.existencia %></td>
+	<% difecha = lote.caducidad != nil ? (lote.caducidad - Date.today).to_i : nil %>
+    <td align="center"><%=raw number_to_currency(lote.precio, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+    <td align="center"><%=raw number_to_currency(lote.precio*lote.existencia, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+    <td align="center"><%=raw lote.caducidad %></td>
+    <td align="center"><%= lote.ped_id  %></td>
+    <td align="center"><%= lote.fecha  %></td>
+  </tr>
+<% end %>
+	<% if @existencia != 0.0 %>
+		<tr>
+			<td align="left" colspan="4"><b>Existencia Total: </b><%= @existencia %></td>
+			<td align="left" colspan="4"><b>Valor Total: </b><%= number_to_currency(@valor, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<td align="left" colspan="4"><b>Valor Promedio: </b><%= number_to_currency(@valor/@existencia, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+		</tr>
+	<% end %>
+</table>
+<% end %>
+
+<% if [21].include?(@reporte.id) %>
+	<% inicial = true %>
+	<% @catalogo = nil %>
+    <% fuente = nil %>
+    <% loteant = nil %>
+	<% corte = 0 %>
+	<% exislote = 0.0 %>
+	<% exisfuente = 0.0 %>
+	<% exisclave = 0.0 %>
+	<% valorlote = 0.0 %>
+	<% valorfuente = 0.0 %>
+	<% valorclave = 0.0 %>
+
+	<% @lotes.each do |lote| %>
+		<% @movimiento = Movimiento.find(lote.almacen_id == @almacen.id && lote.renglon_id == nil ? lote.movimiento_id : lote.salida_id) %>
+		<% cantidad =  (lote.almacen_id == @almacen.id && lote.renglon_id == nil ? 1.0 : -1.0) * lote.cantidadp %>
+		<% valor = cantidad * lote.precio %>
+		<% if @catalogo == nil || lote.catalogo_id != @catalogo.id %>
+			<% corte = 3 %>
+		<% else %>
+			<% if fuente == nil || lote.fuente_id != fuente %>
+				<% corte = 2 %>
+			<% else %>
+				<% if loteant == nil || lote.lote != loteant %>
+					<% corte = 1 %>
+				<% end %>
+			<% end %>
+		<% end %>
+		<% if corte > 0 && !inicial && !(corte==1 && loteant==nil && lote.lote == nil) %>	
+			<tr>
+				<td colspan="10">
+					<table border="1" width="100%">
+						<tr>
+							<td>
+								<% if corte > 0 %>
+									Existencia Lote(<%= loteant %>): <%= number_to_currency(exislote,:unit => '',:separator => ".", :delimiter => ",") %>
+									<% exislote = 0.0 %>
+									<% loteant = lote.lote %>
+								<% end %>	
+							</td>
+							<td>
+								<% if corte > 1 %>
+									Existencia Fuente: <%= number_to_currency(exisfuente,:unit => '',:separator => ".", :delimiter => ",") %>
+									<% exisfuente = 0.0 %>
+									<% fuente = lote.fuente_id %>
+								<% end %>	
+							</td>
+							<td>
+								<% if corte > 2 %>
+									Existencia Clave: <%= number_to_currency(exisclave,:unit => '',:separator => ".", :delimiter => ",") %>
+									<% exisclave = 0.0 %>
+									<% @catalogo = Catalogo.find(lote.catalogo_id) %>
+								<% end %>	
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		<% else %>
+			<% if inicial %>
+				<% inicial = false %>
+				<% loteant = lote.lote %>
+				<% fuente = lote.fuente_id %>
+				<% @catalogo = Catalogo.find(lote.catalogo_id) %>
+			<% end %>
+		<% end %>
+		<% if corte > 1 %>
+			<table border="0" width="90%">
+				<tr>
+					<td><%= link_to('<img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" />',url_for("/")) %></td>
+					<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+					<h3><%=@reporte.reporte%></h3><%= lote.fuente_id != nil ? Fuente.find(lote.fuente_id).fuente : 'FUENTE FALTANTE' %></td>
+					<td align="center">
+						<%= 'Hasta: '+@reporte.hasta.to_s %>
+						<% if !@reporte.rango1.blank? %>
+							<br/><br/><%= @almacen.nombre %>
+						<% end %>
+					</td>
+				</tr>
+			</table>
+			<table border="10" width="100%">
+				<tr>
+					<td align="center" colspan="6"><%=raw @catalogo.descripcion %></td>
+					<td align="center" colspan="2"><%=raw @catalogo.presentacion %></td>
+				</tr>
+			<tr>
+				<th>Partida</th>
+				<th>#Mov.</th>
+				<th>#Lote</th>
+				<th>Fecha</th>
+				<th>Clave</th>
+				<th>Lote</th>
+				<th>Caducidad</th>
+				<th>Orig./Dest.</th>
+				<th>Cantidad</th>
+				<th>Existencia</th>
+			</tr>
+		<% end %>
+			<tr>
+				<td align="center"><%=raw lote.partida.cog2011 %></td>
+				<td align="center"><%=raw @movimiento.consec %></td>
+				<% if lote.etiqueta_id == nil %>
+					<td align="center" bgcolor="#FFFFFF"><%= link_to(lote.id,new_ajuste_path(:lote=>lote.id,:hasta=>@reporte.hasta)) %></td>
+				<% else %>
+					<td align="center" bgcolor="#FF99FF"><%= (Ajuste.find(lote.etiqueta_id).estado_id == 12 && ![10].include?(current_user.rol_id)) ? lote.id : link_to(lote.id,edit_ajuste_path(:ajuste=>lote.etiqueta_id,:hasta=>@reporte.hasta)) %></td>
+				<% end %>	
+				<td align="center"><%=raw lote.fecha %></td>
+				<td align="center"><%=raw @catalogo.clave %></td>
+				<td align="center"><%=raw lote.lote %></td>
+				<td align="center"><%=raw lote.caducidad %></td>
+				<td align="center">
+					<% if lote.almacen_id != @almacen.id || lote.lote_id != nil %>
+						<%=raw @movimiento.oridest == nil ? 'ERROR:M'+@movimiento.id.to_s : Almacen.find(@movimiento.oridest).nombre %>
+					<% else %>
+						<%=raw !@movimiento.ped_id.blank? ? Prov.find(@movimiento.ped.proveedor_id).fiscal+'/'+@movimiento.ped_id.to_s : ((@movimiento.descripcion == nil || @movimiento.descripcion == '') && (@movimiento.pedido != 0 || @movimiento.pedido != nil) ? 'Ped.'+@movimiento.pedido.to_s+'/2010' : @movimiento.descripcion) %>
+					<% end %>
+				</td>
+				<td align="right"><%=raw cantidad %></td>
+				<td align="right"><%=raw exislote = exislote + cantidad %></td>
+				<% exisfuente = exisfuente + cantidad %>
+				<% exisclave = exisclave + cantidad %>
+			</tr>
+		<% corte = 0 %>
+	<% end %>
+<TFOOT>
+	<tr>
+	<td colspan="10">
+	<table border="1" width="100%">
+	<tr>
+		<td align="center">
+			JEFE DE ALMACEN<br/><br/>
+			<%= User.find(@almacen.user_id).name %>
+		</td>
+		<td align="center">
+			ADMINISTRADOR<br/><br/>
+			<%= @almacen.admoru != nil ? User.find(@almacen.admoru).name : ''%>
+		</td>
+		<td align="center">
+			JEFE O DIRECTOR DE LA UNIDAD<br/><br/>
+			<%= @almacen.jefeu != nil ? User.find(@almacen.jefeu).name : ''%>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="8" align="center">
+			<b><FONT face="arial" size="1"><%=@reporte.reporte%> / <%= @almacen.nombre %> / <%= 'Hasta: '+@reporte.hasta.to_s %> / Consult&oacute;: <%= User.find(current_user.id).name %> / Fecha: <%= Date.today %></b></FONT>
+		</td>
+	</tr>	
+	</table>
+	</td>
+	</tr>
+</TFOOT>
+	<tr>
+	<td colspan="10">
+		<table border="1" width="100%">
+			<tr>
+				<td>
+					Existencia Lote(<%= loteant %>): <%= number_to_currency(exislote,:unit => '',:separator => ".", :delimiter => ",") %>
+				</td>
+				<td>
+					Existencia Fuente: <%= number_to_currency(exisfuente,:unit => '',:separator => ".", :delimiter => ",") %>
+				</td>
+				<td>
+					Existencia Clave: <%= number_to_currency(exisclave,:unit => '',:separator => ".", :delimiter => ",") %>
+				</td>
+			</tr>
+		</table>
+	</td>
+	</tr>
+	</table>
+<% end %>
+
+<% if [22].include?(@reporte.id) %>
+<table border="0" width="100%">
+	<tr>
+		<td align="right">
+			<%= link_to '<img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" />', url_for("/") %>
+        </td>
+		<td align="left">
+			DIRECCION ADMINISTRATIVA</br>
+			SUBDIRECCION OPERATIVA</br>
+			DOMICILIO: JESUS GOYTORTUA NO.340</br>
+			FRACC.TANGAMANGA, 78269.</br>
+			NUMERO DE OFICIO _______________</br>
+			EXPEDIENTE _____________________</br>
+		</td>	
+	</tr>
+	<% @prov = Prov.find(1) %>
+	<tr>
+		<td align="left">
+			<%= @prov.fiscal %></br>
+			SUBDIRECCION OPERATIVA</br>
+			DOMICILIO: JESUS GOYTORTUA NO.340</br>
+			FRACC.TANGAMANGA, 78269.</br>
+			NUMERO DE OFICIO _______________</br>
+			EXPEDIENTE _____________________</br>
+		</td>	
+	</tr>
+</table>
+<% end %>

@@ -1,0 +1,21 @@
+<%= link_to 'Regresar a Requisicion', @reqnota.requisicion %> |
+<%= link_to 'Requisiciones', requisicions_path %><p>
+<p>
+  <b>Requisicion:</b>
+  <%=h @reqnota.requisicion_id %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%=h @reqnota.user_id %>
+</p>
+
+<p>
+  <b>Fecha:</b>
+  <%=h @reqnota.fecha %>
+</p>
+
+<p>
+  <b>Comenta:</b>
+  <%=h @reqnota.comenta %>
+</p>

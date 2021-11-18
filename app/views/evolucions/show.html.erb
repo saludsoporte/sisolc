@@ -1,74 +1,63 @@
-<p id="notice"><%= notice %></p>
-
 <p>
-  <strong>Paciente:</strong>
-  <%= @evolucion.paciente_id %>
+  <b>Paciente:</b>
+  <%=h @evolucion.paciente_id %>
 </p>
 
 <p>
-  <strong>Atencion:</strong>
-  <%= @evolucion.atencion_id %>
+  <b>Atencion:</b>
+  <%=h @evolucion.atencion_id %>
 </p>
 
 <p>
-  <strong>Fecha:</strong>
-  <%= @evolucion.fecha %>
+  <b>Fecha:</b>
+  <%=h @evolucion.fecha %>
 </p>
 
 <p>
-  <strong>Diagnosticos:</strong>
-  <%= @evolucion.diagnosticos %>
+  <b>Diagnosticos:</b>
+  <%=h @evolucion.diagnosticos %>
 </p>
 
 <p>
-  <strong>Ta:</strong>
-  <%= @evolucion.ta %>
+  <b>Ta:</b>
+  <%=h @evolucion.ta %>
 </p>
 
 <p>
-  <strong>Fr:</strong>
-  <%= @evolucion.fr %>
+  <b>Fr:</b>
+  <%=h @evolucion.fr %>
 </p>
 
 <p>
-  <strong>Fc:</strong>
-  <%= @evolucion.fc %>
+  <b>Fc:</b>
+  <%=h @evolucion.fc %>
 </p>
 
 <p>
-  <strong>Temp:</strong>
-  <%= @evolucion.temp %>
+  <b>Temp:</b>
+  <%=h @evolucion.temp %>
 </p>
 
 <p>
-  <strong>Condiciones:</strong>
-  <%= @evolucion.condiciones %>
+  <b>Condiciones:</b>
+  <%=h @evolucion.condiciones %>
 </p>
 
 <p>
-  <strong>Pendientes:</strong>
-  <%= @evolucion.pendientes %>
+  <b>Pendientes:</b>
+  <%=h @evolucion.pendientes %>
 </p>
 
 <p>
-  <strong>Pronostico:</strong>
-  <%= @evolucion.pronostico %>
+  <b>Pronostico:</b>
+  <%=h @evolucion.pronostico %>
 </p>
 
 <p>
-  <strong>User:</strong>
-  <%= @evolucion.user_id %>
+  <b>User:</b>
+  <%=h @evolucion.user_id %>
 </p>
 
-<p>
-  <strong>Tipo:</strong>
-  <%= @evolucion.tipo_id %>
-</p>
-
-<p>
-  <strong>Fechaeg:</strong>
-  <%= @evolucion.fechaeg %>
-</p>
 
 <%= link_to 'Edit', edit_evolucion_path(@evolucion) %> |
 <%= link_to 'Back', evolucions_path %>

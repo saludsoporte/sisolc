@@ -1,69 +1,104 @@
 class AlmacensController < ApplicationController
-  before_action :set_almacen, only: %i[ show edit update destroy ]
-
-  # GET /almacens or /almacens.json
-  def index
-    @almacens = Almacen.all
-  end
-
-  # GET /almacens/1 or /almacens/1.json
-  def show
-  end
-
-  # GET /almacens/new
-  def new
-    @almacen = Almacen.new
-  end
-
-  # GET /almacens/1/edit
-  def edit
-  end
-
-  # POST /almacens or /almacens.json
-  def create
-    @almacen = Almacen.new(almacen_params)
-
-    respond_to do |format|
-      if @almacen.save
-        format.html { redirect_to @almacen, notice: "Almacen was successfully created." }
-        format.json { render :show, status: :created, location: @almacen }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @almacen.errors, status: :unprocessable_entity }
+    before_action :login_required 
+    # GET /almacens
+    # GET /almacens.xml
+    def index
+      @almacens = Almacen.all().order(tipo: :asc,nombre: :asc)
+  
+      respond_to do |format|
+        format.html # index.html.erb
+        format.xml  { render :xml => @almacens }
       end
     end
-  end
+  
+    # GET /almacens/1
+    # GET /almacens/1.xml
+    def show
+      @almacen = Almacen.find(params[:id])
+      @partida_id = params[:partida]
+      @marbetes = params[:marbetes]
+      @movimiento_id = params[:movimiento]
 
-  # PATCH/PUT /almacens/1 or /almacens/1.json
-  def update
-    respond_to do |format|
-      if @almacen.update(almacen_params)
-        format.html { redirect_to @almacen, notice: "Almacen was successfully updated." }
-        format.json { render :show, status: :ok, location: @almacen }
+      logger.debug "*************** partida_id "+@partida_id.to_s
+      logger.debug "*************** marbetes "+@marbetes.to_s
+      logger.debug "*************** movimiento_id "+@movimiento_id.to_s
+                 
+      if @marbetes
+          @existencias = Lote.find_by_sql ["select distinct almacen_id,fuente_id,partida_id,catalogo_id,lote,caducidad from lotes where existencia > 0.0 and almacen_id = ? order by fuente_id,partida_id,catalogo_id",@almacen]
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @almacen.errors, status: :unprocessable_entity }
+          if @partida_id == nil
+              @existencias = Lote.find_by_sql ["select * from lotes where existencia > 0.0 and almacen_id = ? order by partida_id,catalogo_id,fuente_id,caducidad",@almacen]
+          else
+              @partida_id = @partida_id.to_i
+              @existencias = Lote.find_by_sql ["select * from lotes where existencia > 0.0 and almacen_id = ? and partida_id = ? order by catalogo_id,fuente_id,caducidad",@almacen,@partida_id]
+          end	
+      end
+      respond_to do |format|
+        format.html # show.html.erb
+        format.xml  { render :xml => @almacen }
       end
     end
-  end
-
-  # DELETE /almacens/1 or /almacens/1.json
-  def destroy
-    @almacen.destroy
-    respond_to do |format|
-      format.html { redirect_to almacens_url, notice: "Almacen was successfully destroyed." }
-      format.json { head :no_content }
+  
+    # GET /almacens/new
+    # GET /almacens/new.xml
+    def new
+      @almacen = Almacen.new
+  
+      respond_to do |format|
+        format.html # new.html.erb
+        format.xml  { render :xml => @almacen }
+      end
     end
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_almacen
+  
+    # GET /almacens/1/edit
+    def edit
       @almacen = Almacen.find(params[:id])
     end
-
-    # Only allow a list of trusted parameters through.
-    def almacen_params
-      params.require(:almacen).permit(:clue_id, :user_id, :nombre, :tipo, :cuenta1, :cuenta2, :tipo_id, :conta1_id, :conta2_id, :almac1_id, :almac2_id, :almac3_id, :depende_id, :almac4_id, :almac5_id, :almac6_id, :almac7_id, :domicilio, :municipio, :cp, :cpostal, :jefeu, :admoru, :cierre1, :cierre2)
+  
+    # POST /almacens
+    # POST /almacens.xml
+    def create
+      @almacen = Almacen.new(params[:almacen])
+  
+      respond_to do |format|
+        if @almacen.save
+          flash[:notice] = 'Almacen was successfully created.'
+          format.html { redirect_to(@almacen) }
+          format.xml  { render :xml => @almacen, :status => :created, :location => @almacen }
+        else
+          format.html { render :action => "new" }
+          format.xml  { render :xml => @almacen.errors, :status => :unprocessable_entity }
+        end
+      end
+    end
+  
+    # PUT /almacens/1
+    # PUT /almacens/1.xml
+    def update
+      @almacen = Almacen.find(params[:id])
+  
+      respond_to do |format|
+        if @almacen.update_attributes(params[:almacen])
+          flash[:notice] = 'Almacen fue actualizado'
+          format.html { redirect_to(almacens_path) }
+          format.xml  { head :ok }
+        else
+          format.html { render :action => "edit" }
+          format.xml  { render :xml => @almacen.errors, :status => :unprocessable_entity }
+        end
+      end
+    end
+  
+    # DELETE /almacens/1
+    # DELETE /almacens/1.xml
+    def destroy
+      @almacen = Almacen.find(params[:id])
+      @almacen.destroy
+  
+      respond_to do |format|
+        format.html { redirect_to(almacens_url) }
+        format.xml  { head :ok }
+      end
     end
 end
+  

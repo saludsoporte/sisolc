@@ -1,6 +1,44 @@
-<h1>Editing Nacido</h1>
+<h1>Editing nacido</h1>
 
-<%= render 'form', nacido: @nacido %>
+<% form_for(@nacido) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :paciente_id %><br />
+    <%= f.text_field :paciente_id %>
+  </p>
+  <p>
+    <%= f.label :atencion_id %><br />
+    <%= f.text_field :atencion_id %>
+  </p>
+  <p>
+    <%= f.label :evolucion %><br />
+    <%= f.text_field :evolucion %>
+  </p>
+  <p>
+    <%= f.label :atencion %><br />
+    <%= f.text_field :atencion %>
+  </p>
+  <p>
+    <%= f.label :egreso %><br />
+    <%= f.date_select :egreso %>
+  </p>
+  <p>
+    <%= f.label :defuncion %><br />
+    <%= f.text_field :defuncion %>
+  </p>
+  <p>
+    <%= f.label :defuncion %><br />
+    <%= f.date_select :defuncion %>
+  </p>
+  <p>
+    <%= f.label :user_id %><br />
+    <%= f.text_field :user_id %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
 
 <%= link_to 'Show', @nacido %> |
 <%= link_to 'Back', nacidos_path %>

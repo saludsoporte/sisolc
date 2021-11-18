@@ -1,0 +1,83 @@
+<table border="1" width="100%">
+	<tr>
+		<td width ="230"><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><h4>DIRECCION: PLANEACION, EVALUACION Y PROYECTOS ESPECIALES<br/>DEPARTAMENTO DE CONTROL PRESUPUESTAL</h4><h3>REQUISICION DE EJERCICIO</h3></td>
+		<td align="center" width="100"><h3>FOLIO: <%= @requisicion.id < 201100000 ? @requisicion.id : @requisicion.id % 100000 %></h3><br/>
+		<%= Estado.find(@requisicion.estado_id).estado %>
+		</td>
+	</tr>
+</table>
+<br/>
+<table border="2" width="100%">
+	<tr>
+		<td><b>Unidad Solicitante:</b></td>
+		<td><% if @requisicion.clues_id != nil %><%=raw Clue.find(@requisicion.clues_id).name %><% end %></td>
+		<% if @requisicion.etiqueta != nil && @requisicion.etiqueta != 0 %><td align="center"><b>ETIQUETA</b></td><% end %>
+		<td align="center"><b>IMPORTE</b></td>
+		<td align="center"><b>AAAA-MM-DD</b></td>
+	</tr>
+	<tr>
+		<td><b>Financiamiento:</b></td>
+		<td><%=raw Fuente.find(@requisicion.fuente_id ).name %></td>
+		<% if @requisicion.etiqueta != nil && @requisicion.etiqueta != 0 %><td align="center"><%= @requisicion.etiqueta %></td><% end %>
+		<td align="center"><%=raw number_to_currency @requisicion.importe, :unit => '$', :separator => ".", :delimiter => "," %></td>
+		<td align="center"><%=raw @requisicion.fecha %></td>
+	</tr>
+</table>
+<table border="10" width="100%">
+  <THEAD>
+  <tr>
+    <th>No.</th>
+    <th>Etiq.</th>
+    <th>Proy.</th>
+    <th>Prog.</th>
+    <th>Aplica</th>
+    <th>Part.</th>
+    <th>Mes</th>
+    <th>Descripcion del Gasto</th>
+    <th>Importe</th>
+  </tr>
+  </THEAD>
+<br/>
+<% for renglon in @renglons %> 
+  <tr>
+    <td align="center"><%=raw renglon.renglon %></td>
+    <td align="center"><%=raw renglon.etiqueta_id %></td>
+    <td align="center"><%=raw renglon.proyecto.name %></td>
+    <td align="center"><%=raw renglon.programa.clave %></td>
+    <td align="center"><% if renglon.clues_id != nil %><%=raw Clue.find(renglon.clues_id).name %><% end %></td>
+    <td align="center"><%=raw @requisicion.fecha > '2010-12-31'.to_date ? renglon.partida.partida_armonizada : renglon.partida.partida %></td>
+    <td align="center"><% if renglon.ejercicio != nil %><%=raw renglon.ejercicio.year %>-<%=raw renglon.ejercicio.month %><% end %></td>
+    <td align="center"><%=raw renglon.descripcion %></td>
+    <td align="center"><%=raw number_to_currency renglon.importe, :unit => '$', :separator => ".", :delimiter => "," %></td>
+  </tr>
+<% end %>
+</table>
+<br/>
+<table border="1" width="100%">
+<% if @reqnotas != nil %>
+	<THEAD>	
+	<th>FECHA</th>
+	<th>NOMBRE</th>
+	<th>OBSERVACIONES REQUISICION # <%= @requisicion.id %></th>
+	</THEAD>
+<% end %>	
+<% for reqnota in @requisicion.reqnotas %>
+	<tr>
+	<td align="center"><%=raw reqnota.fecha %></td>
+	<td align="center"><%=raw User.find(reqnota.user_id ).name %></td>
+	<td><%=raw reqnota.comenta %></td>
+	</tr>
+<% end %>
+</table>
+<br/>
+<table border="0" width="100%">
+	<tr>
+		<td align="center"><b>Elabora:</b></td>
+		<td align="center"><b>Solicita:</b></td>
+	</tr>
+	<tr>
+		<td align="center"><%= User.find(@requisicion.user_id).nompos %></td>
+		<td align="center"><% if @requisicion.vobo_id != nil %><%= User.find(@requisicion.vobo_id).nompos %><% end %></td>
+	</tr>
+</table>

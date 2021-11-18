@@ -1,6 +1,70 @@
-<h1>Editing Requisicion</h1>
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><h2>Modificar Requisicion</h2></td>
+<% form_for(@requisicion) do |f| %>
+  <%= f.error_messages %>
+		<td align="center"><b>#: <%= @requisicion.id %></b></td>
+		<td align="center">
+		<b>Elabora:</b><br/>
+		<% if [10].include?(current_user.rol_id) || ([15].include?(current_user.rol_id) && [1,3].include?(@requisicion.estado_id)) %>
+			<%= f.select :user_id, User.find(:all , :order => "nombre").collect {|s| [s.nombre, s.id]} %>  </p>
+		<% else %>
+			<b><%= User.find(:first, :conditions => { :id => @requisicion.user_id }).name %></b>
+		<% end %>	
+		</td>
+	</tr>
+</table>
 
-<%= render 'form', requisicion: @requisicion %>
+  <% if true || [10].include?(current_user.rol_id) %>
+  <p>
+    <%= f.label :fecha %><br />
+    <%= f.date_select :fecha, :use_month_numbers => true %>
+  </p>
+  <% else %>
+    <%= f.hidden_field :fecha, :value => Date.today.to_s %>
+  <% end %>
+  <p>
+    Unidad Solicitante:<br />
+	<%= f.select :clues_id, Clue.find(:all , :order => "nomunidad").collect {|s| [(s.nomunidad+" "+String(s.clues)), s.id]}, :include_blank => true %>  </p>
+  </p>
+  <p>
+    <%= f.label :fuente_id %><br />
+	<%= f.select :fuente_id, Fuente.find(:all , :order => "fuente").collect {|s| [s.fuente, s.id]} %>  </p>
+  </p>
+  <p>
+    <%= f.label :etiqueta %><br />
+	<%= f.text_field :etiqueta %>
+  </p>
+  <p>
+    Autoriza presupuesto:<br />
+	<%= f.select :autoriza_id, User.find(:all , :conditions => { :id => 115 }, :order => "id").collect {|s| [s.name, s.id]} %>  </p>
+  </p>
+  <p>
+    Solicita (Vo.Bo.):<br />
+	<%= f.select :vobo_id, User.find(:all , :conditions => { :rol_id => [2,3,5,6,7,15,23,24] }, :order => "nombre").collect {|s| [s.name, s.id]} %>  </p>
+  </p>
+  <p>
+    <%= f.label :estado_id %><br />
+	<%=case 
+	when [10].include?(current_user.rol_id)
+		f.select :estado_id, Estado.find(:all, :order => "id").collect {|s| [s.estado, s.id]}
+	when @requisicion.user_id == current_user.id
+		f.select :estado_id, Estado.find(:all, :conditions => { :id => [@requisicion.estado_id,2,11] }, :order => "id").collect {|s| [s.estado, s.id]}
+	when @requisicion.vobo_id == current_user.id
+		f.select :estado_id, Estado.find(:all, :conditions => { :id => [@requisicion.estado_id,2,3,11] }, :order => "id").collect {|s| [s.estado, s.id]}
+	when [3,4].include?(current_user.rol_id)
+		f.select :estado_id, Estado.find(:all, :conditions => { :id => [2,3,6,9,10] }, :order => "id").collect {|s| [s.estado, s.id]}
+	end %>	
+  </p>
+  <p>
+    <%= f.label :anexos %><br />
+    <%= f.check_box :anexos %>
+  </p>
+  <p>
+    <%= f.submit 'Actualizar' %>
+  </p>
+<% end %>
 
-<%= link_to 'Show', @requisicion %> |
-<%= link_to 'Back', requisicions_path %>
+<%= link_to 'Requisicion', @requisicion %> |
+<%= link_to 'Requisiciones', requisicions_path %>

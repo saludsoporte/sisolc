@@ -1,75 +1,47 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Almacens</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Clue</th>
-      <th>User</th>
-      <th>Nombre</th>
-      <th>Tipo</th>
-      <th>Cuenta1</th>
-      <th>Cuenta2</th>
-      <th>Tipo</th>
-      <th>Conta1</th>
-      <th>Conta2</th>
-      <th>Almac1</th>
-      <th>Almac2</th>
-      <th>Almac3</th>
-      <th>Depende</th>
-      <th>Almac4</th>
-      <th>Almac5</th>
-      <th>Almac6</th>
-      <th>Almac7</th>
-      <th>Domicilio</th>
-      <th>Municipio</th>
-      <th>Cp</th>
-      <th>Cpostal</th>
-      <th>Jefeu</th>
-      <th>Admoru</th>
-      <th>Cierre1</th>
-      <th>Cierre2</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @almacens.each do |almacen| %>
-      <tr>
-        <td><%= almacen.clue_id %></td>
-        <td><%= almacen.user_id %></td>
-        <td><%= almacen.nombre %></td>
-        <td><%= almacen.tipo %></td>
-        <td><%= almacen.cuenta1 %></td>
-        <td><%= almacen.cuenta2 %></td>
-        <td><%= almacen.tipo_id %></td>
-        <td><%= almacen.conta1_id %></td>
-        <td><%= almacen.conta2_id %></td>
-        <td><%= almacen.almac1_id %></td>
-        <td><%= almacen.almac2_id %></td>
-        <td><%= almacen.almac3_id %></td>
-        <td><%= almacen.depende_id %></td>
-        <td><%= almacen.almac4_id %></td>
-        <td><%= almacen.almac5_id %></td>
-        <td><%= almacen.almac6_id %></td>
-        <td><%= almacen.almac7_id %></td>
-        <td><%= almacen.domicilio %></td>
-        <td><%= almacen.municipio %></td>
-        <td><%= almacen.cp %></td>
-        <td><%= almacen.cpostal %></td>
-        <td><%= almacen.jefeu %></td>
-        <td><%= almacen.admoru %></td>
-        <td><%= almacen.cierre1 %></td>
-        <td><%= almacen.cierre2 %></td>
-        <td><%= link_to 'Show', almacen %></td>
-        <td><%= link_to 'Edit', edit_almacen_path(almacen) %></td>
-        <td><%= link_to 'Destroy', almacen, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
+<table border="0" width="80%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+		<h2>Almacenes</h2>
+		<td align="center">
+			<%= link_to 'Inicio', url_for("/") %>
+			<% if [10,13].include?(current_user.rol_id) %>
+				<br/><br/><%= link_to 'Nuevo Almacen', new_almacen_path %>
+			<% end %>
+		</td>
+	</tr>
+</table>
+<table border="10" width="100%">
+  <tr>
+    <th>#Al.</th>
+    <th>Unidad</th>
+    <th>Responsable</th>
+    <th>Nombre</th>
+    <th>Mov.</th>
+    <th>Tipo</th>
+  </tr>
+<% mialmacen = 0 %>
+<% @almacens.each do |almacen| %>
+	<% if [almacen.conta1_id,almacen.conta2_id,almacen.almac1_id,almacen.almac2_id,almacen.almac3_id,almacen.almac4_id,almacen.almac5_id,almacen.almac6_id,almacen.almac7_id,almacen.user_id].include?(current_user.id) || [almacen.depende_id,1].include?(mialmacen) || [5,10,13,24,26,27].include?(current_user.rol_id) || [165].include?(current_user.id) || (current_user.dato1 != nil && [almacen.id,almacen.depende_id].include?(current_user.dato1)) %>
+		<% if almacen.depende_id != mialmacen %>
+			<% mialmacen = almacen.id %>
+		<% end %>	
+		<tr>
+			<td align="center"><%=h almacen.id %></td>
+			<td align="center"><%=h almacen.clue.nomunidad %></td>
+			<td align="center"><%=h almacen.user.name %></td>
+			<td align="center"><%= link_to almacen.nombre, almacen_path(almacen.id) %></td>
+			<td align="center"><%= link_to 'Ver', movimientos_path(:almacen=>almacen.id) %></td>
+			<td align="center"><%= link_to almacen.tipo, almacen_path(almacen.id,:marbetes=> true) %></td>
+			<% if [10,13,27].include?(current_user.rol_id) || [165].include?(current_user.id) %>
+				<td align="center"><%= link_to 'Mod.', edit_almacen_path(almacen) %></td>
+				<% if [10].include?(current_user.rol_id) %>
+					<td align="center"><%= link_to 'X', almacen, :confirm => 'Are you sure?', :method => :delete %></td>
+				<% end %>
+			<% end %>
+		</tr>
+	<% end %>
+<% end %>
 </table>
 
-<br>
-
-<%= link_to 'New Almacen', new_almacen_path %>
+<br />

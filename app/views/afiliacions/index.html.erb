@@ -1,35 +1,46 @@
-<p id="notice"><%= notice %></p>
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp-smp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Seguimiento a Pacientes con Complicaciones durante el Embarazo o Puerperio</b></br><hr/>
+							<h2>Afiliaciones</h2>
+			<% if @paciente_id != nil %>
+				<%= link_to @paciente_id,paciente_path(@paciente_id) %>-<%= Paciente.find(:first, :conditions=>{:id => @paciente_id}).name %>
+			<% end %>
+        </td>
+		<td align="right" valign="bottom">
+			<% if @paciente_id != nil && (17..20).include?(current_user.rol_id) %>
+				<%= link_to 'Nueva Afiliacion', new_afiliacion_path(:paciente => @paciente_id) %><br/><br/>
+			<% end %>
+			<%= link_to 'Inicio', url_for("/") %>
+		</td>
+	</tr>
+</table>
+<table border='10' width='100%'>
+  <tr>
+	<% if @paciente_id == nil %>
+		<th>Pac.</th>
+	<% end %>	
+    <th>Institucion</th>
+    <th>Afiliacion</th>
+    <th>MD</th>
+  </tr>
 
-<h1>Afiliacions</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Paciente</th>
-      <th>Institu</th>
-      <th>Institucion</th>
-      <th>Afiliacion</th>
-      <th>User</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @afiliacions.each do |afiliacion| %>
-      <tr>
-        <td><%= afiliacion.paciente_id %></td>
-        <td><%= afiliacion.institu_id %></td>
-        <td><%= afiliacion.institucion %></td>
-        <td><%= afiliacion.afiliacion %></td>
-        <td><%= afiliacion.user_id %></td>
-        <td><%= link_to 'Show', afiliacion %></td>
-        <td><%= link_to 'Edit', edit_afiliacion_path(afiliacion) %></td>
-        <td><%= link_to 'Destroy', afiliacion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
+<% @afiliacions.each do |afiliacion| %>
+  <tr>
+	<% if @paciente_id == nil %>
+		<td align="center"><%= link_to afiliacion.paciente_id, paciente_path(afiliacion.paciente_id) %></td>
+	<% end %>	
+    <td align="center"><%=h afiliacion.institucion %></td>
+    <td align="center"><%=h afiliacion.afiliacion %></td>
+    <td align="center"><%=h User.find(afiliacion.user_id).login %></td>
+	<% if [10,18].include?(current_user.rol_id) %>
+		<td align="center"><%= link_to 'Mod.', edit_afiliacion_path(afiliacion) %></td>
+	<% end %>	
+	<% if [10,18].include?(current_user.rol_id) %>
+		<td align="center"><%= link_to 'X', afiliacion, :confirm => 'Are you sure?', :method => :delete %></td>
+	<% end %>	
+  </tr>
+<% end %>
 </table>
 
-<br>
-
-<%= link_to 'New Afiliacion', new_afiliacion_path %>
+<br />

@@ -1,6 +1,132 @@
-<h1>Editing Reporte</h1>
-
-<%= render 'form', reporte: @reporte %>
-
-<%= link_to 'Show', @reporte %> |
-<%= link_to 'Back', reportes_path %>
+<%= form_for(@reporte) do |f| %>
+	<% if @reporte.errors.any? %>
+		<% @reporte.errors.full_messages.each do |message|%>\
+			<h3><%= message %> </h3>
+		<%end%>
+	<%end%>
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp-smp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b><%= @reporte.sistema_id == 2 ? 'Seguimiento a Pacientes con Complicaciones durante el Embarazo y/o Puerperio' : 'Sistema Integral Estatal de Control de Inventarios' %></b></br><hr/>
+							<h2>Modificar Reporte</h2></td>
+		<td align="center" valign="bottom">
+			<%= link_to 'Inicio', url_for("/") %>
+		</td>	
+	</tr>
+</table>
+  <p>
+    <%= f.label :reporte %><br />
+    <%= f.text_field :reporte %>
+  </p>
+<% if ![4,19,20].include?(@reporte.id) %>
+	<% if ![12,13,16,20].include?(@reporte.id) %>
+		<p>
+			Desde:<br />
+			<%= f.date_select :desde %>
+		</p>
+	<% end %> 
+	<% if ![6,16].include?(@reporte.id) %>
+		<p>
+			Hasta:<br />
+			<%= f.date_select :hasta,:start_year=>Time.now.year - 5 %>
+		</p>
+	<% end %> 
+<% end %> 
+  <p>
+	<% if ![6,7,8,9,10,11,12,13,16,17,18,20].include?(@reporte.id) %>
+		<p>
+		<%= f.label :rango1 %><br />
+		<%= f.text_field :rango1 %>
+		</p>
+		<p>
+		<%= f.label :rango2 %><br />
+		<%= f.text_field :rango2 %>
+		</p>
+		<% if [4].include?(@reporte.id) %>
+			<p>
+			Proceso (opcional al rango):<br />
+			<%= f.select :cpfin, Proceso.all().order(:proceso).collect {|s| [s.proceso+" - "+String(s.partida_id), s.id]}, :include_blank => true  %><br /><br />
+			Unicamente relaci&oacute;n de pedidos:<br />
+			<%= f.check_box :cpini %><br />
+			</p>
+		<% end %>
+	<% else %>
+		<% if @reporte.id == 6 %>
+			<p>
+			Proveedor:<br />
+			<%= f.select :rango1, Prov.all().order(:fiscal).collect {|s| [s.fiscal, s.id]}, :include_blank => true %>
+			</p>
+			<p>
+			Desplazamiento:<br />
+			<%= f.text_field :rango2 %>
+			</p>
+		<% else %>
+			<% if ![16,17].include?(@reporte.id) %>
+				<p>
+					Almacen:<br />
+					<%= f.select :rango1, Almacen.all().order(:nombre).collect {|s| [s.nombre, s.id]}, :include_blank => true %> 
+				</p>
+			<% end %>
+		<% end %>
+	<% end %>
+	<% if [12,13,20].include?(@reporte.id) %>
+		<p>
+			#Articulo (Sustituye Partida y Fuente):<br />
+			<%= f.text_field :rango2 %>
+		</p>
+		<p>
+			Fuente:<br/>
+			<%= f.select :cpini, Fuente.all().order(:fuente).collect {|s| [s.fuente, s.id]} %>
+		</p>
+		<p>
+			Partida:<br/>
+			<%= f.select :cpfin, Partida.all().order(:partida).collect {|s| [(String(s.partida)+"/"+String(s.cog2011)+" "+s.descripcion), s.id]} %>
+		</p>
+	<% end %>
+	<% if [20].include?(@reporte.id) %>
+		<p>
+		Incluir todo:<br />
+		<%= f.check_box :unidad %>
+		</p>
+	<% end %>
+	<% if [16,17].include?(@reporte.id) %>
+		<p>
+			Almacen:<br />
+			<%= f.select :rango1, Almacen.all().order(:nombre).collect {|s| [s.nombre, s.id]} %> 
+		</p>
+		<p>
+			Partida:<br/>
+			<%= f.select :cpfin, Partida.all().order(:partida).collect {|s| [(String(s.partida)+"/"+String(s.cog2011)+" "+s.descripcion), s.id]} %>
+		</p>
+		<% if [16].include?(@reporte.id) %>
+			<p>
+			Incluir art&iacute;culos sin existencia:<br />
+			<%= f.check_box :cpini,:default=>"checked" %>
+			</p>
+		<% end %>
+	<% end %>
+<% if [10].include?(current_user.rol_id) %>
+  <p>
+    <%= f.label :unidad %><br />
+    <%= f.text_field :unidad %>
+  </p>
+  <p>
+    <%= f.label :usuario %><br />
+    <%= f.text_field :usuario %>
+  </p>
+  <p>
+    <%= f.label :texto %><br />
+    <%= f.text_field :texto %>
+  </p>
+  <% if [10].include?(current_user.rol_id) %>
+  <p>
+    <%= f.label :sistema_id %><br />
+    <%= f.text_field :sistema_id %>
+  </p>
+  <br /><br /><%= @reporte.updated_at %>
+  <% end %>
+<% end %>
+  <p>
+    <%= f.submit 'Actualizar' %>
+  </p>
+<% end %>

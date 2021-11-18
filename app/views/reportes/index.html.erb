@@ -1,47 +1,71 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Reportes</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Reporte</th>
-      <th>Desde</th>
-      <th>Hasta</th>
-      <th>Unidad</th>
-      <th>Cpini</th>
-      <th>Cpfin</th>
-      <th>Usuario</th>
-      <th>Texto</th>
-      <th>Rango1</th>
-      <th>Rango2</th>
-      <th>Sistema</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @reportes.each do |reporte| %>
-      <tr>
-        <td><%= reporte.reporte %></td>
-        <td><%= reporte.desde %></td>
-        <td><%= reporte.hasta %></td>
-        <td><%= reporte.unidad %></td>
-        <td><%= reporte.cpini %></td>
-        <td><%= reporte.cpfin %></td>
-        <td><%= reporte.usuario %></td>
-        <td><%= reporte.texto %></td>
-        <td><%= reporte.rango1 %></td>
-        <td><%= reporte.rango2 %></td>
-        <td><%= reporte.sistema_id %></td>
-        <td><%= link_to 'Show', reporte %></td>
-        <td><%= link_to 'Edit', edit_reporte_path(reporte) %></td>
-        <td><%= link_to 'Destroy', reporte, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
+<% if @tipo == 2 %>
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp-smp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Seguimiento a Pacientes con Complicaciones durante el Embarazo y/o Puerperio</b><hr/>
+							<h2>Reportes</h2>
+		</td>
+		<td align="center">
+			<%= link_to 'Inicio', url_for("/") %>
+			<% if [10].include?(current_user.rol_id) %>
+				<br/><br/><%= link_to 'Nuevo reporte', new_reporte_path(:sistema=>@tipo) %>
+			<% end %>
+		</td>	
+	</tr>
 </table>
+<% else %>
+<table border="0" width="80%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+		<h2>Reportes</h2>
+		<td align="center">
+			<%= link_to 'Inicio', url_for("/") %>
+			<% if [10].include?(current_user.rol_id) %>
+				<br/><br/><%= link_to 'Nuevo reporte', new_reporte_path(:sistema=>@tipo) %>
+			<% end %>
+		</td>
+	</tr>
+</table>
+<% end %>
+<table border='10' width='100%'>
+  <tr>
+    <th>#</th>
+    <th>Reporte</th>
+    <th>Desde</th>
+    <th>Hasta</th>
+	<th>Rango1</th>
+	<th>Rango2</th>
+	<% if [10].include?(current_user.rol_id) %>
+		<th>Unidad</th>
+		<th>Cpini</th>
+		<th>Cpfin</th>
+		<th>Usuario</th>
+		<th>Texto</th>
+	<% end %>	
+  </tr>
 
-<br>
-
-<%= link_to 'New Reporte', new_reporte_path %>
+<% @reportes.each do |reporte| %>
+  <tr>
+    <td align="center"><%=h reporte.id %></td>
+    <td align="center"><%= link_to reporte.reporte, reporte %></td>
+    <td align="center"><%=h reporte.desde %></td>
+    <td align="center"><%=h reporte.hasta %></td>
+	<td align="center"><%=h reporte.rango1 %></td>
+	<td align="center"><%=h reporte.rango2 %></td>
+	<% if [10].include?(current_user.rol_id) %>
+		<td align="center"><%=h reporte.unidad %></td>
+		<td align="center"><%=h reporte.cpini %></td>
+		<td align="center"><%=h reporte.cpfin %></td>
+		<td align="center"><%=h reporte.usuario %></td>
+		<td align="center"><%=h reporte.texto %></td>
+	<% end %>	
+	<% if [5,7,8,9,10,11,12,13,15,18,19,20,21,22,23,24,26,27].include?(current_user.rol_id) %>
+		<td align="center"><%= link_to 'Mod.', edit_reporte_path(reporte) %></td>
+		<% if [10].include?(current_user.rol_id) %>
+			<td align="center"><%= link_to 'X', reporte, :confirm => 'Are you sure?', :method => :delete %></td>
+		<% end %>
+	<% end %>
+  </tr>
+<% end %>
+</table>

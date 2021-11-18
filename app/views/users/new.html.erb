@@ -1,5 +1,42 @@
-<h1>New User</h1>
+<% if current_user.rol_id == 10 %>
+<%= error_messages_for :user %>
+<% form_for :user, :url => users_path do |f| -%>
+<p><label for="login">Login</label><br/>
+<%= f.text_field :login %></p>
 
-<%= render 'form', user: @user %>
+<p><label for="titulo">Titulo</label><br/>
+<%= f.text_field :titulo %></p>
 
-<%= link_to 'Back', users_path %>
+<p><label for="nombre">Nombre</label><br/>
+<%= f.text_field :nombre, :size=>80 %></p>
+
+<p><label for="puesto">Puesto</label><br/>
+<%= f.text_field :puesto, :size=>80 %></p>
+
+<p><%= f.label :area_id %><br />
+<%= f.select :area_id, Area.find(:all , :order => "id").collect {|s| [s.area, s.id]} %></p>
+
+<p><%= f.label :rol_id %><br />
+<%= f.select :rol_id, Rol.find(:all , :order => "id").collect {|s| [s.rol, s.id]} %></p>
+
+<p><label for="dato1">Dato 1</label><br/>
+<%= f.text_field :dato1 %></p>
+
+<p><label for="dato2">Dato 2</label><br/>
+<%= f.text_field :dato2 %></p>
+
+<p><label for="estructura_id">Estructura</label><br/>
+<%= f.text_field :estructura_id %></p>
+
+<p><label for="email">Email</label><br/>
+<%= f.text_field :email, :size=>80 %></p>
+
+<p><label for="password">Password</label><br/>
+<%= f.password_field :password %></p>
+
+<p><label for="password_confirmation">Confirm Password</label><br/>
+<%= f.password_field :password_confirmation %></p>
+
+<p><%= submit_tag 'Sign up' %></p>
+<% end -%>
+<% end -%>

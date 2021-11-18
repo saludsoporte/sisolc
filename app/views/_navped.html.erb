@@ -1,0 +1,18 @@
+<p>
+ <% if current_user %> 
+	<%= link_to "Inicio", root_path %> | 
+	<% if ![13,21,22,24].include?(current_user.rol_id) %>
+		<%= link_to "Solicitudes", solicituds_url %> | 
+		<%= link_to "Requisiciones", requisicions_url %> |
+	<% end %>	
+	<%= link_to "Catalogos", partidas_url %>
+  | <%= link_to "Salir del Sistema", logout_path %>
+ <% end %>
+<% if (([9,15].include?(current_user.rol_id) || (current_user.id == @ped.user_id)) && [1,3].include?(@ped.estado_id)) || [10,15].include?(current_user.rol_id) || ([13].include?(current_user.rol_id) && [14,15,16,17].include?(@ped.tipo_id))  %> 
+	|| <%= link_to 'Pedidos', peds_path %>
+	| <%= link_to 'Cambios datos grales. de Pedido', edit_ped_path(@ped) %> |
+	<%= link_to 'Nuevo articulo', new_detped_path(:ped => @ped.id,:partida=>(@ped.proceso_id.blank? || @ped.partida_id != nil ? @ped.partida_id : @ped.proceso.partida_id), :requisicion => @ped.requisicion_id, :copiar => false) %> |
+<% end %> 
+</p> 
+ 
+<hr />

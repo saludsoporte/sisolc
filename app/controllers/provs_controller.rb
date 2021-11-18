@@ -1,69 +1,86 @@
 class ProvsController < ApplicationController
-  before_action :set_prov, only: %i[ show edit update destroy ]
-
-  # GET /provs or /provs.json
+  before_action  :login_required
+  # GET /provs
+  # GET /provs.xml
   def index
-    @provs = Prov.all
+    @provs = Prov.all().order(:fiscal)
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @provs }
+    end
   end
 
-  # GET /provs/1 or /provs/1.json
+  # GET /provs/1
+  # GET /provs/1.xml
   def show
+    @prov = Prov.find(params[:id])
+    @peds = Ped.where("proveedor_id=?",@prov.id).order(id: :DESC)
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @prov }
+    end
   end
 
   # GET /provs/new
+  # GET /provs/new.xml
   def new
     @prov = Prov.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @prov }
+    end
   end
 
   # GET /provs/1/edit
   def edit
+    @prov = Prov.find(params[:id])
   end
 
-  # POST /provs or /provs.json
+  # POST /provs
+  # POST /provs.xml
   def create
-    @prov = Prov.new(prov_params)
+    @prov = Prov.new(params[:prov])
 
     respond_to do |format|
       if @prov.save
-        format.html { redirect_to @prov, notice: "Prov was successfully created." }
-        format.json { render :show, status: :created, location: @prov }
+        flash[:notice] = 'El proveedor fue creado.'
+        format.html { redirect_to(provs_url) }
+        format.xml  { render :xml => @prov, :status => :created, :location => @prov }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @prov.errors, status: :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @prov.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /provs/1 or /provs/1.json
+  # PUT /provs/1
+  # PUT /provs/1.xml
   def update
+    @prov = Prov.find(params[:id])
+
     respond_to do |format|
-      if @prov.update(prov_params)
-        format.html { redirect_to @prov, notice: "Prov was successfully updated." }
-        format.json { render :show, status: :ok, location: @prov }
+      if @prov.update_attributes(params[:prov])
+        flash[:notice] = 'El proveedor fue actualizado.'
+        format.html { redirect_to(provs_url) }
+        format.xml  { head :ok }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @prov.errors, status: :unprocessable_entity }
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @prov.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /provs/1 or /provs/1.json
+  # DELETE /provs/1
+  # DELETE /provs/1.xml
   def destroy
+    @prov = Prov.find(params[:id])
     @prov.destroy
+
     respond_to do |format|
-      format.html { redirect_to provs_url, notice: "Prov was successfully destroyed." }
-      format.json { head :no_content }
+      format.html { redirect_to(provs_url) }
+      format.xml  { head :ok }
     end
   end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_prov
-      @prov = Prov.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def prov_params
-      params.require(:prov).permit(:nombre, :fiscal, :domicilio, :colonia, :ciudad, :telefonos, :fax, :rfc, :cp, :situacion_id, :cvealma_id)
-    end
 end

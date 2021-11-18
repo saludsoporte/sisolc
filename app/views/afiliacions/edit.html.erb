@@ -1,6 +1,27 @@
-<h1>Editing Afiliacion</h1>
-
-<%= render 'form', afiliacion: @afiliacion %>
-
-<%= link_to 'Show', @afiliacion %> |
-<%= link_to 'Back', afiliacions_path %>
+<% form_for(@afiliacion) do |f| %>
+  <%= f.error_messages %>
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp-smp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Seguimiento a Pacientes con Complicaciones durante el Embarazo y/o Puerperio</b></br><hr/>
+							<h2>Nueva Afiliacion</h2></td>
+		<td align="center"><b>Medico:</b><br />
+			<%= f.select :user_id, User.find(:all , :conditions => { :id => current_user.id}, :order => "nombre").collect {|s| [s.name, s.id]} %>
+			<b>Paciente:</b><br />
+			<%= f.select :paciente_id, Paciente.find(:all , :conditions => { :id => @afiliacion.paciente_id }).collect {|s| [s.name, s.id]} %>
+		</td>	
+	</tr>
+</table>
+  <p>
+    <%= f.label :institucion %><br />
+    <%= f.text_field :institucion %>
+  </p>
+  <p>
+    <%= f.label :afiliacion %><br />
+    <%= f.text_field :afiliacion %>
+  </p>
+  <p>
+    <%= f.submit 'Actualizar' %>
+  </p>
+<% end %>
+<%= link_to 'Afiliaciones', afiliacions_path(:paciente => @afiliacion.paciente_id) %>

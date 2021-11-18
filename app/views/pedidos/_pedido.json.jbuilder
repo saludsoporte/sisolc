@@ -1,2 +1,0 @@
-json.extract! pedido, :id, :pedido, :claveuni, :nombreuni, :articulo, :partida, :preciouni, :cantidad, :marca, :clavepro, :proveedor, :entrega, :descripcion, :presentacion, :requisicion, :proceso, :fuente, :pedidounico, :almacen, :archivo, :cantfac, :cantcanc, :elaboracion, :etiqueta, :proyecto, :programa, :subprograma, :comenta, :estado_id, :iva, :created_at, :updated_at
-json.url pedido_url(pedido, format: :json)

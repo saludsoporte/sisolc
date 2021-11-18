@@ -1,5 +1,54 @@
-<h1>New Requisicion</h1>
+<table border="0" width="80%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><h2>Nueva Requisicion</h2></td>
+	<% form_for(@requisicion) do |f| %>
+		<td align="center"><b>Usuario</b><br/>
+		<%= f.select :user_id, User.find(:all , :conditions => { :id => current_user.id}, :order => "nombre").collect {|s| [s.name, s.id]} %>  </p>
+		</td>
+	</tr>
+</table>
 
-<%= render 'form', requisicion: @requisicion %>
+  <%= f.error_messages %>
+  <% if true || [10].include?(current_user.rol_id) %>
+  <p>
+    <%= f.label :fecha %><br />
+    <%= f.date_select :fecha, :use_month_numbers => true %>
+  </p>
+  <% else %>
+    <%= f.hidden_field :fecha, :value => Date.today.to_s %>
+  <% end %>
+  <p>
+    Unidad Solicitante:<br />
+	<%= f.select :clues_id, Clue.find(:all , :order => "nomunidad").collect {|s| [(s.nomunidad+" "+String(s.clues)), s.id]} %>  </p>
+  </p>
+  <p>
+    <%= f.label :fuente_id %><br />
+	<%= f.select :fuente_id, Fuente.find(:all , :order => "fuente").collect {|s| [s.fuente, s.id]} %>
+  </p>
+  <p>
+    No. Etiqueta:<br />
+	<%= f.text_field :etiqueta %>
+  </p>
+  <p>
+    Autoriza presupuesto:<br />
+	<%= f.select :autoriza_id, User.find(:all , :conditions => { :id => 115 }, :order => "id").collect {|s| [s.name, s.id]} %>  </p>
+  </p>
+  <p>
+    Solicita (Vo.Bo.):<br />
+	<%= f.select :vobo_id, User.find(:all , :conditions => { :rol_id => [2,3,5,6,7,15,23,24] }, :order => "nombre").collect {|s| [s.name, s.id]} %>  </p>
+  </p>
+  <p>
+    <%= f.label :estado_id %><br />
+	<%= f.select :estado_id, Estado.find(:all, :conditions => { :id => 1}, :order => "id").collect {|s| [s.estado, s.id]} %>  </p>
+  </p>
+  <p>
+    <%= f.label :anexos %><br />
+    <%= f.check_box :anexos %>
+  </p>
+  <p>
+    <%= f.submit 'Crear' %>
+  </p>
+<% end %>
 
-<%= link_to 'Back', requisicions_path %>
+<%= link_to 'Requisiciones', requisicions_path %>

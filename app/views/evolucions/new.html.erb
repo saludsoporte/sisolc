@@ -1,5 +1,77 @@
-<h1>New Evolucion</h1>
-
-<%= render 'form', evolucion: @evolucion %>
-
-<%= link_to 'Back', evolucions_path %>
+<% form_for(@evolucion) do |f| %>
+  <%= f.error_messages %>
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp-smp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Seguimiento a Pacientes con Complicaciones durante el Embarazo y/o Puerperio</b></br><hr/>
+							<h2>Nueva Evolucion</h2>Atencion no. <%= f.select :atencion_id, Atencion.find(:all, :conditions => { :id => @evolucion.atencion_id }).collect {|s| [@evolucion.atencion_id.to_s+" del "+s.fecha.to_s, s.id]}  %>
+</td>
+		<td align="center"><b>Medico:</b><br />
+			<%= f.select :user_id, User.find(:all , :conditions => { :id => current_user.id}, :order => "nombre").collect {|s| [s.name, s.id]} %>
+			<b>Paciente:</b><br />
+			<%= f.select :paciente_id, Paciente.find(:all , :conditions => { :id => @evolucion.paciente_id }).collect {|s| [s.name, s.id]} %>
+		</td>	
+	</tr>
+</table>
+<table>
+	<tr>
+		<td rowspan="8">
+		<%= f.label :diagnosticos %><br />
+		<%= f.text_area :diagnosticos, :rows=>14 %>
+		</td>
+		<td>
+			<%= f.label :fecha %><br />
+			<%= f.date_select :fecha %>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<%= f.label :ta %><br />
+		<%= f.text_field :ta %>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<%= f.label :fr %><br />
+		<%= f.text_field :fr %>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<%= f.label :fc %><br />
+		<%= f.text_field :fc %>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<%= f.label :temp %><br />
+		<%= f.text_field :temp %>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<%= f.label :pronostico %><br />
+		<%= f.text_field :pronostico, :size=>80 %>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">
+		<%= f.submit 'Create' %>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">
+		<%= link_to 'Paciente', paciente_path(@evolucion.paciente_id) %>
+		</td>
+	<tr>
+		<td>
+		<%= f.label :condiciones %><br />
+		<%= f.text_area :condiciones, :rows=>14 %>
+		</td>
+		<td>
+		<%= f.label :pendientes %><br />
+		<%= f.text_area :pendientes, :rows=>14 %>
+		</td>
+	</tr>
+<% end %>
+</table>

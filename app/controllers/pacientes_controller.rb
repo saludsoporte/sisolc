@@ -1,69 +1,96 @@
 class PacientesController < ApplicationController
-  before_action :set_paciente, only: %i[ show edit update destroy ]
-
-  # GET /pacientes or /pacientes.json
+  before_action :login_required 
+  # GET /pacientes
+  # GET /pacientes.xml
   def index
-    @pacientes = Paciente.all
+	@tipo = params[:tipo].to_i
+	case
+		when @tipo == 0
+			@pacientes = Paciente.all(:order=>"id DESC")
+		when [23,24].include?(@tipo)
+		    @pacientes = Paciente.find(:all, :conditions=>["exists(select * from atencions where pacientes.id = atencions.paciente_id and fechaeg is null and tipo_id = ?)",@tipo], :order=>"id DESC")
+	end
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @pacientes }
+    end
   end
 
-  # GET /pacientes/1 or /pacientes/1.json
+  # GET /pacientes/1
+  # GET /pacientes/1.xml
   def show
+    @paciente = Paciente.find(params[:id])
+    @domicilio = Domicilio.where("paciente_id=?",@paciente.id).order(:id)
+    @afiliacion = Afiliacion.find(:last, :conditions=>{:paciente_id=>@paciente.id},:order=>"id")
+    @atencion = Atencion.find(:last, :conditions=>{:paciente_id=>@paciente.id},:order=>"id")
+    @evolucion = @atencion == nil ? nil : Evolucion.find(:all, :conditions=>{:paciente_id=>@paciente.id},:order=>"id DESC")
+    @nacido = @atencion == nil ? nil :Nacido.find(:all, :conditions=>{:paciente_id=>@paciente.id, :atencion_id=>@atencion.id},:order=>"id DESC")
+    @pacnotas = Pacnota.find(:all,:conditions=>{:paciente_id=>@paciente.id},:order=>"id DESC")
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @paciente }
+    end
   end
 
   # GET /pacientes/new
+  # GET /pacientes/new.xml
   def new
     @paciente = Paciente.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @paciente }
+    end
   end
 
   # GET /pacientes/1/edit
   def edit
+    @paciente = Paciente.find(params[:id])
   end
 
-  # POST /pacientes or /pacientes.json
+  # POST /pacientes
+  # POST /pacientes.xml
   def create
-    @paciente = Paciente.new(paciente_params)
+    @paciente = Paciente.new(params[:paciente])
 
     respond_to do |format|
       if @paciente.save
-        format.html { redirect_to @paciente, notice: "Paciente was successfully created." }
-        format.json { render :show, status: :created, location: @paciente }
+        flash[:notice] = 'El nuevo paciente fue agregado.'
+        format.html { redirect_to(pacientes_path) }
+        format.xml  { render :xml => @paciente, :status => :created, :location => @paciente }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @paciente.errors, status: :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @paciente.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /pacientes/1 or /pacientes/1.json
+  # PUT /pacientes/1
+  # PUT /pacientes/1.xml
   def update
+    @paciente = Paciente.find(params[:id])
+
     respond_to do |format|
-      if @paciente.update(paciente_params)
-        format.html { redirect_to @paciente, notice: "Paciente was successfully updated." }
-        format.json { render :show, status: :ok, location: @paciente }
+      if @paciente.update_attributes(params[:paciente])
+        flash[:notice] = 'Paciente was successfully updated.'
+        format.html { redirect_to(@paciente) }
+        format.xml  { head :ok }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @paciente.errors, status: :unprocessable_entity }
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @paciente.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /pacientes/1 or /pacientes/1.json
+  # DELETE /pacientes/1
+  # DELETE /pacientes/1.xml
   def destroy
+    @paciente = Paciente.find(params[:id])
     @paciente.destroy
+
     respond_to do |format|
-      format.html { redirect_to pacientes_url, notice: "Paciente was successfully destroyed." }
-      format.json { head :no_content }
+      format.html { redirect_to(pacientes_url) }
+      format.xml  { head :ok }
     end
   end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_paciente
-      @paciente = Paciente.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def paciente_params
-      params.require(:paciente).permit(:paterno, :materno, :nombre, :nacimiento, :curp, :observa, :cambio, :user_id)
-    end
 end

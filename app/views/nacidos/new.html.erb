@@ -1,5 +1,39 @@
-<h1>New Nacido</h1>
-
-<%= render 'form', nacido: @nacido %>
-
-<%= link_to 'Back', nacidos_path %>
+<% form_for(@nacido) do |f| %>
+  <%= f.error_messages %>
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp-smp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Seguimiento a Pacientes con Complicaciones durante el Embarazo y/o Puerperio</b></br><hr/>
+							<h2>Nuevo Nacido</h2> Atencion no. <%= f.select :atencion_id, Atencion.find(:all, :conditions => { :id => @nacido.atencion_id }).collect {|s| [@nacido.atencion_id.to_s+" del "+s.fecha.to_s, s.id]}  %></td>
+		<td align="center"><b>Medico:</b><br />
+			<%= f.select :user_id, User.find(:all , :conditions => { :id => current_user.id}, :order => "nombre").collect {|s| [s.name, s.id]} %>
+			<br /><b>Paciente:</b><br />
+			<%= f.select :paciente_id, Paciente.find(:all , :conditions => { :id => @nacido.paciente_id }).collect {|s| [s.name, s.id]} %>
+		</td>	
+	</tr>
+</table>
+  <p>
+    <%= f.label :evolucion %><br />
+    <%= f.text_field :evolucion, :size=>97 %>
+  </p>
+  <p>
+    <%= f.label :atencion %><br />
+    <%= f.text_field :atencion, :size=>97 %>
+  </p>
+  <p>
+    Fecha de Egreso:<br />
+    <%= f.date_select :egreso, :include_blank=>true %>
+  </p>
+  <p>
+    <%= f.label :defuncion %><br />
+    <%= f.text_field :defuncion, :size=>97 %>
+  </p>
+  <p>
+    Fecha de Defuncion:<br />
+    <%= f.date_select :defuncion, :include_blank=>true %>
+  </p>
+  <p>
+    <%= f.submit 'Crear' %>
+  </p>
+<% end %>
+<%= link_to 'Datos Paciente', paciente_path(@nacido.paciente_id) %></table>

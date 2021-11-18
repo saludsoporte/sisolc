@@ -1,69 +1,90 @@
 class PoasController < ApplicationController
-  before_action :set_poa, only: %i[ show edit update destroy ]
-
-  # GET /poas or /poas.json
+  before_action :login_required
+  # GET /poas
+  # GET /poas.xml
   def index
     @poas = Poa.all
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @poas }
+    end
   end
 
-  # GET /poas/1 or /poas/1.json
+  # GET /poas/1
+  # GET /poas/1.xml
   def show
+    @poa = Poa.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @poa }
+    end
   end
 
   # GET /poas/new
+  # GET /poas/new.xml
   def new
     @poa = Poa.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @poa }
+    end
   end
 
   # GET /poas/1/edit
   def edit
+    @poa = Poa.find(params[:id])
   end
 
-  # POST /poas or /poas.json
+  # POST /poas
+  # POST /poas.xml
   def create
-    @poa = Poa.new(poa_params)
+    @poa = Poa.new(params[:poa])
 
     respond_to do |format|
       if @poa.save
-        format.html { redirect_to @poa, notice: "Poa was successfully created." }
-        format.json { render :show, status: :created, location: @poa }
+        flash[:notice] = 'Poa was successfully created.'
+        format.html { redirect_to(@poa) }
+        format.xml  { render :xml => @poa, :status => :created, :location => @poa }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @poa.errors, status: :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @poa.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /poas/1 or /poas/1.json
+  # PUT /poas/1
+  # PUT /poas/1.xml
   def update
+    @poa = Poa.find(params[:id])
+
     respond_to do |format|
-      if @poa.update(poa_params)
-        format.html { redirect_to @poa, notice: "Poa was successfully updated." }
-        format.json { render :show, status: :ok, location: @poa }
+      if @poa.update_attributes(params[:poa])
+        flash[:notice] = 'Poa was successfully updated.'
+        format.html { redirect_to(@poa) }
+        format.xml  { head :ok }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @poa.errors, status: :unprocessable_entity }
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @poa.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /poas/1 or /poas/1.json
+  # DELETE /poas/1
+  # DELETE /poas/1.xml
   def destroy
+    @poa = Poa.find(params[:id])
     @poa.destroy
+
     respond_to do |format|
-      format.html { redirect_to poas_url, notice: "Poa was successfully destroyed." }
-      format.json { head :no_content }
+      format.html { redirect_to(poas_url) }
+      format.xml  { head :ok }
     end
   end
+end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_poa
-      @poa = Poa.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def poa_params
-      params.require(:poa).permit(:nombreuni, :programa, :subprograma, :accion, :intcauses, :afaspe, :partida, :articulo, :sino, :descripcion, :presentacion, :precioiva, :cantidad, :presupuesto, :fuente, :marca, :observacion, :preciolin, :sacp_requisi, :sacp_interno, :sacp_anio, :fuente_id, :accion_id, :clave_id, :sacp_esq, :clues_id)
-    end
+def sum
+  
 end

@@ -1,64 +1,43 @@
-<p id="notice"><%= notice %></p>
-
 <p>
-  <strong>Nombre:</strong>
-  <%= @reorden.nombre %>
-</p>
-
-<p>
-  <strong>Partida:</strong>
-  <%= @reorden.partida_id %>
-</p>
-
-<p>
-  <strong>Catalogo:</strong>
-  <%= @reorden.catalogo_id %>
-</p>
-
-<p>
-  <strong>Punto:</strong>
-  <%= @reorden.punto %>
-</p>
-
-<p>
-  <strong>Tipo:</strong>
-  <%= @reorden.tipo_id %>
-</p>
-
-<p>
-  <strong>Almacen:</strong>
-  <%= @reorden.almacen_id %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @reorden.user_id %>
-</p>
-
-<p>
-  <strong>Notifica:</strong>
-  <%= @reorden.notifica_id %>
-</p>
-
-<p>
-  <strong>Vigenciai:</strong>
-  <%= @reorden.vigenciai %>
-</p>
-
-<p>
-  <strong>Vigenciaf:</strong>
-  <%= @reorden.vigenciaf %>
-</p>
-
-<p>
-  <strong>Estado:</strong>
-  <%= @reorden.estado_id %>
-</p>
-
-<p>
-  <strong>Existencia:</strong>
-  <%= @reorden.existencia %>
-</p>
-
-<%= link_to 'Edit', edit_reorden_path(@reorden) %> |
-<%= link_to 'Back', reordens_path %>
+    <b>Nombre:</b>
+    <%=h @reorden.nombre %>
+  </p>
+  
+  <p>
+    <b>Partida:</b>
+    <%=h @reorden.partida_id %>
+  </p>
+  
+  <p>
+    <b>Catalogo:</b>
+    <%=h @reorden.catalogo_id %>
+  </p>
+  
+  <p>
+    <b>Punto:</b>
+    <%=h @reorden.punto %>
+  </p>
+  
+  <p>
+    <b>Tipo:</b>
+    <%=h @reorden.tipo_id %>
+  </p>
+  
+  <p>
+    <b>Almacen:</b>
+    <%=h @reorden.almacen_id %>
+  </p>
+  
+  <p>
+    <b>User:</b>
+    <%=h @reorden.user_id %>
+  </p>
+  
+  <p>
+    <b>Notifica:</b>
+    <%=h @reorden.notifica_id %>
+  </p>
+  
+  
+  <%= link_to 'Edit', edit_reorden_path(@reorden) %> |
+  <%= link_to 'Back', reordens_path %>

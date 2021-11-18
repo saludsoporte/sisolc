@@ -1,53 +1,55 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Fianzas</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Fecha</th>
-      <th>Vence</th>
-      <th>Observa</th>
-      <th>Proceso</th>
-      <th>Prov</th>
-      <th>Monto</th>
-      <th>Estado</th>
-      <th>Tipo</th>
-      <th>Contratos</th>
-      <th>Contrato</th>
-      <th>Imp peds</th>
-      <th>Clave</th>
-      <th>Situacion</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @fianzas.each do |fianza| %>
-      <tr>
-        <td><%= fianza.user_id %></td>
-        <td><%= fianza.fecha %></td>
-        <td><%= fianza.vence %></td>
-        <td><%= fianza.observa %></td>
-        <td><%= fianza.proceso_id %></td>
-        <td><%= fianza.prov_id %></td>
-        <td><%= fianza.monto %></td>
-        <td><%= fianza.estado_id %></td>
-        <td><%= fianza.tipo_id %></td>
-        <td><%= fianza.contratos %></td>
-        <td><%= fianza.contrato_id %></td>
-        <td><%= fianza.imp_peds %></td>
-        <td><%= fianza.clave %></td>
-        <td><%= fianza.situacion %></td>
-        <td><%= link_to 'Show', fianza %></td>
-        <td><%= link_to 'Edit', edit_fianza_path(fianza) %></td>
-        <td><%= link_to 'Destroy', fianza, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
+<table border="0" width="80%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+		<h2>Fianzas</h2>
+		<td align="center">
+			<%= link_to 'Inicio', url_for("/") %>
+			<% if [10,13,21,22].include?(current_user.rol_id) %>
+				<br/><br/><%= link_to 'Nueva Fianza', new_fianza_path %>
+			<% end %>
+		</td>
+	</tr>
 </table>
+<table border="10" width="100%">
+  <tr>
+    <th>#F</th>
+	<th>Contrato</th>
+    <th>Fecha</th>
+    <th>Recibida</th>
+    <th>Afianzadora</th>
+    <th>Proceso</th>
+    <th>Tipo</th>
+    <th>Prov</th>
+    <th>Monto</th>
+    <th>Captura</th>
+    <th>Estado</th>
+  </tr>
 
-<br>
-
-<%= link_to 'New Fianza', new_fianza_path %>
+<% @fianzas.each do |fianza| %>
+  <tr>
+    <td align="center"><%=h fianza.id %></td>
+    <td align="center"><%=h fianza.contratos %></td>
+    <td align="center"><%=h fianza.fecha %></td>
+    <td align="center"><%=h fianza.vence %></td>
+    <td align="center"><%=h fianza.observa %></td>
+    <td align="center"><%=h fianza.proceso_id != nil ? fianza.proceso_id : 'PROCESO FALTANTE' %></td>
+<% if !(112..113).include?(fianza.id) && fianza.proceso_id != nil%>
+    <% proceso = Proceso.find(fianza.proceso_id) %>
+    <td align="center"><%=h proceso.proceso %></td>
+    <td align="center"><%=h fianza.tipo_id != nil ? Tipo.find(fianza.tipo_id).tipo : '' %></td>
+    <td align="center"><%=h fianza.prov_id %></td>
+    <td align="center"><%=h fianza.monto %></td>
+    <td align="center"><%=h User.find(fianza.user_id).name %></td>
+    <td align="center"><%=h Estado.find(fianza.estado_id).estado %></td>
+    <td><%= link_to 'Ver', fianza %></td>
+<% end %>
+	<% if [10].include?(current_user.rol_id) || [1,3].include?(fianza.estado_id) %>
+		<td><%= link_to 'Mod', edit_fianza_path(fianza) %></td>
+		<% if [10].include?(current_user.rol_id) %>
+			<td><%= link_to 'X', fianza, :confirm => 'Are you sure?', :method => :delete %></td>
+		<% end %>	
+	<% end %>	
+  </tr>
+<% end %>	
+</table>

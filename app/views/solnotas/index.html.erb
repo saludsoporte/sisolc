@@ -1,0 +1,26 @@
+<h1>Listing solnotas</h1>
+
+<table>
+  <tr>
+    <th>Solicitud</th>
+    <th>User</th>
+    <th>Fecha</th>
+    <th>Comenta</th>
+  </tr>
+
+<% @solnotas.each do |solnota| %>
+  <tr>
+    <td><%=h solnota.solicitud_id %></td>
+    <td><%=h solnota.user_id %></td>
+    <td><%=h solnota.fecha %></td>
+    <td><%=h solnota.comenta %></td>
+    <td><%= link_to 'Show', solnota %></td>
+    <td><%= link_to 'Edit', edit_solnota_path(solnota) %></td>
+    <td><%= link_to 'Destroy', solnota, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New solnota', new_solnota_path %>

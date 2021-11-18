@@ -1,29 +1,55 @@
-<p id="notice"><%= notice %></p>
+<%= render :partial => '/navpar' %>
+<table border="0" width="95%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="left"><h3>Catalogo Partida: <%= link_to @partida.partida_armonizada, :action =>'excel', :id => @partida.id %></h3></td><td align="left"><h3><%=h @partida.descripcion %></h3></td>
+	</tr>
+</table>
+<table border="10" width="100%">
+  <THEAD>
+  <tr>
+    <th>Clave</th>
+		<th>Precio c/IVA</th>
+		<th>Proceso</th>
+		<th>Fecha</th>
+    <th colspan="7">Presentacion</th>
+	<th>#Uni.</th>
+	<th>Existen</th>
+	<th>IVA</th>
+  </tr>
+  </THEAD>
 
-<p>
-  <strong>Partida:</strong>
-  <%= @partida.partida %>
-</p>
-
-<p>
-  <strong>Descripcion:</strong>
-  <%= @partida.descripcion %>
-</p>
-
-<p>
-  <strong>Indice:</strong>
-  <%= @partida.indice %>
-</p>
-
-<p>
-  <strong>Cog2011:</strong>
-  <%= @partida.cog2011 %>
-</p>
-
-<p>
-  <strong>Descripcion2:</strong>
-  <%= @partida.descripcion2 %>
-</p>
-
-<%= link_to 'Edit', edit_partida_path(@partida) %> |
-<%= link_to 'Back', partidas_path %>
+<% for catalogo in @catalogos %> 
+  <tr>
+    <td align="center" rowspan="2"<%= catalogo.estado_id == 2 ? ' bgcolor="#99FFCC"' : '' %>><%= link_to(raw(catalogo.clave+'<br/>'),catalogo)+'#'+catalogo.id.to_s  %></td>
+		<td align="right"><%= number_to_currency(catalogo.precio, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+		<td align="center"><%=h catalogo.proceso %></td>
+		<td align="center"><%=h catalogo.fecha %></td>
+    <td colspan="7"><%=h catalogo.presentacion %></td>
+		<td align="center"><%=h catalogo.unidades %></td>
+		<td align="center"><%= ([5,6,7,8,10,11,13,15,16,24].include?(current_user.rol_id) || [9].include?(current_user.id)) ? link_to('Ver', catalogo_path(catalogo,:acceso=>2)) : "" %></td>
+		<td align="center"><%=h catalogo.iva %></td>
+  </tr>
+  <tr>
+	<td align="center"><b><%= [10,13,21,22,24].include?(current_user.rol_id) ? link_to('Descripcion', catalogo_path(catalogo,:acceso=>3)) : 'Descripcion' %></b>
+        <% begin %>
+            <% grupo = Tipo.find(catalogo.grupo_id) %>
+        <% rescue ActiveRecord::RecordNotFound => msg %>	
+        <% end %>
+        <%=raw grupo != nil ? '<br/>'+grupo.tipo : '' %>
+        <% begin %>
+            <% tipo = Tipo.find(catalogo.tipo_id) %>
+        <% rescue ActiveRecord::RecordNotFound => msg %>
+        <% end %>
+		<%=raw tipo != nil ? '<br/>'+tipo.tipo : '' %>
+	</td>
+	<td align="left" colspan="11"><%=h catalogo.descripcion %></td>
+	<% if [10,12,13,14].include?(current_user.rol_id) %>
+		<td align="center"><%= link_to 'Mod.', edit_catalogo_path(catalogo) %></td>
+		<% if current_user.rol_id==10 || ((12..14) === current_user.rol_id) %>
+			<td align="center"><%= link_to 'X', catalogo, :confirm => 'Are you sure?', :method => :delete %></td>
+		<% end %>	
+	<% end%>
+  </tr>
+<% end %>
+</table>

@@ -1,47 +1,55 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Provs</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Fiscal</th>
-      <th>Domicilio</th>
-      <th>Colonia</th>
-      <th>Ciudad</th>
-      <th>Telefonos</th>
-      <th>Fax</th>
-      <th>Rfc</th>
-      <th>Cp</th>
-      <th>Situacion</th>
-      <th>Cvealma</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @provs.each do |prov| %>
-      <tr>
-        <td><%= prov.nombre %></td>
-        <td><%= prov.fiscal %></td>
-        <td><%= prov.domicilio %></td>
-        <td><%= prov.colonia %></td>
-        <td><%= prov.ciudad %></td>
-        <td><%= prov.telefonos %></td>
-        <td><%= prov.fax %></td>
-        <td><%= prov.rfc %></td>
-        <td><%= prov.cp %></td>
-        <td><%= prov.situacion_id %></td>
-        <td><%= prov.cvealma_id %></td>
-        <td><%= link_to 'Show', prov %></td>
-        <td><%= link_to 'Edit', edit_prov_path(prov) %></td>
-        <td><%= link_to 'Destroy', prov, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
+<%= render :partial => '/navigation' %>
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="left"><h2>Proveedores</h2></td>
+		<td align="right">
+			<% if [10,13,15].include?(current_user.rol_id) %>
+				<%= link_to 'Nuevo proveedor', new_prov_path %>
+			<% end%>	
+		</td>
+	</tr>
 </table>
+<table border="10" width="100%">
+  <tr>
+    <th>No.</th>
+    <th>#Alm.</th>
+    <th>Nombre</th>
+    <th>Fiscal</th>
+    <th>Domicilio</th>
+    <th>Colonia</th>
+    <th>Ciudad</th>
+    <th>Telefonos</th>
+    <th>Fax</th>
+    <th>Rfc</th>
+    <th>Cp</th>
+    <th>Status</th>
+  </tr>
 
-<br>
+<% @provs.each do |prov| %>
+  <tr>
+	<td align="center">
+		<%= link_to prov.id, prov_path(prov.id) %>
+		<% if [10,11,13,15].include?(current_user.rol_id) %>
+			<br/><%= link_to 'Mod.', edit_prov_path(prov) %>
+		<% end %>
+	</td>
+   <td align="center"><%=raw prov.cvealma_id %></td>
+    <td><%=raw prov.nombre %></td>
+    <td><%=raw prov.fiscal %></td>
+    <td><%=raw prov.domicilio %></td>
+    <td><%=raw prov.colonia %></td>
+    <td><%=raw prov.ciudad %></td>
+    <td><%=raw prov.telefonos %></td>
+    <td><%=raw prov.fax %></td>
+    <td><%=raw prov.rfc %></td>
+    <td><%=raw prov.cp %></td>
+    <td><%=raw Estado.find(prov.situacion_id).estado %></td>
 
-<%= link_to 'New Prov', new_prov_path %>
+	<% if [10].include?(current_user.rol_id) %>
+		<td><%= link_to 'X', prov, :confirm => 'Are you sure?', :method => :delete %></td>
+	<% end %>	
+  </tr>
+<% end %>
+</table>
+<br />

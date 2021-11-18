@@ -1,59 +1,53 @@
-<p id="notice"><%= notice %></p>
-
 <p>
-  <strong>Paciente:</strong>
-  <%= @domicilio.paciente_id %>
+  <b>Paciente:</b>
+  <%=h @domicilio.paciente_id %>
 </p>
 
 <p>
-  <strong>Entidad:</strong>
-  <%= @domicilio.entidad_id %>
+  <b>Entidad:</b>
+  <%=h @domicilio.entidad_id %>
 </p>
 
 <p>
-  <strong>Municipio:</strong>
-  <%= @domicilio.municipio %>
+  <b>Municipio:</b>
+  <%=h @domicilio.municipio %>
 </p>
 
 <p>
-  <strong>Calle:</strong>
-  <%= @domicilio.calle %>
+  <b>Calle:</b>
+  <%=h @domicilio.calle %>
 </p>
 
 <p>
-  <strong>Numero:</strong>
-  <%= @domicilio.numero %>
+  <b>Numero:</b>
+  <%=h @domicilio.numero %>
 </p>
 
 <p>
-  <strong>Colonia:</strong>
-  <%= @domicilio.colonia %>
+  <b>Colonia:</b>
+  <%=h @domicilio.colonia %>
 </p>
 
 <p>
-  <strong>Cp:</strong>
-  <%= @domicilio.cp %>
+  <b>Cp:</b>
+  <%=h @domicilio.cp %>
 </p>
 
 <p>
-  <strong>Telefono:</strong>
-  <%= @domicilio.telefono %>
+  <b>Telefono:</b>
+  <%=h @domicilio.telefono %>
 </p>
 
 <p>
-  <strong>Observa:</strong>
-  <%= @domicilio.observa %>
+  <b>Observa:</b>
+  <%=h @domicilio.observa %>
 </p>
 
 <p>
-  <strong>User:</strong>
-  <%= @domicilio.user_id %>
+  <b>User:</b>
+  <%=h @domicilio.user_id %>
 </p>
 
-<p>
-  <strong>Muni:</strong>
-  <%= @domicilio.muni_id %>
-</p>
 
 <%= link_to 'Edit', edit_domicilio_path(@domicilio) %> |
 <%= link_to 'Back', domicilios_path %>

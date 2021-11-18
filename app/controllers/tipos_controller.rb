@@ -1,69 +1,86 @@
 class TiposController < ApplicationController
-  before_action :set_tipo, only: %i[ show edit update destroy ]
-
-  # GET /tipos or /tipos.json
+  before_action :login_required
+  # GET /tipos
+  # GET /tipos.xml
   def index
     @tipos = Tipo.all
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @tipos }
+    end
   end
 
-  # GET /tipos/1 or /tipos/1.json
+  # GET /tipos/1
+  # GET /tipos/1.xml
   def show
+    @tipo = Tipo.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @tipo }
+    end
   end
 
   # GET /tipos/new
+  # GET /tipos/new.xml
   def new
     @tipo = Tipo.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @tipo }
+    end
   end
 
   # GET /tipos/1/edit
   def edit
+    @tipo = Tipo.find(params[:id])
   end
 
-  # POST /tipos or /tipos.json
+  # POST /tipos
+  # POST /tipos.xml
   def create
-    @tipo = Tipo.new(tipo_params)
+    @tipo = Tipo.new(params[:tipo])
 
     respond_to do |format|
       if @tipo.save
-        format.html { redirect_to @tipo, notice: "Tipo was successfully created." }
-        format.json { render :show, status: :created, location: @tipo }
+        flash[:notice] = 'Tipo was successfully created.'
+        format.html { redirect_to(@tipo) }
+        format.xml  { render :xml => @tipo, :status => :created, :location => @tipo }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @tipo.errors, status: :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @tipo.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /tipos/1 or /tipos/1.json
+  # PUT /tipos/1
+  # PUT /tipos/1.xml
   def update
+    @tipo = Tipo.find(params[:id])
+
     respond_to do |format|
-      if @tipo.update(tipo_params)
-        format.html { redirect_to @tipo, notice: "Tipo was successfully updated." }
-        format.json { render :show, status: :ok, location: @tipo }
+      if @tipo.update_attributes(params[:tipo])
+        flash[:notice] = 'Tipo was successfully updated.'
+        format.html { redirect_to(@tipo) }
+        format.xml  { head :ok }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @tipo.errors, status: :unprocessable_entity }
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @tipo.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /tipos/1 or /tipos/1.json
+  # DELETE /tipos/1
+  # DELETE /tipos/1.xml
   def destroy
+    @tipo = Tipo.find(params[:id])
     @tipo.destroy
+
     respond_to do |format|
-      format.html { redirect_to tipos_url, notice: "Tipo was successfully destroyed." }
-      format.json { head :no_content }
+      format.html { redirect_to(tipos_url) }
+      format.xml  { head :ok }
     end
   end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_tipo
-      @tipo = Tipo.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def tipo_params
-      params.require(:tipo).permit(:tipo)
-    end
 end

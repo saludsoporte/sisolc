@@ -1,0 +1,20 @@
+<p>
+    <% if current_user %> 
+          <%= link_to "Inicio", root_path %> | 
+      <% if current_user.rol_id > 0 %>
+          <%= link_to "Solicitudes", solicituds_url %> | 
+          <%= link_to "Requisiciones", requisicions_url %> |
+      <% end %>	
+      <%= link_to "Catalogos", partidas_url %>
+    <% end %>
+    <% if current_user %> 
+    | <%= link_to "Salir del Sistema", logout_path %>
+    <% end %>
+  <% if current_user.rol_id==10 ||(current_user.id==@requisicion.user_id && [1,3].include?(@requisicion.estado_id))     || ((@requisicion.autoriza_id == current_user.id || [4].include?(current_user.rol_id))     && [2,10].include?(@requisicion.estado_id)) ||(current_user.id==@requisicion.vobo_id     && [11].include?(@requisicion.estado_id))  %>
+      || <%= link_to 'Cambios datos generales', edit_requisicion_path(@requisicion) %> |
+      <%= link_to 'Nuevo renglon', new_renglon_path(:requisicion_id => @requisicion.id) %> |
+      <%= link_to 'Nuevo comentario', new_reqnota_path(:requisicion => @requisicion.id) %> |
+  <% end %>
+  </p> 
+   
+  <hr />

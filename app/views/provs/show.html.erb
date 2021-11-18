@@ -1,59 +1,61 @@
-<p id="notice"><%= notice %></p>
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><h2>Pedidos del proveedor</h2><h4><%= @prov.id.to_s+' '+@prov.fiscal %></h5></td>
+		<td align="center">Al <%= Date.today %></td>
+		<td align="center"><%= link_to 'Proveedores',provs_path %></td>
+	</tr>
+</table>
+<table border='10'>
+<% if @peds.size > 0 %>
+  <tr>
+    <th>No.</th>
+    <th>Clues</th>
+    <th>Proceso</th>
+    <th>Fecha</th>
+    <th>Almacen</th>
+    <th>Entrega</th>
+    <th>Elabora</th>
+    <th>Estado</th>
+  </tr>
+<% end %>
+<% @peds.each do |ped| %>
+	<% if [5,8,10,13,15].include?(current_user.rol_id) || [ped.user_id].include?(current_user.id) %>
+  <tr>
+    <td align="center" ><%=link_to ped.id, ped %>
+	<td align="center"><% if ped.clues_id != nil %>
+		<% clues = Clue.find(ped.clues_id) %>
+		<%= clues.nomunidad %>-<%= clues.clues %>
+		<% end %>	
+    </td>
+	<td align="center">
+		<% if ped.proceso_id != nil %>
+			<%=raw Proceso.find(ped.proceso_id).proceso %>
+		<% else %>
+			<%=raw ped.tipo.tipo %>
+		<% end %>	
+    </td>
+    <td align="center"><%=raw ped.fecha %></td>
+	<td align="center">
+		<% if ped.almacen_id != nil %>
+			<% if current_user.id == 165 or ped.id > 367 %>
+				<% almacen = Almacen.find(ped.almacen_id) %>
+				<%=raw almacen != nil ? almacen.nombre : '' %>
+			<% else %>
+				<% almacen = Clue.find(ped.almacen_id ) %>
+				<%=raw almacen != nil ? almacen.nomunidad : '' %>
+			<% end %>	
+		<% end %>	
+    </td>
+    <td align="center"><%=raw ped.entrega %></td>
+	<td align="center"><% if ped.user_id != nil %>
+		<%=raw User.find(ped.user_id).name %>
+		<% end %>	
+    </td>
+    <td align="center"><%=raw ped.estado.estado %></td>
+  </tr>
+	<% end %>
+<% end %>
+</table>
 
-<p>
-  <strong>Nombre:</strong>
-  <%= @prov.nombre %>
-</p>
-
-<p>
-  <strong>Fiscal:</strong>
-  <%= @prov.fiscal %>
-</p>
-
-<p>
-  <strong>Domicilio:</strong>
-  <%= @prov.domicilio %>
-</p>
-
-<p>
-  <strong>Colonia:</strong>
-  <%= @prov.colonia %>
-</p>
-
-<p>
-  <strong>Ciudad:</strong>
-  <%= @prov.ciudad %>
-</p>
-
-<p>
-  <strong>Telefonos:</strong>
-  <%= @prov.telefonos %>
-</p>
-
-<p>
-  <strong>Fax:</strong>
-  <%= @prov.fax %>
-</p>
-
-<p>
-  <strong>Rfc:</strong>
-  <%= @prov.rfc %>
-</p>
-
-<p>
-  <strong>Cp:</strong>
-  <%= @prov.cp %>
-</p>
-
-<p>
-  <strong>Situacion:</strong>
-  <%= @prov.situacion_id %>
-</p>
-
-<p>
-  <strong>Cvealma:</strong>
-  <%= @prov.cvealma_id %>
-</p>
-
-<%= link_to 'Edit', edit_prov_path(@prov) %> |
-<%= link_to 'Back', provs_path %>
+<br />

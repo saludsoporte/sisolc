@@ -1,69 +1,79 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show edit update destroy ]
+  before_action :login_required
+  # Be sure to include AuthenticationSystem in Application Controller instead
+  include AuthenticatedSystem
 
-  # GET /users or /users.json
-  def index
-    @users = User.all
-  end
-
-  # GET /users/1 or /users/1.json
-  def show
-  end
-
-  # GET /users/new
+  # render new.rhtml
   def new
-    @user = User.new
+    if current_user.rol_id != 10
+      redirect_to("/")
+    end
   end
 
-  # GET /users/1/edit
   def edit
+    if current_user.rol_id != 10
+      redirect_to("/")
+    end
+    @user = User.find(params[:id])
   end
 
-  # POST /users or /users.json
   def create
-    @user = User.new(user_params)
+    User.create(user_params)
+  end 
 
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: "User was successfully created." }
-        format.json { render :show, status: :created, location: @user }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /users/1 or /users/1.json
   def update
+    @user = User.find(params[:id])
+
     respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to @user, notice: "User was successfully updated." }
-        format.json { render :show, status: :ok, location: @user }
+      if @user.update_attributes(params[:user])
+        flash[:notice] = 'El usuario fue actualizado correctamente.'
+        format.html { redirect_to("/") }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.html { render :action => "edit" }
       end
     end
   end
 
-  # DELETE /users/1 or /users/1.json
-  def destroy
-    @user.destroy
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: "User was successfully destroyed." }
-      format.json { head :no_content }
+  def create
+    cookies.delete :auth_token
+    # protects against session fixation attacks, wreaks havoc with
+    # request forgery protection.
+    # uncomment at your own risk
+    # reset_session
+    @user = User.new(params[:user])
+    @user.save
+    if @user.errors.empty?
+      self.current_user = @user
+      redirect_back_or_default('/')
+      flash[:notice] = "Gracias por inscribirse al SISOLC"
+    else
+      render :action => 'new'
+    end
+  end
+  def show
+    @medico = User.find(params[:id])
+    if [5,7,8,10,17,18,19].include?(current_user.rol_id)
+      @usuario = [17].include?(current_user.rol_id) ? current_user.id : params[:id]
+      @pacientes = Paciente.find_by_sql ["select * from pacientes where id = ? or exists(select * from atencions where user_id = ?) order by nombre",@usuario,@usuario]
+      @domicilios = Domicilio.where("user_id=?",@usuario).order(id: :DESC)   
+      @afiliacions = Afiliacion.where("user_id=?",@usuario).order(id: :DESC)
+      @atencions = Atencion.where("user_id=?",@usuario).order(id: :DESC)
+      @evolucions = Evolucion.where("user_id=?",@usuario).order(id: :DESC)
+      @nacidos = Nacido.where("user_id=?",@usuario).order(id: :DESC)
+      respond_to do |format|
+        format.html # show.html.erb
+      end
+    else
+      redirect_to("/")
     end
   end
 
+    
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
+
+    def user_params
+      params.require(:user).permit(:login, :email, :password, :password_confirmation, 
+        :titulo, :nombre, :area_id, :rol_id, :estructura_id, :dato1, :dato2)
     end
 
-    # Only allow a list of trusted parameters through.
-    def user_params
-      params.require(:user).permit(:titulo, :nombre, :puesto, :area_id, :rol_id, :estructura_id, :login, :email, :crypted_password, :salt, :remember_token, :remember_token_expires_at, :dato1, :dato2)
-    end
 end

@@ -1,6 +1,122 @@
-<h1>Editing Catalogo</h1>
-
-<%= render 'form', catalogo: @catalogo %>
-
-<%= link_to 'Show', @catalogo %> |
-<%= link_to 'Back', catalogos_path %>
+<% catmaster = (10..14).include?(current_user.rol_id) %>
+<% administrador = [10].include?(current_user.rol_id) %>
+<% form_for(@catalogo) do |f| %>
+    <% if @catalogo.errors.any? %>
+        <% @catalogo.errors.full_messages.each do |message|%>\
+            <h3><%= message %> </h3>
+        <%end%>
+    <%end%>
+<table border="0" width="70%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><h2>Edicion Articulo</h2>
+			<b>Partida: </b><%= @catalogo.partida.partida_armonizada %><br />
+		</td>
+		<td align="center" valign="top">
+			<b>Estado Art. </b><%= f.select :estado_id, Estado.where("id in (6,9) ").order(:id).collect {|s| [s.estado, s.id]}%><br /><br />
+			<b>Tipo Art. </b><%= f.select :tipo_id, Tipo.where("id =21").order(:tipo).collect {|s| [s.tipo, s.id]}, :include_blank=>true %><br /><br />
+			<b>Grupo Art. </b><%= f.select :grupo_id, Tipo.where("id in (22,37,38)").order(:tipo).collect {|s| [s.tipo, s.id]}, :include_blank=>true %>
+		</td>
+    </tr>
+</table>
+<table border ="1">
+		<tr>
+			<td>
+				<%= f.label :clave %><br />
+				<%= catmaster ? f.text_field(:clave) : @catalogo.clave %>
+			</td>	
+			<td>
+			Sub-Unidades<br />
+			<%= catmaster ? f.text_field(:unidades) : @catalogo.unidades %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<%= f.label :presentacion %><br />
+				<%= catmaster ? f.text_field(:presentacion, :size=>100) : @catalogo.presentacion %>
+			</td>
+			<td>
+			<%= f.label :iva %><br />
+			<%= catmaster ? f.text_field(:iva) : @catalogo.iva %>
+			</td>
+		</tr>
+		<tr>
+			<td rowspan="7">
+			<%= f.label :descripcion %><br />
+			<%= catmaster ? f.text_area(:descripcion, :cols => 60, :rows => 20) : @catalogo.descripcion %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<%= f.label :precio %><br />
+				<%= administrador ? f.text_field(:precio) : @catalogo.precio %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<%= f.label :proceso %><br />
+				<%= administrador ? f.text_field(:proceso) : @catalogo.proceso %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<%= f.label :fecha %><br />
+				<%= administrador ? f.date_select(:fecha) : @catalogo.fecha %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<%= f.label :precio2 %><br />
+				<%= administrador ? f.text_field(:precio2) : @catalogo.precio2 %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<%= f.label :fecha2 %><br />
+				<%= administrador ? f.date_select(:fecha2) : @catalogo.fecha2 %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<%= f.label :programa_id %><br />
+				<%= catmaster ? f.select(:programa_id, Programa.all().order(:programa).collect {|s| [(s.programa+"-"+s.clave), s.id]}, :include_blank => true) : @catalogo.programa_id %>
+			</td>
+        </tr>
+        
+	<% if [10,13].include?(current_user.rol_id) %>
+	<tr>
+		<td colspan="2">
+		P0 
+		<%= f.select :prog0_id, Tipo.where("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P1 
+		<%= f.select :prog1_id, Tipo.where("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P2 
+		<%= f.select :prog2_id, Tipo.where("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P3 
+		<%= f.select :prog3_id, Tipo.where("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P4 
+		<%= f.select :prog4_id, Tipo.where("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P5 
+		<%= f.select :prog5_id, Tipo.where("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P6 
+		<%= f.select :prog6_id, Tipo.where("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P7 
+		<%= f.select :prog7_id, Tipo.where("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P8 
+		<%= f.select :prog8_id, Tipo.where("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		P9
+		<%= f.select :prog9_id, Tipo.where("id between 25 and 34").order(:tipo).collect {|s| [(s.tipo[0..3]), s.id]}, :include_blank => true %>
+		<td>
+	<tr>
+	<% end %>
+		<% if catmaster %>
+			<tr>
+				<td colspan="2" align="center">
+				<%= f.submit 'Actualizar' %>
+			</td>
+		</tr>
+		<% end %>
+	</table>
+	<%= link_to 'Catalogo de Partidas', partidas_path %> |
+	<%= link_to 'Catalogo por Partida', partida_path(@catalogo.partida_id) %>
+<% end %>	

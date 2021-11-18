@@ -1,69 +1,98 @@
-class PedidosController < ApplicationController
-  before_action :set_pedido, only: %i[ show edit update destroy ]
-
-  # GET /pedidos or /pedidos.json
+class PedidosController < ApplicationController  
+  before_action :login_required
+  
+  # GET /pedidos
+  # GET /pedidos.xml
   def index
-    @pedidos = Pedido.all
+    @pedidos = Pedido.all().order(:id)
+  
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @pedidos }
+    end
   end
-
-  # GET /pedidos/1 or /pedidos/1.json
+  
+  # GET /pedidos/1
+  # GET /pedidos/1.xml
   def show
+    if [5].include?(current_user.rol_id)
+      @pedido = Pedido.find(params[:id])
+  
+      respond_to do |format|
+        format.html # show.html.erb
+        format.xml  { render :xml => @pedido }
+      end
+    else
+      redirect_to("/")
+    end
   end
-
+  
   # GET /pedidos/new
+  # GET /pedidos/new.xml
   def new
-    @pedido = Pedido.new
+    if [10].include?(current_user.rol_id)
+      @pedido = Pedido.new
+      respond_to do |format|
+        format.html # new.html.erb
+        format.xml  { render :xml => @pedido }
+      end
+    else
+      redirect_to("/")
+    end
   end
-
+  
   # GET /pedidos/1/edit
   def edit
+    if [10].include?(current_user.rol_id)
+      @pedido = Pedido.find(params[:id])
+    else
+      redirect_to("/")
+    end
   end
-
-  # POST /pedidos or /pedidos.json
+  
+  # POST /pedidos
+  # POST /pedidos.xml
   def create
-    @pedido = Pedido.new(pedido_params)
-
+    @pedido = Pedido.new(params[:pedido])
+  
     respond_to do |format|
       if @pedido.save
-        format.html { redirect_to @pedido, notice: "Pedido was successfully created." }
-        format.json { render :show, status: :created, location: @pedido }
+        flash[:notice] = 'Pedido was successfully created.'
+        format.html { redirect_to(@pedido) }
+        format.xml  { render :xml => @pedido, :status => :created, :location => @pedido }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @pedido.errors, status: :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @pedido.errors, :status => :unprocessable_entity }
       end
     end
   end
-
-  # PATCH/PUT /pedidos/1 or /pedidos/1.json
+  
+  # PUT /pedidos/1
+  # PUT /pedidos/1.xml
   def update
+    @pedido = Pedido.find(params[:id])
+  
     respond_to do |format|
-      if @pedido.update(pedido_params)
-        format.html { redirect_to @pedido, notice: "Pedido was successfully updated." }
-        format.json { render :show, status: :ok, location: @pedido }
+      if @pedido.update_attributes(params[:pedido])
+        flash[:notice] = 'Pedido was successfully updated.'
+        format.html { redirect_to(@pedido) }
+        format.xml  { head :ok }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @pedido.errors, status: :unprocessable_entity }
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @pedido.errors, :status => :unprocessable_entity }
       end
     end
   end
-
-  # DELETE /pedidos/1 or /pedidos/1.json
+  
+  # DELETE /pedidos/1
+  # DELETE /pedidos/1.xml
   def destroy
+    @pedido = Pedido.find(params[:id])
     @pedido.destroy
+  
     respond_to do |format|
-      format.html { redirect_to pedidos_url, notice: "Pedido was successfully destroyed." }
-      format.json { head :no_content }
+      format.html { redirect_to(pedidos_url) }
+      format.xml  { head :ok }
     end
   end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_pedido
-      @pedido = Pedido.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def pedido_params
-      params.require(:pedido).permit(:pedido, :claveuni, :nombreuni, :articulo, :partida, :preciouni, :cantidad, :marca, :clavepro, :proveedor, :entrega, :descripcion, :presentacion, :requisicion, :proceso, :fuente, :pedidounico, :almacen, :archivo, :cantfac, :cantcanc, :elaboracion, :etiqueta, :proyecto, :programa, :subprograma, :comenta, :estado_id, :iva)
-    end
 end

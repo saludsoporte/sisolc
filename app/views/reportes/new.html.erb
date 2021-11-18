@@ -1,5 +1,56 @@
-<h1>New Reporte</h1>
+<h1>New reporte</h1>
 
-<%= render 'form', reporte: @reporte %>
+<% form_for(@reporte) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :reporte %><br />
+    <%= f.text_field :reporte %>
+  </p>
+  <p>
+    <%= f.label :desde %><br />
+    <%= f.date_select :desde %>
+  </p>
+  <p>
+    <%= f.label :hasta %><br />
+    <%= f.date_select :hasta %>
+  </p>
+  <p>
+    <%= f.label :unidad %><br />
+    <%= f.text_field :unidad %>
+  </p>
+  <p>
+    <%= f.label :cpini %><br />
+    <%= f.text_field :cpini %>
+  </p>
+  <p>
+    <%= f.label :cpfin %><br />
+    <%= f.text_field :cpfin %>
+  </p>
+  <p>
+    <%= f.label :usuario %><br />
+    <%= f.text_field :usuario %>
+  </p>
+  <p>
+    <%= f.label :texto %><br />
+    <%= f.text_field :texto %>
+  </p>
+  <p>
+    <%= f.label :rango1 %><br />
+    <%= f.text_field :rango1 %>
+  </p>
+  <p>
+    <%= f.label :rango2 %><br />
+    <%= f.text_field :rango2 %>
+  </p>
+  <p>
+    <%= f.label :sistema_id %><br />
+    <%= f.text_field :sistema_id, :readonly=>"readonly" %>
+  </p>
+<%= f.hidden_field :sistema_id %>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
 
 <%= link_to 'Back', reportes_path %>

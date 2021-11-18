@@ -1,69 +1,96 @@
 class PartidasController < ApplicationController
-  before_action :set_partida, only: %i[ show edit update destroy ]
-
-  # GET /partidas or /partidas.json
+  before_action :login_required 
+  # GET /partidas
+  # GET /partidas.xml
   def index
-    @partidas = Partida.all
+	@partidas = case current_user.rol_id
+		when 12	then @partidas = Partida.where("partida between 5000 and 5999").order(:partida)
+		when 13	then @partidas = Partida.where("partida between 1000 and 3999").order(:partida)
+		when 14	then @partidas = Partida.where("partida between 5300 and 5399").order(:partida)
+		else Partida.all().order(:partida)
+	end
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @partidas }
+    end
   end
 
-  # GET /partidas/1 or /partidas/1.json
+  # GET /partidas/1
+  # GET /partidas/1.xml
   def show
+    @partida = Partida.find(params[:id])    
+    @catalogos = Catalogo.where("partida_id = ?",@partida.id).order(:clave)
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @partida }
+    end
+  end
+
+  def excel
+    @partida = Partida.find(params[:id])
+    @catalogos = Catalogo.find_by("partida_id = ?",@partida.id).order(:clave)
   end
 
   # GET /partidas/new
+  # GET /partidas/new.xml
   def new
     @partida = Partida.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @partida }
+    end
   end
 
   # GET /partidas/1/edit
   def edit
+    @partida = Partida.find(params[:id])
   end
 
-  # POST /partidas or /partidas.json
+  # POST /partidas
+  # POST /partidas.xml
   def create
-    @partida = Partida.new(partida_params)
+    @partida = Partida.new(params[:partida])
 
     respond_to do |format|
       if @partida.save
-        format.html { redirect_to @partida, notice: "Partida was successfully created." }
-        format.json { render :show, status: :created, location: @partida }
+        flash[:notice] = 'Partida was successfully created.'
+        format.html { redirect_to(partidas_url) }
+        format.xml  { render :xml => @partida, :status => :created, :location => @partida }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @partida.errors, status: :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @partida.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /partidas/1 or /partidas/1.json
+  # PUT /partidas/1
+  # PUT /partidas/1.xml
   def update
+    @partida = Partida.find(params[:id])
+
     respond_to do |format|
-      if @partida.update(partida_params)
-        format.html { redirect_to @partida, notice: "Partida was successfully updated." }
-        format.json { render :show, status: :ok, location: @partida }
+      if @partida.update_attributes(params[:partida])
+        flash[:notice] = 'Partida was successfully updated.'
+        format.html { redirect_to(partidas_url) }
+        format.xml  { head :ok }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @partida.errors, status: :unprocessable_entity }
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @partida.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /partidas/1 or /partidas/1.json
+  # DELETE /partidas/1
+  # DELETE /partidas/1.xml
   def destroy
+    @partida = Partida.find(params[:id])
     @partida.destroy
+
     respond_to do |format|
-      format.html { redirect_to partidas_url, notice: "Partida was successfully destroyed." }
-      format.json { head :no_content }
+      format.html { redirect_to(partidas_url) }
+      format.xml  { head :ok }
     end
   end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_partida
-      @partida = Partida.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def partida_params
-      params.require(:partida).permit(:partida, :descripcion, :indice, :cog2011, :descripcion2)
-    end
 end
+

@@ -1,83 +1,60 @@
-<p id="notice"><%= notice %></p>
+<%= render :partial => '/navigation' %>
+<table border="0" width="84%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><h2>Pedidos Lics. 3, 4 y 7 del 2010 (Primera Entrega)</h2></td>
+	</tr>
+</table>
+<table border='10'>
+  <tr>
+    <th>Pedido</th>
+    <th>Proceso</th>
+    <th>Unidad</th>
+    <th>Part.</th>
+    <th>Clave</th>
+    <th>Descripcion</th>
+    <th>Presentacion</th>
+    <th>Cantidad</th>
+    <th>Precio s/IVA</th>
+    <th>Marca</th>
+    <th>Entrega</th>
+    <th>Almacen</th>
+    <th>Etiq.</th>
+    <th>Req.#</th>
+    <th>Fuente</th>
+    <th>Prog.</th>
+    <th>Proy.</th>
+  </tr>
 
-<h1>Pedidos</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Pedido</th>
-      <th>Claveuni</th>
-      <th>Nombreuni</th>
-      <th>Articulo</th>
-      <th>Partida</th>
-      <th>Preciouni</th>
-      <th>Cantidad</th>
-      <th>Marca</th>
-      <th>Clavepro</th>
-      <th>Proveedor</th>
-      <th>Entrega</th>
-      <th>Descripcion</th>
-      <th>Presentacion</th>
-      <th>Requisicion</th>
-      <th>Proceso</th>
-      <th>Fuente</th>
-      <th>Pedidounico</th>
-      <th>Almacen</th>
-      <th>Archivo</th>
-      <th>Cantfac</th>
-      <th>Cantcanc</th>
-      <th>Elaboracion</th>
-      <th>Etiqueta</th>
-      <th>Proyecto</th>
-      <th>Programa</th>
-      <th>Subprograma</th>
-      <th>Comenta</th>
-      <th>Estado</th>
-      <th>Iva</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @pedidos.each do |pedido| %>
-      <tr>
-        <td><%= pedido.pedido %></td>
-        <td><%= pedido.claveuni %></td>
-        <td><%= pedido.nombreuni %></td>
-        <td><%= pedido.articulo %></td>
-        <td><%= pedido.partida %></td>
-        <td><%= pedido.preciouni %></td>
-        <td><%= pedido.cantidad %></td>
-        <td><%= pedido.marca %></td>
-        <td><%= pedido.clavepro %></td>
-        <td><%= pedido.proveedor %></td>
-        <td><%= pedido.entrega %></td>
-        <td><%= pedido.descripcion %></td>
-        <td><%= pedido.presentacion %></td>
-        <td><%= pedido.requisicion %></td>
-        <td><%= pedido.proceso %></td>
-        <td><%= pedido.fuente %></td>
-        <td><%= pedido.pedidounico %></td>
-        <td><%= pedido.almacen %></td>
-        <td><%= pedido.archivo %></td>
-        <td><%= pedido.cantfac %></td>
-        <td><%= pedido.cantcanc %></td>
-        <td><%= pedido.elaboracion %></td>
-        <td><%= pedido.etiqueta %></td>
-        <td><%= pedido.proyecto %></td>
-        <td><%= pedido.programa %></td>
-        <td><%= pedido.subprograma %></td>
-        <td><%= pedido.comenta %></td>
-        <td><%= pedido.estado_id %></td>
-        <td><%= pedido.iva %></td>
-        <td><%= link_to 'Show', pedido %></td>
-        <td><%= link_to 'Edit', edit_pedido_path(pedido) %></td>
-        <td><%= link_to 'Destroy', pedido, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
+<% @pedidos.each do |pedido| %>
+  <tr>
+    <td><%=raw pedido.pedido %></td>
+    <td><%=raw pedido.proceso %></td>
+    <td><%=raw pedido.nombreuni %></td>
+    <td><%=raw pedido.partida %></td>
+    <td><%=raw pedido.articulo %></td>
+    <td><%=raw pedido.descripcion %></td>
+    <td><%=raw pedido.presentacion %></td>
+    <td align="right"><%=raw pedido.cantidad %></td>
+    <td align="right"><%=raw pedido.preciouni %></td>
+    <td><%=raw pedido.marca %></td>
+    <td><%=raw pedido.entrega %></td>
+    <td><%=raw pedido.almacen %></td>
+    <td><%=raw pedido.etiqueta %></td>
+    <td><%=raw pedido.requisicion %></td>
+    <td><%=raw pedido.fuente %></td>
+    <td><%=raw pedido.programa.to_s+pedido.subprograma.to_s %></td>
+    <td><%=raw pedido.proyecto %></td>
+	<% if current_user.rol_id==10 %>
+    <td><%= link_to 'Show', pedido %></td>
+    <td><%= link_to 'Edit', edit_pedido_path(pedido) %></td>
+    <td><%= link_to 'Destroy', pedido, :confirm => 'Are you sure?', :method => :delete %></td>
+	<% end %>
+  </tr>
+<% end %>
 </table>
 
-<br>
-
-<%= link_to 'New Pedido', new_pedido_path %>
+<br />
+<% if current_user.rol_id==10 %>
+<%= link_to 'New pedido', new_pedido_path %>
+<% end %>

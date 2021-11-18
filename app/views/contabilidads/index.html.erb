@@ -1,45 +1,48 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Contabilidads</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Cuenta</th>
-      <th>Sistema</th>
-      <th>Fuente</th>
-      <th>Partida</th>
-      <th>Almacen</th>
-      <th>Prov</th>
-      <th>Tipo</th>
-      <th>User</th>
-      <th>Programa</th>
-      <th>Proyecto</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @contabilidads.each do |contabilidad| %>
-      <tr>
-        <td><%= contabilidad.cuenta %></td>
-        <td><%= contabilidad.sistema_id %></td>
-        <td><%= contabilidad.fuente_id %></td>
-        <td><%= contabilidad.partida_id %></td>
-        <td><%= contabilidad.almacen_id %></td>
-        <td><%= contabilidad.prov_id %></td>
-        <td><%= contabilidad.tipo_id %></td>
-        <td><%= contabilidad.user_id %></td>
-        <td><%= contabilidad.programa_id %></td>
-        <td><%= contabilidad.proyecto_id %></td>
-        <td><%= link_to 'Show', contabilidad %></td>
-        <td><%= link_to 'Edit', edit_contabilidad_path(contabilidad) %></td>
-        <td><%= link_to 'Destroy', contabilidad, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
+<table border="0" width="80%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Sistema de Recursos Materiales</b><hr/>
+		<h2>Cuentas Contables</h2>
+		<td align="center">
+			<%= link_to 'Inicio', url_for("/") %>
+			<% if [10].include?(current_user.rol_id) %>
+				<br/><br/><%= link_to 'Nueva cuenta', new_contabilidad_path %>
+			<% end %>
+		</td>
+	</tr>
 </table>
+<table border="10">
+  <tr>
+    <th>Cuenta</th>
+    <th>Fuente</th>
+    <th>Partida</th>
+    <th>Almacen</th>
+    <th>Prov.</th>
+    <th>Tipo</th>
+    <th>Genera</th>
+<% if false %>
+    <th>Sistema</th>
+    <th>Programa</th>
+    <th>Proyecto</th>
+<% end %>
+  </tr>
 
-<br>
-
-<%= link_to 'New Contabilidad', new_contabilidad_path %>
+<% @contabilidads.each do |contabilidad| %>
+  <tr>
+    <td align="center"><%=raw contabilidad.cuenta %></td>
+    <td align="center"><%=raw contabilidad.fuente_id.blank? ? '' : Fuente.find(contabilidad.fuente_id).fuente %></td>
+    <td align="center"><%=raw contabilidad.partida_id.blank? ? '' : Partida.find(contabilidad.partida_id).cog2011 %></td>
+    <td align="center"><%=raw contabilidad.almacen_id.blank? ? '' : Almacen.find(contabilidad.almacen_id).nombre %></td>
+    <td align="center"><%=raw contabilidad.prov_id.blank? ? '' : Prov.find(contabilidad.prov_id).fiscal %></td>
+    <td align="center"><%=raw contabilidad.tipo_id.blank? ? '' : Tipo.find(contabilidad.tipo_id).tipo %></td>
+    <td align="center"><%=raw User.find(contabilidad.user_id).name %></td>
+<% if false %>
+    <td><%=raw contabilidad.sistema_id %></td>
+    <td><%=raw contabilidad.programa_id %></td>
+    <td><%=raw contabilidad.proyecto_id %></td>
+<% end %>
+    <td align="center"><%= link_to 'Mod.', edit_contabilidad_path(contabilidad) %></td>
+    <td align="center"><%= link_to 'X', contabilidad, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>

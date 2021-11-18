@@ -1,0 +1,50 @@
+<%= render :partial => '/navigation' %>
+<table border='0' width='86%'>
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><h2>Requisiciones</h2></td>
+		<td align="right">
+		<% if current_user.rol_id==10 || current_user.rol_id > 0 %>
+			<%= link_to 'Nueva requisicion', new_requisicion_path %>
+		<% end %>
+		</td>
+	</tr>
+</table>
+<table border="10" width='100%'>
+  <tr>
+    <th>Clave</th>
+    <th>Fecha</th>
+    <th>Solicitante</th>
+    <th>Fuente</th>
+    <th>Elabora</th>
+    <th>Solicita</th>
+    <th>Autoriza</th>
+    <th>Estado</th>
+    <th>+</th>
+  </tr>
+
+<% @requisicions.each do |requisicion| %>
+	<% if requisicion.estado_id == 6 %>
+	<% if [5,6,8,10,15].include?(current_user.rol_id) || current_user.id==requisicion.user_id || current_user.id==requisicion.vobo_id || ((current_user.id==requisicion.autoriza_id || [4].include?(current_user.rol_id))&& [2,6,8,10].include?(requisicion.estado_id)) %>
+	<tr>
+		<td align="center"><%= link_to requisicion.id, requisicion %>
+			<% if  [10].include?(current_user.rol_id) ||(current_user.id==requisicion.user_id && [1,3].include?(requisicion.estado_id)) || ((current_user.id == requisicion.autoriza_id || [4].include?(current_user.rol_id)) && [2,10].include?(requisicion.estado_id)) ||(current_user.id==requisicion.vobo_id && [11].include?(requisicion.estado_id)) %>
+				<%= link_to 'Mod.', edit_requisicion_path(requisicion) %>
+			<% end %>	
+		</td>
+		<td><%=h requisicion.fecha %></td>
+		<td><% if requisicion.clues_id != nil %><%=h Clue.find(:first, :conditions => { :id => requisicion.clues_id }).nomunidad %><% end %></td>
+		<td><%=h Fuente.find(:first, :conditions => { :id => requisicion.fuente_id }).fuente %></td>
+		<td><%=h User.find(:first, :conditions => { :id => requisicion.user_id }).name %></td>
+		<td><% if requisicion.vobo_id != nil %><%=h User.find(:first, :conditions => { :id => requisicion.vobo_id }).name %><% end %></td>
+		<td><%=h User.find(:first, :conditions => { :id => requisicion.autoriza_id }).name %></td>
+		<td><%=h Estado.find(:first, :conditions => { :id => requisicion.estado_id }).estado %></td>
+		<td><%=h (requisicion.anexos ? 'Si' : 'No') %></td>
+		<% if current_user.rol_id==10 %>
+			<td><%= link_to 'X', requisicion, :confirm => 'Are you sure?', :method => :delete %></td>
+		<% end %>	
+	</tr>
+	<% end %>	
+	<% end %>	
+<% end %>
+</table>

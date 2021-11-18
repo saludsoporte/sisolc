@@ -1,43 +1,46 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Procesos</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Proceso</th>
-      <th>Fecha</th>
-      <th>Tipopro</th>
-      <th>Partida</th>
-      <th>Observacion</th>
-      <th>Estado</th>
-      <th>Pena</th>
-      <th>Sancionmax</th>
-      <th>Tipo</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @procesos.each do |proceso| %>
-      <tr>
-        <td><%= proceso.proceso %></td>
-        <td><%= proceso.fecha %></td>
-        <td><%= proceso.tipopro_id %></td>
-        <td><%= proceso.partida_id %></td>
-        <td><%= proceso.observacion %></td>
-        <td><%= proceso.estado_id %></td>
-        <td><%= proceso.pena %></td>
-        <td><%= proceso.sancionmax %></td>
-        <td><%= proceso.tipo_id %></td>
-        <td><%= link_to 'Show', proceso %></td>
-        <td><%= link_to 'Edit', edit_proceso_path(proceso) %></td>
-        <td><%= link_to 'Destroy', proceso, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
+<%= render :partial => '/navigation' %>
+<table border="0" width="60%">
+	<tr>
+		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="left"><h2>Procesos de Compra</h2></td>
+		<td align="right">
+			<% if [10,15].include?(current_user.rol_id) %>
+				<%= link_to 'Nuevo Proceso', new_proceso_path %>
+			<% end%>	
+		</td>
+	</tr>
 </table>
 
-<br>
+<table border="10">
+  <tr>
+    <th>Clave</th>
+    <th>Proceso</th>
+    <th>Fecha</th>
+	<% if [10].include?(current_user.rol_id) %>
+		<th>Tipo</th>
+	<% end %>
+    <th>Part.</th>
+    <th>Observaciones</th>
+  </tr>
 
-<%= link_to 'New Proceso', new_proceso_path %>
+<% @procesos.each do |proceso| %>
+  <tr>
+    <td align="center"><%=h proceso.id %></td>
+    <td><%= link_to proceso.proceso,proceso %></td>
+    <td><%=h proceso.fecha %></td>
+	<% if [10].include?(current_user.rol_id) %>
+		<td><%=h proceso.tipopro_id %></td>
+	<% end %>
+    <td><%=h proceso.partida_id %></td>
+    <td><%=h proceso.observacion %></td>
+	<% if [10,15].include?(current_user.rol_id) %>
+		<td><%= link_to 'Mod.', edit_proceso_path(proceso) %></td>
+	<% if [10].include?(current_user.rol_id) %>
+		<td><%= link_to 'X', proceso, :confirm => 'Are you sure?', :method => :delete %></td>
+	<% end %>	
+	<% end %>	
+  </tr>
+<% end %>
+</table>
+
+<br />

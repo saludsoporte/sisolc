@@ -1,54 +1,95 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Fecha:</strong>
-  <%= @requisicion.fecha %>
-</p>
-
-<p>
-  <strong>Clues:</strong>
-  <%= @requisicion.clues_id %>
-</p>
-
-<p>
-  <strong>Fuente:</strong>
-  <%= @requisicion.fuente_id %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @requisicion.user_id %>
-</p>
-
-<p>
-  <strong>Autoriza:</strong>
-  <%= @requisicion.autoriza_id %>
-</p>
-
-<p>
-  <strong>Estado:</strong>
-  <%= @requisicion.estado_id %>
-</p>
-
-<p>
-  <strong>Anexos:</strong>
-  <%= @requisicion.anexos %>
-</p>
-
-<p>
-  <strong>Etiqueta:</strong>
-  <%= @requisicion.etiqueta %>
-</p>
-
-<p>
-  <strong>Importe:</strong>
-  <%= @requisicion.importe %>
-</p>
-
-<p>
-  <strong>Vobo:</strong>
-  <%= @requisicion.vobo_id %>
-</p>
-
-<%= link_to 'Edit', edit_requisicion_path(@requisicion) %> |
-<%= link_to 'Back', requisicions_path %>
+<%= render :partial => '/navreq' %>
+<table border="1" width="100%">
+	<tr>
+		<td width ="230"><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><h4>DIRECCION: PLANEACION, EVALUACION Y PROYECTOS ESPECIALES<br/>DEPARTAMENTO DE CONTROL PRESUPUESTAL</h4><h3>REQUISICION DE EJERCICIO</h3></td>	
+		<td align="center" width="100"><h3>FOLIO: <%= link_to (@requisicion.id < 201100000 ? @requisicion.id : @requisicion.id % 100000), :action =>"vistaimp", :id => @requisicion.id  %></h3><br/>
+		<%= link_to Estado.where("id=?",@requisicion.estado_id).first().estado,@requisicion,method: :requistatus,:popup => false %>
+		</td>
+	</tr>
+</table>
+<br/>
+<table border="2" width="100%">
+	<tr>
+		<td><b>Unidad Solicitante:</b></td>
+		<td><% if @requisicion.clues_id != nil %><%=raw Clue.where("id =?",@requisicion.clues_id).first.name %><% end %></td>
+		<% if @requisicion.etiqueta != nil && @requisicion.etiqueta != 0 %><td align="center"><b>ETIQUETA</b></td><% end %>
+		<td align="center"><b>IMPORTE</b></td>
+		<td align="center"><b>AAAA-MM-DD</b></td>
+	</tr>
+	<tr>
+		<td><b>Financiamiento:</b></td>
+		<td><%=raw Fuente.where("id =?",@requisicion.fuente_id ).first.name %></td>
+		<% if @requisicion.etiqueta != nil && @requisicion.etiqueta != 0 %><td align="center"><%= @requisicion.etiqueta %></td><% end %>
+		<td align="center"><%=raw number_to_currency(@requisicion.importe, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+		<td align="center"><%=raw @requisicion.fecha %></td>
+	</tr>
+</table>
+<table border="10" width="100%">
+  <THEAD>
+  <tr>
+    <th>No.</th>
+    <th>Etiq.</th>
+    <th>Proyecto</th>
+    <th>Prog.</th>
+    <th>Aplica</th>
+    <th>Part.</th>
+    <th>Mes</th>
+    <th>Descripcion del Gasto</th>
+    <th>Importe</th>
+  </tr>
+  </THEAD>
+<br/>
+<% for renglon in @renglones %> 
+  <tr>
+    <td align="center"><%=raw renglon.renglon %></td>
+    <td align="center"><%=raw renglon.etiqueta_id %></td>
+    <td align="center"><% if renglon.proyecto != nil %><%=raw renglon.proyecto.name %><% end %></td>
+    <td align="center"><%=raw renglon.programa.clave %></td>
+    <td align="center"><% if renglon.clues_id != nil %><%=raw Clue.where("id=?",renglon.clues_id).first.name %><% end %></td>
+    <td align="center"><%=raw @requisicion.fecha > '2010-12-31'.to_date ? renglon.partida.partida_armonizada : renglon.partida.partida %></td>
+    <td align="center"><% if renglon.ejercicio != nil %><%=raw renglon.ejercicio.year %>-<%=raw renglon.ejercicio.month %><% end %></td>
+    <td align="center"><%=raw renglon.descripcion %></td>
+    <td align="center"><%=raw number_to_currency renglon.importe, :unit => '$', :separator => ".", :delimiter => "," %></td>
+    <% if false %> <td align="center"><%= link_to 'Ver', renglon %></td><% end %>
+	<% if current_user.rol_id==10 ||(current_user.id==@requisicion.user_id && [1,3].include?(@requisicion.estado_id)) || ((current_user.id == @requisicion.autoriza_id || [4].include?(current_user.rol_id)) && [2,10].include?(@requisicion.estado_id)) ||(current_user.id==@requisicion.vobo_id && [11].include?(@requisicion.estado_id)) %>
+		<td><%= link_to 'Mod.', edit_renglon_path(renglon) %></td>
+	<% end%>	
+	<% if current_user.rol_id==10 ||(current_user.id==@requisicion.user_id && [1,3].include?(@requisicion.estado_id)) || ((current_user.id == @requisicion.autoriza_id || [4].include?(current_user.rol_id)) && [2,10].include?(@requisicion.estado_id)) ||(current_user.id==@requisicion.vobo_id && [11].include?(@requisicion.estado_id)) %>
+		<td><%= link_to 'X', renglon, :confirm => 'Quieres borrar el renglon? No olvides reasignar las letras.', :method => :delete %></td>
+	<% end%>
+  </tr>
+<% end %>
+</table>
+<br/>
+<table border="1" width="100%">
+<% if @reqnotas != nil %>
+	<THEAD>	
+	<th>FECHA</th>
+	<th>NOMBRE</th>
+	<th>OBSERVACIONES REQUISICION # <%= @requisicion.id %></th>
+	</THEAD>
+<% end %>	
+<% for reqnota in @requisicion.reqnotas %>
+	<tr>
+	<td align="center"><%=raw reqnota.fecha %></td>
+	<td align="center"><%=raw User.find(:first, :conditions => { :id => reqnota.user_id }).name %></td>
+	<td><%=raw reqnota.comenta %></td>
+	<% if current_user.rol_id==10 %>
+		<td><%= link_to 'Mod.', edit_reqnota_path(reqnota) %></td>
+		<td><%= link_to 'X', reqnota, :confirm => 'Seguro?', :method => :delete %></td>
+	<% end%>
+	</tr>
+<% end %>
+</table>
+<br/>
+<table border="0" width="100%">
+	<tr>
+		<td align="center"><b>Elabora:</b></td>
+		<td align="center"><b>Solicita:</b></td>
+	</tr>
+	<tr>
+		<td align="center"><%=raw User.where("id =?",@requisicion.user_id ).first.nompos %></td>
+		<td align="center"><% if @requisicion.vobo_id != nil %><%=raw User.where("id =?",@requisicion.vobo_id).first.nompos %><% end %></td>
+	</tr>
+</table>

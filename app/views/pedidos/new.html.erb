@@ -1,5 +1,115 @@
-<h1>New Pedido</h1>
+<h1>New pedido</h1>
 
-<%= render 'form', pedido: @pedido %>
+<% form_for(@pedido) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :pedido %><br />
+    <%= f.text_field :pedido %>
+  </p>
+  <p>
+    <%= f.label :claveuni %><br />
+    <%= f.text_field :claveuni %>
+  </p>
+  <p>
+    <%= f.label :nombreuni %><br />
+    <%= f.text_field :nombreuni %>
+  </p>
+  <p>
+    <%= f.label :articulo %><br />
+    <%= f.text_field :articulo %>
+  </p>
+  <p>
+    <%= f.label :partida %><br />
+    <%= f.text_field :partida %>
+  </p>
+  <p>
+    <%= f.label :preciouni %><br />
+    <%= f.text_field :preciouni %>
+  </p>
+  <p>
+    <%= f.label :cantidad %><br />
+    <%= f.text_field :cantidad %>
+  </p>
+  <p>
+    <%= f.label :marca %><br />
+    <%= f.text_field :marca %>
+  </p>
+  <p>
+    <%= f.label :clavepro %><br />
+    <%= f.text_field :clavepro %>
+  </p>
+  <p>
+    <%= f.label :proveedor %><br />
+    <%= f.text_field :proveedor %>
+  </p>
+  <p>
+    <%= f.label :entrega %><br />
+    <%= f.date_select :entrega %>
+  </p>
+  <p>
+    <%= f.label :descripcion %><br />
+    <%= f.text_area :descripcion %>
+  </p>
+  <p>
+    <%= f.label :presentacion %><br />
+    <%= f.text_field :presentacion %>
+  </p>
+  <p>
+    <%= f.label :requisicion %><br />
+    <%= f.text_field :requisicion %>
+  </p>
+  <p>
+    <%= f.label :proceso %><br />
+    <%= f.text_field :proceso %>
+  </p>
+  <p>
+    <%= f.label :fuente %><br />
+    <%= f.text_field :fuente %>
+  </p>
+  <p>
+    <%= f.label :pedidounico %><br />
+    <%= f.text_field :pedidounico %>
+  </p>
+  <p>
+    <%= f.label :almacen %><br />
+    <%= f.text_field :almacen %>
+  </p>
+  <p>
+    <%= f.label :archivo %><br />
+    <%= f.text_field :archivo %>
+  </p>
+  <p>
+    <%= f.label :cantfac %><br />
+    <%= f.text_field :cantfac %>
+  </p>
+  <p>
+    <%= f.label :cantcanc %><br />
+    <%= f.text_field :cantcanc %>
+  </p>
+  <p>
+    <%= f.label :elaboracion %><br />
+    <%= f.date_select :elaboracion %>
+  </p>
+  <p>
+    <%= f.label :etiqueta %><br />
+    <%= f.text_field :etiqueta %>
+  </p>
+  <p>
+    <%= f.label :proyecto %><br />
+    <%= f.text_field :proyecto %>
+  </p>
+  <p>
+    <%= f.label :programa %><br />
+    <%= f.text_field :programa %>
+  </p>
+  <p>
+    <%= f.label :subprograma %><br />
+    <%= f.text_field :subprograma %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
 
 <%= link_to 'Back', pedidos_path %>

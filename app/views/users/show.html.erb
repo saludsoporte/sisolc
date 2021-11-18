@@ -1,74 +1,264 @@
-<p id="notice"><%= notice %></p>
+<% if [5,7,8,10,17,18,19,20].include?(current_user.rol_id) %>
+<table border="0" width="100%">
+	<tr>
+		<td><img src="/images/ssslp-smp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td align="center"><b>Seguimiento a Pacientes con Complicaciones durante el Embarazo y/o Puerperio</b><hr/>
+							<h2>Mi SMP</h2>
+							<%= [7,8,10,18,19].include?(current_user.rol_id) ? @medico.id.to_s+" "+@medico.name : current_user.name %></td>
+		<td align="right" valign="bottom">
+			<%= link_to 'Pacientes', pacientes_path %><br/><br/>
+			<%= link_to 'Inicio', url_for("/") %>
+		</td>	
+	</tr>
+<table border='5' width='100%'>
+  <tr>
+    <th colspan="12">PACIENTES</th>
+  </tr>
+  <tr>
+    <th>No.</th>
+    <th>Apellido Paterno</th>
+    <th>Apellido Materno</th>
+    <th>Nombre(s)</th>
+    <th>Ed.</th>
+    <th>CURP/RFC</th>
+    <th>Obs.</th>
+    <th>D</th>
+    <th>A</th>
+    <th>M</th>
+    <th>E</th>
+    <th>N</th>
+  </tr>
 
-<p>
-  <strong>Titulo:</strong>
-  <%= @user.titulo %>
-</p>
+<% @pacientes.each do |paciente| %>
+  <tr>
+    <td align="center"><%= link_to paciente.id, paciente %></td>
+    <td align="center"><%=raw paciente.paterno %></td>
+    <td align="center"><%=raw paciente.materno %></td>
+    <td align="center"><%=raw paciente.nombre %></td>
+    <td align="center"><%=raw Date.today == paciente.nacimiento ? 0 : ((Date.today-paciente.nacimiento).to_i/365) %></td>
+    <td align="center"><%=raw paciente.curp %></td>
+    <td align="center"><%=raw paciente.observa %></td>
+	<% numero = paciente.domicilios.count %>
+    <td align="center"><%= link_to numero, numero > 0 ? domicilios_path(:paciente => paciente.id): new_domicilio_path(:paciente => paciente.id) %></td>
+	<% numero = paciente.afiliacions.count %>
+    <td align="center"><%= link_to numero, numero > 0 ? afiliacions_path(:paciente => paciente.id): new_afiliacion_path(:paciente => paciente.id) %></td>
+ 	<% numero = paciente.atencions.count %>
+    <td align="center"><%= link_to numero, numero > 0 ? atencions_path(:paciente => paciente.id): new_atencion_path(:paciente => paciente.id) %></td>
+	<% numero = paciente.evolucions.count %>
+    <td align="center"><%= link_to numero, numero > 0 ? evolucions_path(:paciente => paciente.id): new_evolucion_path(:paciente => paciente.id) %></td>
+	<% numero = paciente.nacidos.count %>
+    <td align="center"><%= link_to numero, numero > 0 ? nacidos_path(:paciente => paciente.id): new_nacido_path(:paciente => paciente.id) %></td>
+	<% if [10,18].include?(current_user.rol_id) %>
+		<td><%= link_to 'Mod.', edit_paciente_path(paciente) %></td>
+		<% if [10].include?(current_user.rol_id) %>
+			<td><%= link_to 'X', paciente, :confirm => 'Are you sure?', :method => :delete %></td>
+		<% end %>
+	<% end %>
+  </tr>
+<% end %>
+</table>
+<table border='5' width='100%'>
+  <tr>
+    <th colspan="9">DOMICILIOS</th>
+  </tr>
+  <tr>
+<% if @paciente_id == nil %>
+    <th>Pac.</th>
+<% end %>	
+    <th>Ent.</th>
+    <th>Municipio</th>
+    <th>Calle</th>
+    <th>Numero</th>
+    <th>Colonia</th>
+    <th>CP</th>
+    <th>Telefono</th>
+    <th>Obs.</th>
+  </tr>
 
-<p>
-  <strong>Nombre:</strong>
-  <%= @user.nombre %>
-</p>
+<% @domicilios.each do |domicilio| %>
+  <tr>
+<% if @paciente_id == nil %>
+    <td align="center"><%= link_to domicilio.paciente_id,paciente_path(domicilio.paciente_id) %></td>
+<% end %>	
+    <td align="center"><%=raw domicilio.entidad_id == nil ? "": Entidad.find(domicilio.entidad_id).entidad%></td>
+    <td align="center"><%=raw domicilio.municipio %></td>
+    <td align="center"><%=raw domicilio.calle %></td>
+    <td align="center"><%=raw domicilio.numero %></td>
+    <td align="center"><%=raw domicilio.colonia %></td>
+    <td align="center"><%=raw domicilio.cp %></td>
+    <td align="center"><%=raw domicilio.telefono %></td>
+    <td align="center"><%=raw domicilio.observa %></td>
+	<% if [10,18].include?(current_user.rol_id) %>
+		<td align="center"><%= link_to 'Mod.', edit_domicilio_path(domicilio) %></td>
+	<% end %>
+	<% if [10].include?(current_user.rol_id) %>
+		<td align="center"><%= link_to 'X', domicilio, :confirm => 'Are you sure?', :method => :delete %></td>
+	<% end %>	
+  </tr>
+<% end %>
+</table>
+<table border='5' width='100%'>
+  <tr>
+    <th colspan="3">AFILIACIONES</th>
+  </tr>
+  <tr>
+  <tr>
+	<% if @paciente_id == nil %>
+		<th>Pac.</th>
+	<% end %>	
+    <th>Institucion</th>
+    <th>Afiliacion</th>
+  </tr>
 
-<p>
-  <strong>Puesto:</strong>
-  <%= @user.puesto %>
-</p>
+<% @afiliacions.each do |afiliacion| %>
+  <tr>
+	<% if @paciente_id == nil %>
+		<td align="center"><%= link_to afiliacion.paciente_id, paciente_path(afiliacion.paciente_id) %></td>
+	<% end %>	
+    <td align="center"><%=raw afiliacion.institucion %></td>
+    <td align="center"><%=raw afiliacion.afiliacion %></td>
+	<% if [10,18].include?(current_user.rol_id) %>
+		<td align="center"><%= link_to 'Mod.', edit_afiliacion_path(afiliacion) %></td>
+	<% end %>	
+	<% if [10].include?(current_user.rol_id) %>
+		<td align="center"><%= link_to 'X', afiliacion, :confirm => 'Are you sure?', :method => :delete %></td>
+	<% end %>	
+  </tr>
+<% end %>
+</table>
+<table border='5' width='100%'>
+  <tr>
+    <th colspan="14">ATENCION MEDICA</th>
+  </tr>
+  <tr>
+    <th>No.</th>
+	<% if @paciente_id == nil %>
+		<th>Pac.</th>
+		<th>CLUES</th>
+	<% end %>	
+    <th>Unidad</th>
+    <th>Fecha</th>
+    <th>Diagnosticos</th>
+    <th>SG</th>
+    <th>G</th>
+    <th>P</th>
+    <th>A</th>
+    <th>C</th>
+    <th>Terminacion</th>
+    <th>Alta Por</th>
+    <th>Fecha Eg.</th>
+  </tr>
 
-<p>
-  <strong>Area:</strong>
-  <%= @user.area_id %>
-</p>
+<% @atencions.each do |atencion| %>
+  <tr>
+    <td align="center"><%=raw atencion.id %></td>
+	<% if @paciente_id == nil %>
+		<td align="center"><%= link_to atencion.paciente_id, paciente_path(atencion.paciente_id) %></td>
+		<td align="center"><%=raw atencion.clue_id %></td>
+	<% end %>	
+    <td align="center"><%=raw atencion.clue_id == nil ? atencion.unidad : Clue.find(atencion.clue_id).nomunidad %></td>
+    <td align="center"><%=raw atencion.fecha %></td>
+    <td align="center"><%=raw atencion.diagnosticos %></td>
+    <td align="center"><%=raw atencion.semanas %></td>
+    <td align="center"><%=raw atencion.gesta %></td>
+    <td align="center"><%=raw atencion.para %></td>
+    <td align="center"><%=raw atencion.aborto %></td>
+    <td align="center"><%=raw atencion.cesareas %></td>
+    <td align="center"><%=raw atencion.terminacion %></td>
+    <td align="center"><%=raw atencion.altapor %></td>
+    <td align="center">
+		<% if atencion.fechaeg == nil %>
+			<%= (link_to "NuevaEvol.", new_evolucion_path(:paciente=>atencion.paciente_id, :atencion=>atencion.id)) %><br/>
+			<%= (link_to "NuevoNac.", new_nacido_path(:paciente=>atencion.paciente_id, :atencion=>atencion.id)) %>
+		<% else %>	
+			<% atencion.fechaeg %>
+		<% end %>	
+	</td>
+	<% if [10,18].include?(current_user.rol_id) || ([17].include?(current_user.rol_id) && atencion.user_id == current_user.id && atencion.fechaeg == nil)%>
+		<td align="center"><%= link_to 'Mod.', edit_atencion_path(atencion) %></td>
+	<% end %>
+	<% if [10].include?(current_user.rol_id) %>
+		<td align="center"><%= link_to 'X', atencion, :confirm => 'Are you sure?', :method => :delete %></td>
+	<% end %>
+  </tr>
+<% end %>
+</table>
+<table border='5' width='100%'>
+  <tr>
+    <th colspan="11">EVOLUCIONES</th>
+  </tr>
+  <tr>
+	<% if @paciente_id == nil %>
+		<th>Pac.</th>
+	<% end %>	
+    <th>Atn.</th>
+    <th>Fecha</th>
+    <th>Diagnosticos</th>
+    <th>Ta</th>
+    <th>Fr</th>
+    <th>Fc</th>
+    <th>Temp</th>
+    <th>Condiciones</th>
+    <th>Pendientes</th>
+    <th>Pronostico</th>
+  </tr>
 
-<p>
-  <strong>Rol:</strong>
-  <%= @user.rol_id %>
-</p>
+<% @evolucions.each do |evolucion| %>
+  <tr>
+	<% if @paciente_id == nil %>
+		<td align="center"><%= link_to evolucion.paciente_id, paciente_path(evolucion.paciente_id) %></td>
+	<% end %>	
+    <td align="center"><%=raw evolucion.atencion_id %></td>
+    <td align="center"><%=raw evolucion.fecha %></td>
+    <td align="center"><%=raw evolucion.diagnosticos %></td>
+    <td align="center"><%=raw evolucion.ta %></td>
+    <td align="center"><%=raw evolucion.fr %></td>
+    <td align="center"><%=raw evolucion.fc %></td>
+    <td align="center"><%=raw evolucion.temp %></td>
+    <td align="center"><%=raw evolucion.condiciones %></td>
+    <td align="center"><%=raw evolucion.pendientes %></td>
+    <td align="center"><%=raw evolucion.pronostico %></td>
+	<% if [10,18].include?(current_user.rol_id) %>
+		<td align="center"><%= link_to 'Mod.', edit_evolucion_path(evolucion) %></td>
+		<% if [10].include?(current_user.rol_id) %>	
+			<td align="center"><%= link_to 'X', evolucion, :confirm => 'Are you sure?', :method => :delete %></td>
+		<% end %>
+	<% end %>
+  </tr>
+<% end %>
+</table>
+<table border='5' width='100%'>
+    <th colspan="7">NACIDOS</th>
+  <tr>
+    <th>No.</th>
+	<% if @paciente_id == nil %>
+		<th>Pac.</th>
+	<% end %>	
+    <th>Atn.</th>
+    <th>Evolucion</th>
+    <th>Atencion</th>
+    <th>Egreso</th>
+    <th>Defuncion</th>
+  </tr>
 
-<p>
-  <strong>Estructura:</strong>
-  <%= @user.estructura_id %>
-</p>
-
-<p>
-  <strong>Login:</strong>
-  <%= @user.login %>
-</p>
-
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
-
-<p>
-  <strong>Crypted password:</strong>
-  <%= @user.crypted_password %>
-</p>
-
-<p>
-  <strong>Salt:</strong>
-  <%= @user.salt %>
-</p>
-
-<p>
-  <strong>Remember token:</strong>
-  <%= @user.remember_token %>
-</p>
-
-<p>
-  <strong>Remember token expires at:</strong>
-  <%= @user.remember_token_expires_at %>
-</p>
-
-<p>
-  <strong>Dato1:</strong>
-  <%= @user.dato1 %>
-</p>
-
-<p>
-  <strong>Dato2:</strong>
-  <%= @user.dato2 %>
-</p>
-
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<% @nacidos.each do |nacido| %>
+  <tr>
+    <td align="center"><%=raw nacido.id %></td>
+	<% if @paciente_id == nil %>
+		<td align="center"><%=raw nacido.paciente_id %></td>
+	<% end %>	
+    <td align="center"><%=raw nacido.atencion_id %></td>
+    <td align="center"><%=raw nacido.evolucion %></td>
+    <td align="center"><%=raw nacido.atencion %></td>
+    <td align="center"><%=raw nacido.egreso %></td>
+    <td align="center"><%=raw nacido.defuncion %></td>
+	<% if [10,18].include?(current_user.rol_id) %>
+		<td align="center"><%= link_to 'Mod.', edit_nacido_path(nacido) %></td>
+		<% if [10].include?(current_user.rol_id) %>	
+			<td align="center"><%= link_to 'X', nacido, :confirm => 'Are you sure?', :method => :delete %></td>
+		<% end %>	
+	<% end %>
+  </tr>
+<% end %>
+</table>
+<% end %>
