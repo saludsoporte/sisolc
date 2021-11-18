@@ -1,0 +1,31 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  idpedido: 1
+  partida: 1
+  idarticulo: MyString
+  descripcio: MyText
+  presentaci: MyString
+  marca: MyString
+  cantidad: 9.99
+  nombreunid: MyString
+  preciounit: 9.99
+  nombrefuen: MyString
+  requisicio: 1
+  fiscal: MyString
+  ejercicio: 1
+
+two:
+  idpedido: 1
+  partida: 1
+  idarticulo: MyString
+  descripcio: MyText
+  presentaci: MyString
+  marca: MyString
+  cantidad: 9.99
+  nombreunid: MyString
+  preciounit: 9.99
+  nombrefuen: MyString
+  requisicio: 1
+  fiscal: MyString
+  ejercicio: 1

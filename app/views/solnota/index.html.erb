@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Solnota</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Solicitud</th>
+      <th>User</th>
+      <th>Fecha</th>
+      <th>Comenta</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @solnota.each do |solnotum| %>
+      <tr>
+        <td><%= solnotum.solicitud_id %></td>
+        <td><%= solnotum.user_id %></td>
+        <td><%= solnotum.fecha %></td>
+        <td><%= solnotum.comenta %></td>
+        <td><%= link_to 'Show', solnotum %></td>
+        <td><%= link_to 'Edit', edit_solnotum_path(solnotum) %></td>
+        <td><%= link_to 'Destroy', solnotum, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Solnotum', new_solnotum_path %>

@@ -1,0 +1,47 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Provs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Fiscal</th>
+      <th>Domicilio</th>
+      <th>Colonia</th>
+      <th>Ciudad</th>
+      <th>Telefonos</th>
+      <th>Fax</th>
+      <th>Rfc</th>
+      <th>Cp</th>
+      <th>Situacion</th>
+      <th>Cvealma</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @provs.each do |prov| %>
+      <tr>
+        <td><%= prov.nombre %></td>
+        <td><%= prov.fiscal %></td>
+        <td><%= prov.domicilio %></td>
+        <td><%= prov.colonia %></td>
+        <td><%= prov.ciudad %></td>
+        <td><%= prov.telefonos %></td>
+        <td><%= prov.fax %></td>
+        <td><%= prov.rfc %></td>
+        <td><%= prov.cp %></td>
+        <td><%= prov.situacion_id %></td>
+        <td><%= prov.cvealma_id %></td>
+        <td><%= link_to 'Show', prov %></td>
+        <td><%= link_to 'Edit', edit_prov_path(prov) %></td>
+        <td><%= link_to 'Destroy', prov, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Prov', new_prov_path %>

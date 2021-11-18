@@ -1,0 +1,63 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id: 1
+  clues: one
+  proceso: one
+  fecha: 2021-11-18
+  proveedor: one
+  condiciones: one
+  almacen: one
+  entrega: 2021-11-18
+  requisicion: one
+  programa: one
+  observaciones: MyText
+  user: one
+  jda: one
+  so: one
+  cp: one
+  da: one
+  dg: one
+  adq: one
+  subtotal: 9.99
+  iva: 9.99
+  total: 9.99
+  estado: one
+  renglon: one
+  tipo: one
+  partida: one
+  pena: 9.99
+  contrato: 1
+  fuente: one
+  fianza: one
+
+two:
+  id: 1
+  clues: two
+  proceso: two
+  fecha: 2021-11-18
+  proveedor: two
+  condiciones: two
+  almacen: two
+  entrega: 2021-11-18
+  requisicion: two
+  programa: two
+  observaciones: MyText
+  user: two
+  jda: two
+  so: two
+  cp: two
+  da: two
+  dg: two
+  adq: two
+  subtotal: 9.99
+  iva: 9.99
+  total: 9.99
+  estado: two
+  renglon: two
+  tipo: two
+  partida: two
+  pena: 9.99
+  contrato: 1
+  fuente: two
+  fianza: two

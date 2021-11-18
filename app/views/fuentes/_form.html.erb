@@ -1,0 +1,37 @@
+<%= form_with(model: fuente) do |form| %>
+  <% if fuente.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(fuente.errors.count, "error") %> prohibited this fuente from being saved:</h2>
+
+      <ul>
+        <% fuente.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :periodo %>
+    <%= form.number_field :periodo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :clave %>
+    <%= form.text_field :clave %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fuente %>
+    <%= form.text_field :fuente %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cuenta %>
+    <%= form.text_field :cuenta %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

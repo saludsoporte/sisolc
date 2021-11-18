@@ -1,0 +1,61 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  partida: one
+  partida: 1
+  clave: MyString
+  descripcion: MyText
+  presentacion: MyString
+  precio: 9.99
+  proceso: MyString
+  fecha: 2021-11-18
+  precio2: 9.99
+  fecha2: 2021-11-18
+  iva: 9.99
+  unidades: 1
+  existencia: 9.99
+  estado: one
+  tipo: one
+  grupo: one
+  programa: one
+  prog0: one
+  prog1: one
+  prog2: one
+  prog3: one
+  prog4: one
+  prog5: one
+  prog6: one
+  prog7: one
+  prog8: one
+  prog9: one
+  casuses_basico: one
+
+two:
+  partida: two
+  partida: 1
+  clave: MyString
+  descripcion: MyText
+  presentacion: MyString
+  precio: 9.99
+  proceso: MyString
+  fecha: 2021-11-18
+  precio2: 9.99
+  fecha2: 2021-11-18
+  iva: 9.99
+  unidades: 1
+  existencia: 9.99
+  estado: two
+  tipo: two
+  grupo: two
+  programa: two
+  prog0: two
+  prog1: two
+  prog2: two
+  prog3: two
+  prog4: two
+  prog5: two
+  prog6: two
+  prog7: two
+  prog8: two
+  prog9: two
+  casuses_basico: two

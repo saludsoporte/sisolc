@@ -1,0 +1,107 @@
+<%= form_with(model: solicitud) do |form| %>
+  <% if solicitud.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(solicitud.errors.count, "error") %> prohibited this solicitud from being saved:</h2>
+
+      <ul>
+        <% solicitud.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :area_id %>
+    <%= form.text_field :area_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :vobotecnico_id %>
+    <%= form.text_field :vobotecnico_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tipo_id %>
+    <%= form.text_field :tipo_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :partida_id %>
+    <%= form.text_field :partida_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :requisicion_id %>
+    <%= form.text_field :requisicion_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :renglon_id %>
+    <%= form.text_field :renglon_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :notas %>
+    <%= form.text_field :notas %>
+  </div>
+
+  <div class="field">
+    <%= form.label :anexos %>
+    <%= form.check_box :anexos %>
+  </div>
+
+  <div class="field">
+    <%= form.label :recepcion %>
+    <%= form.date_select :recepcion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :estado_id %>
+    <%= form.text_field :estado_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fuente_id %>
+    <%= form.text_field :fuente_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :programa_id %>
+    <%= form.text_field :programa_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :proyecto_id %>
+    <%= form.text_field :proyecto_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :importe %>
+    <%= form.text_field :importe %>
+  </div>
+
+  <div class="field">
+    <%= form.label :adqui_id %>
+    <%= form.text_field :adqui_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :techo %>
+    <%= form.text_field :techo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tipotecho %>
+    <%= form.number_field :tipotecho %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

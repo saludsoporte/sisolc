@@ -1,0 +1,157 @@
+<%= form_with(model: temp2) do |form| %>
+  <% if temp2.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(temp2.errors.count, "error") %> prohibited this temp2 from being saved:</h2>
+
+      <ul>
+        <% temp2.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :uniresp %>
+    <%= form.number_field :uniresp %>
+  </div>
+
+  <div class="field">
+    <%= form.label :programa %>
+    <%= form.number_field :programa %>
+  </div>
+
+  <div class="field">
+    <%= form.label :subprograma %>
+    <%= form.number_field :subprograma %>
+  </div>
+
+  <div class="field">
+    <%= form.label :descripcion %>
+    <%= form.text_field :descripcion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :ff %>
+    <%= form.number_field :ff %>
+  </div>
+
+  <div class="field">
+    <%= form.label :obra %>
+    <%= form.number_field :obra %>
+  </div>
+
+  <div class="field">
+    <%= form.label :partest %>
+    <%= form.number_field :partest %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cvejur %>
+    <%= form.number_field :cvejur %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cveunidad %>
+    <%= form.number_field :cveunidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :unidad %>
+    <%= form.text_field :unidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cveprog %>
+    <%= form.number_field :cveprog %>
+  </div>
+
+  <div class="field">
+    <%= form.label :progabrev %>
+    <%= form.text_field :progabrev %>
+  </div>
+
+  <div class="field">
+    <%= form.label :nom_prog %>
+    <%= form.text_field :nom_prog %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cvesubprog %>
+    <%= form.number_field :cvesubprog %>
+  </div>
+
+  <div class="field">
+    <%= form.label :nomsubprog %>
+    <%= form.text_field :nomsubprog %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cveaccion %>
+    <%= form.number_field :cveaccion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :nomaccion %>
+    <%= form.text_field :nomaccion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :rubro %>
+    <%= form.text_field :rubro %>
+  </div>
+
+  <div class="field">
+    <%= form.label :partida %>
+    <%= form.number_field :partida %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cveart %>
+    <%= form.text_field :cveart %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sinonimo %>
+    <%= form.number_field :sinonimo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :articulo %>
+    <%= form.text_area :articulo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :presentacion %>
+    <%= form.text_area :presentacion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fuente %>
+    <%= form.text_field :fuente %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cantidad %>
+    <%= form.text_field :cantidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :costo %>
+    <%= form.text_field :costo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :observaciones %>
+    <%= form.text_field :observaciones %>
+  </div>
+
+  <div class="field">
+    <%= form.label :nup %>
+    <%= form.text_field :nup %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

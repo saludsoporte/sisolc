@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Contabilidads</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Cuenta</th>
+      <th>Sistema</th>
+      <th>Fuente</th>
+      <th>Partida</th>
+      <th>Almacen</th>
+      <th>Prov</th>
+      <th>Tipo</th>
+      <th>User</th>
+      <th>Programa</th>
+      <th>Proyecto</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @contabilidads.each do |contabilidad| %>
+      <tr>
+        <td><%= contabilidad.cuenta %></td>
+        <td><%= contabilidad.sistema_id %></td>
+        <td><%= contabilidad.fuente_id %></td>
+        <td><%= contabilidad.partida_id %></td>
+        <td><%= contabilidad.almacen_id %></td>
+        <td><%= contabilidad.prov_id %></td>
+        <td><%= contabilidad.tipo_id %></td>
+        <td><%= contabilidad.user_id %></td>
+        <td><%= contabilidad.programa_id %></td>
+        <td><%= contabilidad.proyecto_id %></td>
+        <td><%= link_to 'Show', contabilidad %></td>
+        <td><%= link_to 'Edit', edit_contabilidad_path(contabilidad) %></td>
+        <td><%= link_to 'Destroy', contabilidad, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Contabilidad', new_contabilidad_path %>

@@ -1,0 +1,37 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ped: one
+  clave: one
+  descripcion: MyText
+  presentacion: MyString
+  marca_mod: MyString
+  cantidad: 9.99
+  precio: 9.99
+  iva: 9.99
+  caducidad: 1
+  importe: 9.99
+  total: 9.99
+  recibido: 9.99
+  cancelado: 9.99
+  estado: one
+  requisicion: one
+  renglon: one
+
+two:
+  ped: two
+  clave: two
+  descripcion: MyText
+  presentacion: MyString
+  marca_mod: MyString
+  cantidad: 9.99
+  precio: 9.99
+  iva: 9.99
+  caducidad: 1
+  importe: 9.99
+  total: 9.99
+  recibido: 9.99
+  cancelado: 9.99
+  estado: two
+  requisicion: two
+  renglon: two

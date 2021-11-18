@@ -1,0 +1,192 @@
+<%= form_with(model: temp14) do |form| %>
+  <% if temp14.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(temp14.errors.count, "error") %> prohibited this temp14 from being saved:</h2>
+
+      <ul>
+        <% temp14.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :ped_id %>
+    <%= form.text_field :ped_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :detped_id %>
+    <%= form.text_field :detped_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :anexo %>
+    <%= form.text_field :anexo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :renglon %>
+    <%= form.number_field :renglon %>
+  </div>
+
+  <div class="field">
+    <%= form.label :partida_id %>
+    <%= form.text_field :partida_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :partida %>
+    <%= form.number_field :partida %>
+  </div>
+
+  <div class="field">
+    <%= form.label :catalogo_id %>
+    <%= form.text_field :catalogo_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :clave %>
+    <%= form.text_field :clave %>
+  </div>
+
+  <div class="field">
+    <%= form.label :descripcion %>
+    <%= form.text_area :descripcion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :presentacion %>
+    <%= form.text_field :presentacion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :precio %>
+    <%= form.text_field :precio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :prov_id %>
+    <%= form.text_field :prov_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fiscal %>
+    <%= form.text_field :fiscal %>
+  </div>
+
+  <div class="field">
+    <%= form.label :marca %>
+    <%= form.text_field :marca %>
+  </div>
+
+  <div class="field">
+    <%= form.label :proceso_id %>
+    <%= form.text_field :proceso_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :proceso %>
+    <%= form.text_field :proceso %>
+  </div>
+
+  <div class="field">
+    <%= form.label :empates %>
+    <%= form.text_field :empates %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fuente_id %>
+    <%= form.text_field :fuente_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fuente %>
+    <%= form.text_field :fuente %>
+  </div>
+
+  <div class="field">
+    <%= form.label :clue_id %>
+    <%= form.text_field :clue_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :almacen_id %>
+    <%= form.text_field :almacen_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :unidad %>
+    <%= form.text_field :unidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :programa_id %>
+    <%= form.text_field :programa_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cveprog %>
+    <%= form.text_field :cveprog %>
+  </div>
+
+  <div class="field">
+    <%= form.label :programa %>
+    <%= form.text_field :programa %>
+  </div>
+
+  <div class="field">
+    <%= form.label :subprog2011 %>
+    <%= form.text_field :subprog2011 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :accion2011 %>
+    <%= form.text_field :accion2011 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cantidad %>
+    <%= form.text_field :cantidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :importe %>
+    <%= form.text_field :importe %>
+  </div>
+
+  <div class="field">
+    <%= form.label :requisicion_id %>
+    <%= form.text_field :requisicion_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :renglon_id %>
+    <%= form.text_field :renglon_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sinonimo %>
+    <%= form.number_field :sinonimo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :actividad %>
+    <%= form.text_field :actividad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :entrega %>
+    <%= form.date_select :entrega %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cp_id %>
+    <%= form.text_field :cp_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

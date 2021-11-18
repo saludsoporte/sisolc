@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id_usu: 1
+  nombre: MyString
+  id_sol: 1
+  id_nota: 1
+  comentario: MyString
+  creada: MyString
+  actualizada: MyString
+  email: MyString
+  estado: MyString
+  dias: 1.5
+  fase: 1
+  fecha: 2021-11-18 12:23:48
+
+two:
+  id_usu: 1
+  nombre: MyString
+  id_sol: 1
+  id_nota: 1
+  comentario: MyString
+  creada: MyString
+  actualizada: MyString
+  email: MyString
+  estado: MyString
+  dias: 1.5
+  fase: 1
+  fecha: 2021-11-18 12:23:48

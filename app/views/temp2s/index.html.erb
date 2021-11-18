@@ -1,0 +1,81 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Temp2s</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Uniresp</th>
+      <th>Programa</th>
+      <th>Subprograma</th>
+      <th>Descripcion</th>
+      <th>Ff</th>
+      <th>Obra</th>
+      <th>Partest</th>
+      <th>Cvejur</th>
+      <th>Cveunidad</th>
+      <th>Unidad</th>
+      <th>Cveprog</th>
+      <th>Progabrev</th>
+      <th>Nom prog</th>
+      <th>Cvesubprog</th>
+      <th>Nomsubprog</th>
+      <th>Cveaccion</th>
+      <th>Nomaccion</th>
+      <th>Rubro</th>
+      <th>Partida</th>
+      <th>Cveart</th>
+      <th>Sinonimo</th>
+      <th>Articulo</th>
+      <th>Presentacion</th>
+      <th>Fuente</th>
+      <th>Cantidad</th>
+      <th>Costo</th>
+      <th>Observaciones</th>
+      <th>Nup</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @temp2s.each do |temp2| %>
+      <tr>
+        <td><%= temp2.uniresp %></td>
+        <td><%= temp2.programa %></td>
+        <td><%= temp2.subprograma %></td>
+        <td><%= temp2.descripcion %></td>
+        <td><%= temp2.ff %></td>
+        <td><%= temp2.obra %></td>
+        <td><%= temp2.partest %></td>
+        <td><%= temp2.cvejur %></td>
+        <td><%= temp2.cveunidad %></td>
+        <td><%= temp2.unidad %></td>
+        <td><%= temp2.cveprog %></td>
+        <td><%= temp2.progabrev %></td>
+        <td><%= temp2.nom_prog %></td>
+        <td><%= temp2.cvesubprog %></td>
+        <td><%= temp2.nomsubprog %></td>
+        <td><%= temp2.cveaccion %></td>
+        <td><%= temp2.nomaccion %></td>
+        <td><%= temp2.rubro %></td>
+        <td><%= temp2.partida %></td>
+        <td><%= temp2.cveart %></td>
+        <td><%= temp2.sinonimo %></td>
+        <td><%= temp2.articulo %></td>
+        <td><%= temp2.presentacion %></td>
+        <td><%= temp2.fuente %></td>
+        <td><%= temp2.cantidad %></td>
+        <td><%= temp2.costo %></td>
+        <td><%= temp2.observaciones %></td>
+        <td><%= temp2.nup %></td>
+        <td><%= link_to 'Show', temp2 %></td>
+        <td><%= link_to 'Edit', edit_temp2_path(temp2) %></td>
+        <td><%= link_to 'Destroy', temp2, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Temp2', new_temp2_path %>

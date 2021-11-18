@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @mail_notum.nombre %>
+</p>
+
+<p>
+  <strong>Correo:</strong>
+  <%= @mail_notum.correo %>
+</p>
+
+<p>
+  <strong>Fecha:</strong>
+  <%= @mail_notum.fecha %>
+</p>
+
+<p>
+  <strong>Id nota:</strong>
+  <%= @mail_notum.id_nota %>
+</p>
+
+<p>
+  <strong>Fase:</strong>
+  <%= @mail_notum.fase %>
+</p>
+
+<%= link_to 'Edit', edit_mail_notum_path(@mail_notum) %> |
+<%= link_to 'Back', mail_nota_path %>

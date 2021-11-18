@@ -1,0 +1,2 @@
+class Fuente < ApplicationRecord
+end

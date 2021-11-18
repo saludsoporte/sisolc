@@ -1,0 +1,77 @@
+<%= form_with(model: reorden) do |form| %>
+  <% if reorden.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(reorden.errors.count, "error") %> prohibited this reorden from being saved:</h2>
+
+      <ul>
+        <% reorden.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :nombre %>
+    <%= form.text_field :nombre %>
+  </div>
+
+  <div class="field">
+    <%= form.label :partida_id %>
+    <%= form.text_field :partida_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :catalogo_id %>
+    <%= form.text_field :catalogo_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :punto %>
+    <%= form.text_field :punto %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tipo_id %>
+    <%= form.text_field :tipo_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :almacen_id %>
+    <%= form.text_field :almacen_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :notifica_id %>
+    <%= form.text_field :notifica_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :vigenciai %>
+    <%= form.date_select :vigenciai %>
+  </div>
+
+  <div class="field">
+    <%= form.label :vigenciaf %>
+    <%= form.date_select :vigenciaf %>
+  </div>
+
+  <div class="field">
+    <%= form.label :estado_id %>
+    <%= form.text_field :estado_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :existencia %>
+    <%= form.text_field :existencia %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

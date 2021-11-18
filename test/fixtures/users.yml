@@ -1,0 +1,33 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  titulo: MyString
+  nombre: MyString
+  puesto: MyString
+  area: one
+  rol: one
+  estructura: one
+  login: MyString
+  email: MyString
+  crypted_password: MyString
+  salt: MyString
+  remember_token: MyString
+  remember_token_expires_at: 2021-11-18 12:24:53
+  dato1: 1
+  dato2: 1
+
+two:
+  titulo: MyString
+  nombre: MyString
+  puesto: MyString
+  area: two
+  rol: two
+  estructura: two
+  login: MyString
+  email: MyString
+  crypted_password: MyString
+  salt: MyString
+  remember_token: MyString
+  remember_token_expires_at: 2021-11-18 12:24:53
+  dato1: 1
+  dato2: 1

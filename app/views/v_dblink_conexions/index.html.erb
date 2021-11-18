@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>V Dblink Conexions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Conexion presup</th>
+      <th>Ejercicio</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @v_dblink_conexions.each do |v_dblink_conexion| %>
+      <tr>
+        <td><%= v_dblink_conexion.conexion_presup %></td>
+        <td><%= v_dblink_conexion.ejercicio %></td>
+        <td><%= link_to 'Show', v_dblink_conexion %></td>
+        <td><%= link_to 'Edit', edit_v_dblink_conexion_path(v_dblink_conexion) %></td>
+        <td><%= link_to 'Destroy', v_dblink_conexion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New V Dblink Conexion', new_v_dblink_conexion_path %>

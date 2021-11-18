@@ -1,0 +1,67 @@
+<%= form_with(model: proceso_ped_req) do |form| %>
+  <% if proceso_ped_req.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(proceso_ped_req.errors.count, "error") %> prohibited this proceso_ped_req from being saved:</h2>
+
+      <ul>
+        <% proceso_ped_req.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :proceso_id %>
+    <%= form.text_field :proceso_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :poas_id %>
+    <%= form.text_field :poas_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :req_sacp %>
+    <%= form.number_field :req_sacp %>
+  </div>
+
+  <div class="field">
+    <%= form.label :req_sacp_interno %>
+    <%= form.number_field :req_sacp_interno %>
+  </div>
+
+  <div class="field">
+    <%= form.label :empate %>
+    <%= form.check_box :empate %>
+  </div>
+
+  <div class="field">
+    <%= form.label :clave_id %>
+    <%= form.text_field :clave_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :detpeds_id %>
+    <%= form.text_field :detpeds_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :entrega %>
+    <%= form.number_field :entrega %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fecha %>
+    <%= form.date_select :fecha %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cantidad %>
+    <%= form.text_field :cantidad %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

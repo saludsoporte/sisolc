@@ -1,0 +1,33 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  paciente: one
+  atencion: one
+  fecha: 2021-11-18
+  diagnosticos: MyText
+  ta: 9.99
+  fr: 9.99
+  fc: 9.99
+  temp: 9.99
+  condiciones: MyText
+  pendientes: MyText
+  pronostico: MyString
+  user: one
+  tipo: one
+  fechaeg: 2021-11-18 12:23:43
+
+two:
+  paciente: two
+  atencion: two
+  fecha: 2021-11-18
+  diagnosticos: MyText
+  ta: 9.99
+  fr: 9.99
+  fc: 9.99
+  temp: 9.99
+  condiciones: MyText
+  pendientes: MyText
+  pronostico: MyString
+  user: two
+  tipo: two
+  fechaeg: 2021-11-18 12:23:43

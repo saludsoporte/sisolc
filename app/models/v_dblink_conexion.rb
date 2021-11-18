@@ -1,0 +1,2 @@
+class VDblinkConexion < ApplicationRecord
+end

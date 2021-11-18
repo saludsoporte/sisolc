@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre: MyString
+  partida: one
+  catalogo: one
+  punto: 9.99
+  tipo: one
+  almacen: one
+  user: one
+  notifica: one
+  vigenciai: 2021-11-18
+  vigenciaf: 2021-11-18
+  estado: one
+  existencia: 9.99
+
+two:
+  nombre: MyString
+  partida: two
+  catalogo: two
+  punto: 9.99
+  tipo: two
+  almacen: two
+  user: two
+  notifica: two
+  vigenciai: 2021-11-18
+  vigenciaf: 2021-11-18
+  estado: two
+  existencia: 9.99

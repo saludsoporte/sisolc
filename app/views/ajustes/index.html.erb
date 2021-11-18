@@ -1,0 +1,53 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Ajustes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Almacen</th>
+      <th>Partida</th>
+      <th>Fuente</th>
+      <th>Ajuste</th>
+      <th>Lote</th>
+      <th>Lote</th>
+      <th>Caducidad</th>
+      <th>Existen</th>
+      <th>Precio</th>
+      <th>Estado</th>
+      <th>Tipo</th>
+      <th>Fecharep</th>
+      <th>Catalogo</th>
+      <th>Descrip</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ajustes.each do |ajuste| %>
+      <tr>
+        <td><%= ajuste.almacen_id %></td>
+        <td><%= ajuste.partida_id %></td>
+        <td><%= ajuste.fuente_id %></td>
+        <td><%= ajuste.ajuste %></td>
+        <td><%= ajuste.lote_id %></td>
+        <td><%= ajuste.lote %></td>
+        <td><%= ajuste.caducidad %></td>
+        <td><%= ajuste.existen %></td>
+        <td><%= ajuste.precio %></td>
+        <td><%= ajuste.estado_id %></td>
+        <td><%= ajuste.tipo_id %></td>
+        <td><%= ajuste.fecharep %></td>
+        <td><%= ajuste.catalogo_id %></td>
+        <td><%= ajuste.descrip %></td>
+        <td><%= link_to 'Show', ajuste %></td>
+        <td><%= link_to 'Edit', edit_ajuste_path(ajuste) %></td>
+        <td><%= link_to 'Destroy', ajuste, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Ajuste', new_ajuste_path %>

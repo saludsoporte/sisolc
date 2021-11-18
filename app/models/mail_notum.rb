@@ -1,0 +1,2 @@
+class MailNotum < ApplicationRecord
+end

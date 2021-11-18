@@ -1,0 +1,61 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  uniresp: 1
+  programa: 1
+  subprograma: 1
+  descripcion: MyString
+  ff: 1
+  obra: 1
+  partest: 1
+  cvejur: 1
+  cveunidad: 1
+  unidad: MyString
+  cveprog: 1
+  progabrev: MyString
+  nom_prog: MyString
+  cvesubprog: 1
+  nomsubprog: MyString
+  cveaccion: 1
+  nomaccion: MyString
+  rubro: MyString
+  partida: 1
+  cveart: MyString
+  sinonimo: 1
+  articulo: MyText
+  presentacion: MyText
+  fuente: MyString
+  cantidad: 9.99
+  costo: 9.99
+  observaciones: MyString
+  nup: MyString
+
+two:
+  uniresp: 1
+  programa: 1
+  subprograma: 1
+  descripcion: MyString
+  ff: 1
+  obra: 1
+  partest: 1
+  cvejur: 1
+  cveunidad: 1
+  unidad: MyString
+  cveprog: 1
+  progabrev: MyString
+  nom_prog: MyString
+  cvesubprog: 1
+  nomsubprog: MyString
+  cveaccion: 1
+  nomaccion: MyString
+  rubro: MyString
+  partida: 1
+  cveart: MyString
+  sinonimo: 1
+  articulo: MyText
+  presentacion: MyText
+  fuente: MyString
+  cantidad: 9.99
+  costo: 9.99
+  observaciones: MyString
+  nup: MyString

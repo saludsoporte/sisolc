@@ -1,0 +1,27 @@
+<%= form_with(model: paciente_id) do |form| %>
+  <% if paciente_id.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(paciente_id.errors.count, "error") %> prohibited this paciente_id from being saved:</h2>
+
+      <ul>
+        <% paciente_id.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :institu_id %>
+    <%= form.text_field :institu_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :afiliacion %>
+    <%= form.text_field :afiliacion %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

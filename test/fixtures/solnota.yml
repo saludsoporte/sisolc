@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  solicitud: one
+  user: one
+  fecha: 2021-11-18
+  comenta: MyText
+
+two:
+  solicitud: two
+  user: two
+  fecha: 2021-11-18
+  comenta: MyText

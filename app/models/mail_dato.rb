@@ -1,0 +1,2 @@
+class MailDato < ApplicationRecord
+end

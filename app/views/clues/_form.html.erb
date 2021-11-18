@@ -1,0 +1,77 @@
+<%= form_with(model: clue) do |form| %>
+  <% if clue.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(clue.errors.count, "error") %> prohibited this clue from being saved:</h2>
+
+      <ul>
+        <% clue.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :clues %>
+    <%= form.number_field :clues %>
+  </div>
+
+  <div class="field">
+    <%= form.label :nomunidad %>
+    <%= form.text_field :nomunidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tipounidad %>
+    <%= form.text_field :tipounidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cvemuni %>
+    <%= form.number_field :cvemuni %>
+  </div>
+
+  <div class="field">
+    <%= form.label :municipio %>
+    <%= form.text_field :municipio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cveloc %>
+    <%= form.number_field :cveloc %>
+  </div>
+
+  <div class="field">
+    <%= form.label :localidad %>
+    <%= form.text_field :localidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :domicilio %>
+    <%= form.text_field :domicilio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cp %>
+    <%= form.text_field :cp %>
+  </div>
+
+  <div class="field">
+    <%= form.label :estructura_id %>
+    <%= form.text_field :estructura_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :nomabrev %>
+    <%= form.text_field :nomabrev %>
+  </div>
+
+  <div class="field">
+    <%= form.label :juris_id %>
+    <%= form.text_field :juris_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

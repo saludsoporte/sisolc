@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  reporte: MyString
+  desde: 2021-11-18
+  hasta: 2021-11-18
+  unidad: 1
+  cpini: 1
+  cpfin: 1
+  usuario: 1
+  texto: MyString
+  rango1: 1
+  rango2: 1
+  sistema: one
+
+two:
+  reporte: MyString
+  desde: 2021-11-18
+  hasta: 2021-11-18
+  unidad: 1
+  cpini: 1
+  cpfin: 1
+  usuario: 1
+  texto: MyString
+  rango1: 1
+  rango2: 1
+  sistema: two

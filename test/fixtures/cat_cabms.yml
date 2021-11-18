@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nivel: 1
+  partida: 1
+  descripcion: MyString
+
+two:
+  nivel: 1
+  partida: 1
+  descripcion: MyString

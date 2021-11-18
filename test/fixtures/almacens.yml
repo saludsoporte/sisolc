@@ -1,0 +1,55 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  clue: one
+  user: one
+  nombre: MyText
+  tipo: 1
+  cuenta1: MyString
+  cuenta2: MyString
+  tipo: one
+  conta1: one
+  conta2: one
+  almac1: one
+  almac2: one
+  almac3: one
+  depende: one
+  almac4: one
+  almac5: one
+  almac6: one
+  almac7: one
+  domicilio: MyString
+  municipio: MyString
+  cp: 1
+  cpostal: MyString
+  jefeu: 1
+  admoru: 1
+  cierre1: 2021-11-18
+  cierre2: 2021-11-18
+
+two:
+  clue: two
+  user: two
+  nombre: MyText
+  tipo: 1
+  cuenta1: MyString
+  cuenta2: MyString
+  tipo: two
+  conta1: two
+  conta2: two
+  almac1: two
+  almac2: two
+  almac3: two
+  depende: two
+  almac4: two
+  almac5: two
+  almac6: two
+  almac7: two
+  domicilio: MyString
+  municipio: MyString
+  cp: 1
+  cpostal: MyString
+  jefeu: 1
+  admoru: 1
+  cierre1: 2021-11-18
+  cierre2: 2021-11-18

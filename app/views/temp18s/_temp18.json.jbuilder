@@ -1,0 +1,2 @@
+json.extract! temp18, :id, :id, :clues_id, :proceso_id, :fecha, :proveedor_id, :condiciones_id, :almacen_id, :entrega, :requisicion_id, :programa_id, :observaciones, :user_id, :jda_id, :so_id, :cp_id, :da_id, :dg_id, :adq_id, :subtotal, :iva, :total, :estado_id, :renglon_id, :tipo_id, :partida_id, :pena, :contrato, :fuente_id, :fianza_id, :created_at, :updated_at
+json.url temp18_url(temp18, format: :json)

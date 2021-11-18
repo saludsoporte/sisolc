@@ -1,0 +1,101 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Peds</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Clues</th>
+      <th>Proceso</th>
+      <th>Fecha</th>
+      <th>Proveedor</th>
+      <th>Condiciones</th>
+      <th>Almacen</th>
+      <th>Entrega</th>
+      <th>Requisicion</th>
+      <th>Programa</th>
+      <th>Observaciones</th>
+      <th>User</th>
+      <th>Jda</th>
+      <th>So</th>
+      <th>Cp</th>
+      <th>Da</th>
+      <th>Dg</th>
+      <th>Adq</th>
+      <th>Subtotal</th>
+      <th>Iva</th>
+      <th>Total</th>
+      <th>Estado</th>
+      <th>Renglon</th>
+      <th>Tipo</th>
+      <th>Partida</th>
+      <th>Pena</th>
+      <th>Contrato</th>
+      <th>Fuente</th>
+      <th>Fianza</th>
+      <th>Facfianza</th>
+      <th>Reqexterna</th>
+      <th>Requi2</th>
+      <th>Requi3</th>
+      <th>Requi4</th>
+      <th>Montoreq</th>
+      <th>Montoreq2</th>
+      <th>Montoreq3</th>
+      <th>Montoreq4</th>
+      <th>Requi5</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @peds.each do |ped| %>
+      <tr>
+        <td><%= ped.clues_id %></td>
+        <td><%= ped.proceso_id %></td>
+        <td><%= ped.fecha %></td>
+        <td><%= ped.proveedor_id %></td>
+        <td><%= ped.condiciones_id %></td>
+        <td><%= ped.almacen_id %></td>
+        <td><%= ped.entrega %></td>
+        <td><%= ped.requisicion_id %></td>
+        <td><%= ped.programa_id %></td>
+        <td><%= ped.observaciones %></td>
+        <td><%= ped.user_id %></td>
+        <td><%= ped.jda_id %></td>
+        <td><%= ped.so_id %></td>
+        <td><%= ped.cp_id %></td>
+        <td><%= ped.da_id %></td>
+        <td><%= ped.dg_id %></td>
+        <td><%= ped.adq_id %></td>
+        <td><%= ped.subtotal %></td>
+        <td><%= ped.iva %></td>
+        <td><%= ped.total %></td>
+        <td><%= ped.estado_id %></td>
+        <td><%= ped.renglon_id %></td>
+        <td><%= ped.tipo_id %></td>
+        <td><%= ped.partida_id %></td>
+        <td><%= ped.pena %></td>
+        <td><%= ped.contrato %></td>
+        <td><%= ped.fuente_id %></td>
+        <td><%= ped.fianza_id %></td>
+        <td><%= ped.facfianza %></td>
+        <td><%= ped.reqexterna %></td>
+        <td><%= ped.requi2_id %></td>
+        <td><%= ped.requi3_id %></td>
+        <td><%= ped.requi4_id %></td>
+        <td><%= ped.montoreq %></td>
+        <td><%= ped.montoreq2 %></td>
+        <td><%= ped.montoreq3 %></td>
+        <td><%= ped.montoreq4 %></td>
+        <td><%= ped.requi5_id %></td>
+        <td><%= link_to 'Show', ped %></td>
+        <td><%= link_to 'Edit', edit_ped_path(ped) %></td>
+        <td><%= link_to 'Destroy', ped, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Ped', new_ped_path %>

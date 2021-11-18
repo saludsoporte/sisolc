@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Partidas</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Partida</th>
+      <th>Descripcion</th>
+      <th>Indice</th>
+      <th>Cog2011</th>
+      <th>Descripcion2</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @partidas.each do |partida| %>
+      <tr>
+        <td><%= partida.partida %></td>
+        <td><%= partida.descripcion %></td>
+        <td><%= partida.indice %></td>
+        <td><%= partida.cog2011 %></td>
+        <td><%= partida.descripcion2 %></td>
+        <td><%= link_to 'Show', partida %></td>
+        <td><%= link_to 'Edit', edit_partida_path(partida) %></td>
+        <td><%= link_to 'Destroy', partida, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Partida', new_partida_path %>

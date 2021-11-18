@@ -1,0 +1,61 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  pedido: 1
+  claveuni: 1
+  nombreuni: MyString
+  articulo: MyString
+  partida: 1
+  preciouni: 9.99
+  cantidad: 9.99
+  marca: MyString
+  clavepro: 1
+  proveedor: MyString
+  entrega: 2021-11-18
+  descripcion: MyText
+  presentacion: MyString
+  requisicion: 1
+  proceso: MyString
+  fuente: MyString
+  pedidounico: 1
+  almacen: MyString
+  archivo: MyString
+  cantfac: 9.99
+  cantcanc: 9.99
+  elaboracion: 2021-11-18
+  etiqueta: 1
+  proyecto: 1
+  programa: MyString
+  subprograma: MyString
+  comenta: MyText
+  iva: 1
+
+two:
+  pedido: 1
+  claveuni: 1
+  nombreuni: MyString
+  articulo: MyString
+  partida: 1
+  preciouni: 9.99
+  cantidad: 9.99
+  marca: MyString
+  clavepro: 1
+  proveedor: MyString
+  entrega: 2021-11-18
+  descripcion: MyText
+  presentacion: MyString
+  requisicion: 1
+  proceso: MyString
+  fuente: MyString
+  pedidounico: 1
+  almacen: MyString
+  archivo: MyString
+  cantfac: 9.99
+  cantcanc: 9.99
+  elaboracion: 2021-11-18
+  etiqueta: 1
+  proyecto: 1
+  programa: MyString
+  subprograma: MyString
+  comenta: MyText
+  iva: 1

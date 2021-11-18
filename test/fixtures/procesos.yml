@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  proceso: MyString
+  fecha: 2021-11-18
+  tipopro: one
+  partida: one
+  observacion: MyText
+  estado: one
+  pena: 9.99
+  sancionmax: 9.99
+  tipo: one
+
+two:
+  proceso: MyString
+  fecha: 2021-11-18
+  tipopro: two
+  partida: two
+  observacion: MyText
+  estado: two
+  pena: 9.99
+  sancionmax: 9.99
+  tipo: two

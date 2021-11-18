@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Mail Datos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Id usu</th>
+      <th>Nombre</th>
+      <th>Id sol</th>
+      <th>Id nota</th>
+      <th>Comentario</th>
+      <th>Creada</th>
+      <th>Actualizada</th>
+      <th>Email</th>
+      <th>Estado</th>
+      <th>Dias</th>
+      <th>Fase</th>
+      <th>Fecha</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @mail_datos.each do |mail_dato| %>
+      <tr>
+        <td><%= mail_dato.id_usu %></td>
+        <td><%= mail_dato.nombre %></td>
+        <td><%= mail_dato.id_sol %></td>
+        <td><%= mail_dato.id_nota %></td>
+        <td><%= mail_dato.comentario %></td>
+        <td><%= mail_dato.creada %></td>
+        <td><%= mail_dato.actualizada %></td>
+        <td><%= mail_dato.email %></td>
+        <td><%= mail_dato.estado %></td>
+        <td><%= mail_dato.dias %></td>
+        <td><%= mail_dato.fase %></td>
+        <td><%= mail_dato.fecha %></td>
+        <td><%= link_to 'Show', mail_dato %></td>
+        <td><%= link_to 'Edit', edit_mail_dato_path(mail_dato) %></td>
+        <td><%= link_to 'Destroy', mail_dato, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Mail Dato', new_mail_dato_path %>

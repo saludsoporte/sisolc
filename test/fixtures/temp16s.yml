@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  clues: one
+  user: one
+  autoriza: one
+  estado: one
+  vobo: one
+  fecha: 2021-11-18
+  fuente: one
+
+two:
+  clues: two
+  user: two
+  autoriza: two
+  estado: two
+  vobo: two
+  fecha: 2021-11-18
+  fuente: two

@@ -1,0 +1,72 @@
+<%= form_with(model: reporte) do |form| %>
+  <% if reporte.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(reporte.errors.count, "error") %> prohibited this reporte from being saved:</h2>
+
+      <ul>
+        <% reporte.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :reporte %>
+    <%= form.text_field :reporte %>
+  </div>
+
+  <div class="field">
+    <%= form.label :desde %>
+    <%= form.date_select :desde %>
+  </div>
+
+  <div class="field">
+    <%= form.label :hasta %>
+    <%= form.date_select :hasta %>
+  </div>
+
+  <div class="field">
+    <%= form.label :unidad %>
+    <%= form.number_field :unidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cpini %>
+    <%= form.number_field :cpini %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cpfin %>
+    <%= form.number_field :cpfin %>
+  </div>
+
+  <div class="field">
+    <%= form.label :usuario %>
+    <%= form.number_field :usuario %>
+  </div>
+
+  <div class="field">
+    <%= form.label :texto %>
+    <%= form.text_field :texto %>
+  </div>
+
+  <div class="field">
+    <%= form.label :rango1 %>
+    <%= form.number_field :rango1 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :rango2 %>
+    <%= form.number_field :rango2 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sistema_id %>
+    <%= form.text_field :sistema_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

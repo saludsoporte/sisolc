@@ -1,0 +1,102 @@
+<%= form_with(model: atencion) do |form| %>
+  <% if atencion.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(atencion.errors.count, "error") %> prohibited this atencion from being saved:</h2>
+
+      <ul>
+        <% atencion.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :clue_id %>
+    <%= form.text_field :clue_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :unidad %>
+    <%= form.text_field :unidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :paciente_id %>
+    <%= form.text_field :paciente_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fecha %>
+    <%= form.datetime_select :fecha %>
+  </div>
+
+  <div class="field">
+    <%= form.label :diagnosticos %>
+    <%= form.text_area :diagnosticos %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tipoat %>
+    <%= form.text_area :tipoat %>
+  </div>
+
+  <div class="field">
+    <%= form.label :semanas %>
+    <%= form.number_field :semanas %>
+  </div>
+
+  <div class="field">
+    <%= form.label :gesta %>
+    <%= form.number_field :gesta %>
+  </div>
+
+  <div class="field">
+    <%= form.label :para %>
+    <%= form.number_field :para %>
+  </div>
+
+  <div class="field">
+    <%= form.label :aborto %>
+    <%= form.number_field :aborto %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cesareas %>
+    <%= form.number_field :cesareas %>
+  </div>
+
+  <div class="field">
+    <%= form.label :terminacion %>
+    <%= form.text_field :terminacion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :termino %>
+    <%= form.date_select :termino %>
+  </div>
+
+  <div class="field">
+    <%= form.label :altapor %>
+    <%= form.text_field :altapor %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fechaeg %>
+    <%= form.datetime_select :fechaeg %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tipo_id %>
+    <%= form.text_field :tipo_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

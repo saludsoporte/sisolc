@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Proceso:</strong>
+  <%= @proceso.proceso %>
+</p>
+
+<p>
+  <strong>Fecha:</strong>
+  <%= @proceso.fecha %>
+</p>
+
+<p>
+  <strong>Tipopro:</strong>
+  <%= @proceso.tipopro_id %>
+</p>
+
+<p>
+  <strong>Partida:</strong>
+  <%= @proceso.partida_id %>
+</p>
+
+<p>
+  <strong>Observacion:</strong>
+  <%= @proceso.observacion %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @proceso.estado_id %>
+</p>
+
+<p>
+  <strong>Pena:</strong>
+  <%= @proceso.pena %>
+</p>
+
+<p>
+  <strong>Sancionmax:</strong>
+  <%= @proceso.sancionmax %>
+</p>
+
+<p>
+  <strong>Tipo:</strong>
+  <%= @proceso.tipo_id %>
+</p>
+
+<%= link_to 'Edit', edit_proceso_path(@proceso) %> |
+<%= link_to 'Back', procesos_path %>

@@ -1,0 +1,37 @@
+<%= form_with(model: pacnotum) do |form| %>
+  <% if pacnotum.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(pacnotum.errors.count, "error") %> prohibited this pacnotum from being saved:</h2>
+
+      <ul>
+        <% pacnotum.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :paciente_id %>
+    <%= form.text_field :paciente_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fecha %>
+    <%= form.date_select :fecha %>
+  </div>
+
+  <div class="field">
+    <%= form.label :comenta %>
+    <%= form.text_area :comenta %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

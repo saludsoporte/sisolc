@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  paciente: one
+  entidad: one
+  municipio: MyString
+  calle: MyString
+  numero: MyString
+  colonia: MyString
+  cp: MyString
+  telefono: MyString
+  observa: MyString
+  user: one
+  muni: one
+
+two:
+  paciente: two
+  entidad: two
+  municipio: MyString
+  calle: MyString
+  numero: MyString
+  colonia: MyString
+  cp: MyString
+  telefono: MyString
+  observa: MyString
+  user: two
+  muni: two

@@ -1,0 +1,41 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  area: one
+  user: one
+  vobotecnico: one
+  tipo: one
+  partida: one
+  requisicion: one
+  renglon: one
+  notas: MyString
+  anexos: false
+  recepcion: 2021-11-18
+  estado: one
+  fuente: one
+  programa: one
+  proyecto: one
+  importe: 9.99
+  adqui: one
+  techo: 9.99
+  tipotecho: 1
+
+two:
+  area: two
+  user: two
+  vobotecnico: two
+  tipo: two
+  partida: two
+  requisicion: two
+  renglon: two
+  notas: MyString
+  anexos: false
+  recepcion: 2021-11-18
+  estado: two
+  fuente: two
+  programa: two
+  proyecto: two
+  importe: 9.99
+  adqui: two
+  techo: 9.99
+  tipotecho: 1

@@ -1,0 +1,33 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  fecha: 2021-11-18
+  vence: 2021-11-18
+  observa: MyText
+  proceso: one
+  prov: one
+  monto: 9.99
+  estado: one
+  tipo: one
+  contratos: MyString
+  contrato: one
+  imp_peds: 9.99
+  clave: MyString
+  situacion: 1
+
+two:
+  user: two
+  fecha: 2021-11-18
+  vence: 2021-11-18
+  observa: MyText
+  proceso: two
+  prov: two
+  monto: 9.99
+  estado: two
+  tipo: two
+  contratos: MyString
+  contrato: two
+  imp_peds: 9.99
+  clave: MyString
+  situacion: 1

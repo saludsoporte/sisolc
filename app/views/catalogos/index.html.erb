@@ -1,0 +1,81 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Catalogos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Partida</th>
+      <th>Partida</th>
+      <th>Clave</th>
+      <th>Descripcion</th>
+      <th>Presentacion</th>
+      <th>Precio</th>
+      <th>Proceso</th>
+      <th>Fecha</th>
+      <th>Precio2</th>
+      <th>Fecha2</th>
+      <th>Iva</th>
+      <th>Unidades</th>
+      <th>Existencia</th>
+      <th>Estado</th>
+      <th>Tipo</th>
+      <th>Grupo</th>
+      <th>Programa</th>
+      <th>Prog0</th>
+      <th>Prog1</th>
+      <th>Prog2</th>
+      <th>Prog3</th>
+      <th>Prog4</th>
+      <th>Prog5</th>
+      <th>Prog6</th>
+      <th>Prog7</th>
+      <th>Prog8</th>
+      <th>Prog9</th>
+      <th>Casuses basico</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @catalogos.each do |catalogo| %>
+      <tr>
+        <td><%= catalogo.partida_id %></td>
+        <td><%= catalogo.partida %></td>
+        <td><%= catalogo.clave %></td>
+        <td><%= catalogo.descripcion %></td>
+        <td><%= catalogo.presentacion %></td>
+        <td><%= catalogo.precio %></td>
+        <td><%= catalogo.proceso %></td>
+        <td><%= catalogo.fecha %></td>
+        <td><%= catalogo.precio2 %></td>
+        <td><%= catalogo.fecha2 %></td>
+        <td><%= catalogo.iva %></td>
+        <td><%= catalogo.unidades %></td>
+        <td><%= catalogo.existencia %></td>
+        <td><%= catalogo.estado_id %></td>
+        <td><%= catalogo.tipo_id %></td>
+        <td><%= catalogo.grupo_id %></td>
+        <td><%= catalogo.programa_id %></td>
+        <td><%= catalogo.prog0_id %></td>
+        <td><%= catalogo.prog1_id %></td>
+        <td><%= catalogo.prog2_id %></td>
+        <td><%= catalogo.prog3_id %></td>
+        <td><%= catalogo.prog4_id %></td>
+        <td><%= catalogo.prog5_id %></td>
+        <td><%= catalogo.prog6_id %></td>
+        <td><%= catalogo.prog7_id %></td>
+        <td><%= catalogo.prog8_id %></td>
+        <td><%= catalogo.prog9_id %></td>
+        <td><%= catalogo.casuses_basico_id %></td>
+        <td><%= link_to 'Show', catalogo %></td>
+        <td><%= link_to 'Edit', edit_catalogo_path(catalogo) %></td>
+        <td><%= link_to 'Destroy', catalogo, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Catalogo', new_catalogo_path %>

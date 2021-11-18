@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  paciente: one
+  institu: one
+  institucion: MyString
+  afiliacion: MyString
+  user: one
+
+two:
+  paciente: two
+  institu: two
+  institucion: MyString
+  afiliacion: MyString
+  user: two

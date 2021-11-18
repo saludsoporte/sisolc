@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Temp19s</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Clue</th>
+      <th>Fuente</th>
+      <th>Programa</th>
+      <th>Importe</th>
+      <th>Proyecto</th>
+      <th>Requisicion</th>
+      <th>Ejercicio</th>
+      <th>Partida</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @temp19s.each do |temp19| %>
+      <tr>
+        <td><%= temp19.clue_id %></td>
+        <td><%= temp19.fuente_id %></td>
+        <td><%= temp19.programa_id %></td>
+        <td><%= temp19.importe %></td>
+        <td><%= temp19.proyecto_id %></td>
+        <td><%= temp19.requisicion_id %></td>
+        <td><%= temp19.ejercicio %></td>
+        <td><%= temp19.partida_id %></td>
+        <td><%= link_to 'Show', temp19 %></td>
+        <td><%= link_to 'Edit', edit_temp19_path(temp19) %></td>
+        <td><%= link_to 'Destroy', temp19, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Temp19', new_temp19_path %>

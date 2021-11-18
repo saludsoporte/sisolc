@@ -1,0 +1,65 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  catalogo: one
+  ped: one
+  cantidadp: 9.99
+  cantidadu: 1
+  existencia: 9.99
+  caducidad: 2021-11-18
+  almacen: one
+  fecha: 2021-11-18
+  lote: MyString
+  fuente: one
+  precio: 9.99
+  observacion: MyString
+  estado: one
+  movimiento: one
+  barras: MyString
+  requisicion: one
+  programa: one
+  proyecto: one
+  partida: one
+  etiqueta: one
+  detped: one
+  lote: one
+  renglon: one
+  salida: one
+  cargo: MyString
+  abono: MyString
+  observsal: MyString
+  prov: one
+  iva: 9.99
+  cartacom: one
+
+two:
+  catalogo: two
+  ped: two
+  cantidadp: 9.99
+  cantidadu: 1
+  existencia: 9.99
+  caducidad: 2021-11-18
+  almacen: two
+  fecha: 2021-11-18
+  lote: MyString
+  fuente: two
+  precio: 9.99
+  observacion: MyString
+  estado: two
+  movimiento: two
+  barras: MyString
+  requisicion: two
+  programa: two
+  proyecto: two
+  partida: two
+  etiqueta: two
+  detped: two
+  lote: two
+  renglon: two
+  salida: two
+  cargo: MyString
+  abono: MyString
+  observsal: MyString
+  prov: two
+  iva: 9.99
+  cartacom: two

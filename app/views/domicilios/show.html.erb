@@ -1,0 +1,59 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Paciente:</strong>
+  <%= @domicilio.paciente_id %>
+</p>
+
+<p>
+  <strong>Entidad:</strong>
+  <%= @domicilio.entidad_id %>
+</p>
+
+<p>
+  <strong>Municipio:</strong>
+  <%= @domicilio.municipio %>
+</p>
+
+<p>
+  <strong>Calle:</strong>
+  <%= @domicilio.calle %>
+</p>
+
+<p>
+  <strong>Numero:</strong>
+  <%= @domicilio.numero %>
+</p>
+
+<p>
+  <strong>Colonia:</strong>
+  <%= @domicilio.colonia %>
+</p>
+
+<p>
+  <strong>Cp:</strong>
+  <%= @domicilio.cp %>
+</p>
+
+<p>
+  <strong>Telefono:</strong>
+  <%= @domicilio.telefono %>
+</p>
+
+<p>
+  <strong>Observa:</strong>
+  <%= @domicilio.observa %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @domicilio.user_id %>
+</p>
+
+<p>
+  <strong>Muni:</strong>
+  <%= @domicilio.muni_id %>
+</p>
+
+<%= link_to 'Edit', edit_domicilio_path(@domicilio) %> |
+<%= link_to 'Back', domicilios_path %>

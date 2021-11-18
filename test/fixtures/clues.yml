@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  clues: 1
+  nomunidad: MyString
+  tipounidad: MyString
+  cvemuni: 1
+  municipio: MyString
+  cveloc: 1
+  localidad: MyString
+  domicilio: MyString
+  cp: MyString
+  estructura: one
+  nomabrev: MyString
+  juris: one
+
+two:
+  clues: 1
+  nomunidad: MyString
+  tipounidad: MyString
+  cvemuni: 1
+  municipio: MyString
+  cveloc: 1
+  localidad: MyString
+  domicilio: MyString
+  cp: MyString
+  estructura: two
+  nomabrev: MyString
+  juris: two

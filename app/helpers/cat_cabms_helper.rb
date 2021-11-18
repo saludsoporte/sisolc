@@ -1,0 +1,2 @@
+module CatCabmsHelper
+end

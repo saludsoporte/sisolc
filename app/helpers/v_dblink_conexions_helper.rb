@@ -1,0 +1,2 @@
+module VDblinkConexionsHelper
+end

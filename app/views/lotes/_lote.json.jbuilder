@@ -1,0 +1,2 @@
+json.extract! lote, :id, :catalogo_id, :ped_id, :cantidadp, :cantidadu, :existencia, :caducidad, :almacen_id, :fecha, :lote, :fuente_id, :precio, :observacion, :estado_id, :movimiento_id, :barras, :requisicion_id, :programa_id, :proyecto_id, :partida_id, :etiqueta_id, :detped_id, :lote_id, :renglon_id, :salida_id, :cargo, :abono, :observsal, :prov_id, :iva, :cartacom_id, :created_at, :updated_at
+json.url lote_url(lote, format: :json)

@@ -1,0 +1,62 @@
+<%= form_with(model: propuestum) do |form| %>
+  <% if propuestum.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(propuestum.errors.count, "error") %> prohibited this propuestum from being saved:</h2>
+
+      <ul>
+        <% propuestum.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :proceso_id %>
+    <%= form.text_field :proceso_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :anexo %>
+    <%= form.text_field :anexo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :reng_id %>
+    <%= form.text_field :reng_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :partida_id %>
+    <%= form.text_field :partida_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :catalogo_id %>
+    <%= form.text_field :catalogo_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :provee_id %>
+    <%= form.text_field :provee_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cantidad %>
+    <%= form.text_field :cantidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :precio %>
+    <%= form.text_field :precio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :iva %>
+    <%= form.text_field :iva %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

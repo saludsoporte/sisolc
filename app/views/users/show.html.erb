@@ -1,0 +1,74 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Titulo:</strong>
+  <%= @user.titulo %>
+</p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @user.nombre %>
+</p>
+
+<p>
+  <strong>Puesto:</strong>
+  <%= @user.puesto %>
+</p>
+
+<p>
+  <strong>Area:</strong>
+  <%= @user.area_id %>
+</p>
+
+<p>
+  <strong>Rol:</strong>
+  <%= @user.rol_id %>
+</p>
+
+<p>
+  <strong>Estructura:</strong>
+  <%= @user.estructura_id %>
+</p>
+
+<p>
+  <strong>Login:</strong>
+  <%= @user.login %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @user.email %>
+</p>
+
+<p>
+  <strong>Crypted password:</strong>
+  <%= @user.crypted_password %>
+</p>
+
+<p>
+  <strong>Salt:</strong>
+  <%= @user.salt %>
+</p>
+
+<p>
+  <strong>Remember token:</strong>
+  <%= @user.remember_token %>
+</p>
+
+<p>
+  <strong>Remember token expires at:</strong>
+  <%= @user.remember_token_expires_at %>
+</p>
+
+<p>
+  <strong>Dato1:</strong>
+  <%= @user.dato1 %>
+</p>
+
+<p>
+  <strong>Dato2:</strong>
+  <%= @user.dato2 %>
+</p>
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>

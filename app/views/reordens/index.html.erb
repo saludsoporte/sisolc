@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Reordens</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Partida</th>
+      <th>Catalogo</th>
+      <th>Punto</th>
+      <th>Tipo</th>
+      <th>Almacen</th>
+      <th>User</th>
+      <th>Notifica</th>
+      <th>Vigenciai</th>
+      <th>Vigenciaf</th>
+      <th>Estado</th>
+      <th>Existencia</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @reordens.each do |reorden| %>
+      <tr>
+        <td><%= reorden.nombre %></td>
+        <td><%= reorden.partida_id %></td>
+        <td><%= reorden.catalogo_id %></td>
+        <td><%= reorden.punto %></td>
+        <td><%= reorden.tipo_id %></td>
+        <td><%= reorden.almacen_id %></td>
+        <td><%= reorden.user_id %></td>
+        <td><%= reorden.notifica_id %></td>
+        <td><%= reorden.vigenciai %></td>
+        <td><%= reorden.vigenciaf %></td>
+        <td><%= reorden.estado_id %></td>
+        <td><%= reorden.existencia %></td>
+        <td><%= link_to 'Show', reorden %></td>
+        <td><%= link_to 'Edit', edit_reorden_path(reorden) %></td>
+        <td><%= link_to 'Destroy', reorden, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Reorden', new_reorden_path %>

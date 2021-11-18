@@ -1,0 +1,22 @@
+<%= form_with(model: entidad) do |form| %>
+  <% if entidad.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(entidad.errors.count, "error") %> prohibited this entidad from being saved:</h2>
+
+      <ul>
+        <% entidad.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :entidad %>
+    <%= form.text_field :entidad %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

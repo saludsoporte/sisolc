@@ -1,0 +1,97 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Temp15s</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Ped</th>
+      <th>Detped</th>
+      <th>Anexo</th>
+      <th>Renglon</th>
+      <th>Partida</th>
+      <th>Partida</th>
+      <th>Catalogo</th>
+      <th>Clave</th>
+      <th>Descripcion</th>
+      <th>Presentacion</th>
+      <th>Precio</th>
+      <th>Prov</th>
+      <th>Fiscal</th>
+      <th>Marca</th>
+      <th>Proceso</th>
+      <th>Proceso</th>
+      <th>Empates</th>
+      <th>Fuente</th>
+      <th>Fuente</th>
+      <th>Clue</th>
+      <th>Almacen</th>
+      <th>Unidad</th>
+      <th>Programa</th>
+      <th>Cveprog</th>
+      <th>Programa</th>
+      <th>Subprog2011</th>
+      <th>Accion2011</th>
+      <th>Cantidad</th>
+      <th>Importe</th>
+      <th>Requisicion</th>
+      <th>Renglon</th>
+      <th>Sinonimo</th>
+      <th>Actividad</th>
+      <th>Entrega</th>
+      <th>Cp</th>
+      <th>Etiqueta</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @temp15s.each do |temp15| %>
+      <tr>
+        <td><%= temp15.ped_id %></td>
+        <td><%= temp15.detped_id %></td>
+        <td><%= temp15.anexo %></td>
+        <td><%= temp15.renglon %></td>
+        <td><%= temp15.partida_id %></td>
+        <td><%= temp15.partida %></td>
+        <td><%= temp15.catalogo_id %></td>
+        <td><%= temp15.clave %></td>
+        <td><%= temp15.descripcion %></td>
+        <td><%= temp15.presentacion %></td>
+        <td><%= temp15.precio %></td>
+        <td><%= temp15.prov_id %></td>
+        <td><%= temp15.fiscal %></td>
+        <td><%= temp15.marca %></td>
+        <td><%= temp15.proceso_id %></td>
+        <td><%= temp15.proceso %></td>
+        <td><%= temp15.empates %></td>
+        <td><%= temp15.fuente_id %></td>
+        <td><%= temp15.fuente %></td>
+        <td><%= temp15.clue_id %></td>
+        <td><%= temp15.almacen_id %></td>
+        <td><%= temp15.unidad %></td>
+        <td><%= temp15.programa_id %></td>
+        <td><%= temp15.cveprog %></td>
+        <td><%= temp15.programa %></td>
+        <td><%= temp15.subprog2011 %></td>
+        <td><%= temp15.accion2011 %></td>
+        <td><%= temp15.cantidad %></td>
+        <td><%= temp15.importe %></td>
+        <td><%= temp15.requisicion_id %></td>
+        <td><%= temp15.renglon_id %></td>
+        <td><%= temp15.sinonimo %></td>
+        <td><%= temp15.actividad %></td>
+        <td><%= temp15.entrega %></td>
+        <td><%= temp15.cp_id %></td>
+        <td><%= temp15.etiqueta %></td>
+        <td><%= link_to 'Show', temp15 %></td>
+        <td><%= link_to 'Edit', edit_temp15_path(temp15) %></td>
+        <td><%= link_to 'Destroy', temp15, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Temp15', new_temp15_path %>

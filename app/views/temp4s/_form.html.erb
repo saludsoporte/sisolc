@@ -1,0 +1,97 @@
+<%= form_with(model: temp4) do |form| %>
+  <% if temp4.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(temp4.errors.count, "error") %> prohibited this temp4 from being saved:</h2>
+
+      <ul>
+        <% temp4.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :ped_id %>
+    <%= form.text_field :ped_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :clave_id %>
+    <%= form.text_field :clave_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :descripcion %>
+    <%= form.text_area :descripcion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :presentacion %>
+    <%= form.text_field :presentacion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :marca_mod %>
+    <%= form.text_field :marca_mod %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cantidad %>
+    <%= form.text_field :cantidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :precio %>
+    <%= form.text_field :precio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :iva %>
+    <%= form.text_field :iva %>
+  </div>
+
+  <div class="field">
+    <%= form.label :caducidad %>
+    <%= form.number_field :caducidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :importe %>
+    <%= form.text_field :importe %>
+  </div>
+
+  <div class="field">
+    <%= form.label :total %>
+    <%= form.text_field :total %>
+  </div>
+
+  <div class="field">
+    <%= form.label :recibido %>
+    <%= form.text_field :recibido %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cancelado %>
+    <%= form.text_field :cancelado %>
+  </div>
+
+  <div class="field">
+    <%= form.label :estado_id %>
+    <%= form.text_field :estado_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :requisicion_id %>
+    <%= form.text_field :requisicion_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :renglon_id %>
+    <%= form.text_field :renglon_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

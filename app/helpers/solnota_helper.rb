@@ -1,0 +1,2 @@
+module SolnotaHelper
+end

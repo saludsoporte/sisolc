@@ -1,0 +1,72 @@
+<%= form_with(model: renglon) do |form| %>
+  <% if renglon.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(renglon.errors.count, "error") %> prohibited this renglon from being saved:</h2>
+
+      <ul>
+        <% renglon.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :requisicion_id %>
+    <%= form.text_field :requisicion_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :renglon %>
+    <%= form.text_field :renglon %>
+  </div>
+
+  <div class="field">
+    <%= form.label :proyecto_id %>
+    <%= form.text_field :proyecto_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :programa_id %>
+    <%= form.text_field :programa_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :clues_id %>
+    <%= form.text_field :clues_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :partida_id %>
+    <%= form.text_field :partida_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :ejercicio %>
+    <%= form.date_select :ejercicio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :descripcion %>
+    <%= form.text_field :descripcion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :importe %>
+    <%= form.text_field :importe %>
+  </div>
+
+  <div class="field">
+    <%= form.label :etiqueta_id %>
+    <%= form.text_field :etiqueta_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cant_detpeds %>
+    <%= form.text_field :cant_detpeds %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,2 @@
+class CatBasico < ApplicationRecord
+end

@@ -1,0 +1,2 @@
+json.extract! ped, :id, :clues_id, :proceso_id, :fecha, :proveedor_id, :condiciones_id, :almacen_id, :entrega, :requisicion_id, :programa_id, :observaciones, :user_id, :jda_id, :so_id, :cp_id, :da_id, :dg_id, :adq_id, :subtotal, :iva, :total, :estado_id, :renglon_id, :tipo_id, :partida_id, :pena, :contrato, :fuente_id, :fianza_id, :facfianza, :reqexterna, :requi2_id, :requi3_id, :requi4_id, :montoreq, :montoreq2, :montoreq3, :montoreq4, :requi5_id, :created_at, :updated_at
+json.url ped_url(ped, format: :json)

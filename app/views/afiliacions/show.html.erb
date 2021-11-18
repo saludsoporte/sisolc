@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Paciente:</strong>
+  <%= @afiliacion.paciente_id %>
+</p>
+
+<p>
+  <strong>Institu:</strong>
+  <%= @afiliacion.institu_id %>
+</p>
+
+<p>
+  <strong>Institucion:</strong>
+  <%= @afiliacion.institucion %>
+</p>
+
+<p>
+  <strong>Afiliacion:</strong>
+  <%= @afiliacion.afiliacion %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @afiliacion.user_id %>
+</p>
+
+<%= link_to 'Edit', edit_afiliacion_path(@afiliacion) %> |
+<%= link_to 'Back', afiliacions_path %>

@@ -1,0 +1,65 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Temp9s</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Almacen</th>
+      <th>Almacen</th>
+      <th>Fuentecve</th>
+      <th>Fuente</th>
+      <th>Fuente</th>
+      <th>Partida</th>
+      <th>Partida</th>
+      <th>Clave</th>
+      <th>Sinonimo</th>
+      <th>Catalogo</th>
+      <th>Descripcion</th>
+      <th>Presentacion</th>
+      <th>Cantidadp</th>
+      <th>Precio</th>
+      <th>Lote</th>
+      <th>Caducidad</th>
+      <th>Existencia</th>
+      <th>Monto</th>
+      <th>Movimiento</th>
+      <th>Estado</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @temp9s.each do |temp9| %>
+      <tr>
+        <td><%= temp9.almacen %></td>
+        <td><%= temp9.almacen_id %></td>
+        <td><%= temp9.fuentecve %></td>
+        <td><%= temp9.fuente %></td>
+        <td><%= temp9.fuente_id %></td>
+        <td><%= temp9.partida %></td>
+        <td><%= temp9.partida_id %></td>
+        <td><%= temp9.clave %></td>
+        <td><%= temp9.sinonimo %></td>
+        <td><%= temp9.catalogo_id %></td>
+        <td><%= temp9.descripcion %></td>
+        <td><%= temp9.presentacion %></td>
+        <td><%= temp9.cantidadp %></td>
+        <td><%= temp9.precio %></td>
+        <td><%= temp9.lote %></td>
+        <td><%= temp9.caducidad %></td>
+        <td><%= temp9.existencia %></td>
+        <td><%= temp9.monto %></td>
+        <td><%= temp9.movimiento_id %></td>
+        <td><%= temp9.estado_id %></td>
+        <td><%= link_to 'Show', temp9 %></td>
+        <td><%= link_to 'Edit', edit_temp9_path(temp9) %></td>
+        <td><%= link_to 'Destroy', temp9, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Temp9', new_temp9_path %>

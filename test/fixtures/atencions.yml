@@ -1,0 +1,39 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  clue: one
+  unidad: MyString
+  paciente: one
+  fecha: 2021-11-18 12:23:33
+  diagnosticos: MyText
+  tipoat: MyText
+  semanas: 1
+  gesta: 1
+  para: 1
+  aborto: 1
+  cesareas: 1
+  terminacion: MyString
+  termino: 2021-11-18
+  altapor: MyString
+  fechaeg: 2021-11-18 12:23:33
+  user: one
+  tipo: one
+
+two:
+  clue: two
+  unidad: MyString
+  paciente: two
+  fecha: 2021-11-18 12:23:33
+  diagnosticos: MyText
+  tipoat: MyText
+  semanas: 1
+  gesta: 1
+  para: 1
+  aborto: 1
+  cesareas: 1
+  terminacion: MyString
+  termino: 2021-11-18
+  altapor: MyString
+  fechaeg: 2021-11-18 12:23:33
+  user: two
+  tipo: two

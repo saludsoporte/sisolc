@@ -1,0 +1,167 @@
+<%= form_with(model: lote) do |form| %>
+  <% if lote.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(lote.errors.count, "error") %> prohibited this lote from being saved:</h2>
+
+      <ul>
+        <% lote.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :catalogo_id %>
+    <%= form.text_field :catalogo_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :ped_id %>
+    <%= form.text_field :ped_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cantidadp %>
+    <%= form.text_field :cantidadp %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cantidadu %>
+    <%= form.number_field :cantidadu %>
+  </div>
+
+  <div class="field">
+    <%= form.label :existencia %>
+    <%= form.text_field :existencia %>
+  </div>
+
+  <div class="field">
+    <%= form.label :caducidad %>
+    <%= form.date_select :caducidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :almacen_id %>
+    <%= form.text_field :almacen_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fecha %>
+    <%= form.date_select :fecha %>
+  </div>
+
+  <div class="field">
+    <%= form.label :lote %>
+    <%= form.text_field :lote %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fuente_id %>
+    <%= form.text_field :fuente_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :precio %>
+    <%= form.text_field :precio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :observacion %>
+    <%= form.text_field :observacion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :estado_id %>
+    <%= form.text_field :estado_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :movimiento_id %>
+    <%= form.text_field :movimiento_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :barras %>
+    <%= form.text_field :barras %>
+  </div>
+
+  <div class="field">
+    <%= form.label :requisicion_id %>
+    <%= form.text_field :requisicion_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :programa_id %>
+    <%= form.text_field :programa_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :proyecto_id %>
+    <%= form.text_field :proyecto_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :partida_id %>
+    <%= form.text_field :partida_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :etiqueta_id %>
+    <%= form.text_field :etiqueta_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :detped_id %>
+    <%= form.text_field :detped_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :lote_id %>
+    <%= form.text_field :lote_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :renglon_id %>
+    <%= form.text_field :renglon_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :salida_id %>
+    <%= form.text_field :salida_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cargo %>
+    <%= form.text_field :cargo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :abono %>
+    <%= form.text_field :abono %>
+  </div>
+
+  <div class="field">
+    <%= form.label :observsal %>
+    <%= form.text_field :observsal %>
+  </div>
+
+  <div class="field">
+    <%= form.label :prov_id %>
+    <%= form.text_field :prov_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :iva %>
+    <%= form.text_field :iva %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cartacom_id %>
+    <%= form.text_field :cartacom_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,82 @@
+<%= form_with(model: temp1) do |form| %>
+  <% if temp1.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(temp1.errors.count, "error") %> prohibited this temp1 from being saved:</h2>
+
+      <ul>
+        <% temp1.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :idpedido %>
+    <%= form.number_field :idpedido %>
+  </div>
+
+  <div class="field">
+    <%= form.label :partida %>
+    <%= form.number_field :partida %>
+  </div>
+
+  <div class="field">
+    <%= form.label :idarticulo %>
+    <%= form.text_field :idarticulo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :descripcio %>
+    <%= form.text_area :descripcio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :presentaci %>
+    <%= form.text_field :presentaci %>
+  </div>
+
+  <div class="field">
+    <%= form.label :marca %>
+    <%= form.text_field :marca %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cantidad %>
+    <%= form.text_field :cantidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :nombreunid %>
+    <%= form.text_field :nombreunid %>
+  </div>
+
+  <div class="field">
+    <%= form.label :preciounit %>
+    <%= form.text_field :preciounit %>
+  </div>
+
+  <div class="field">
+    <%= form.label :nombrefuen %>
+    <%= form.text_field :nombrefuen %>
+  </div>
+
+  <div class="field">
+    <%= form.label :requisicio %>
+    <%= form.number_field :requisicio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fiscal %>
+    <%= form.text_field :fiscal %>
+  </div>
+
+  <div class="field">
+    <%= form.label :ejercicio %>
+    <%= form.text_field :ejercicio %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

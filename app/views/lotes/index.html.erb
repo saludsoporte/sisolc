@@ -1,0 +1,85 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Lotes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Catalogo</th>
+      <th>Ped</th>
+      <th>Cantidadp</th>
+      <th>Cantidadu</th>
+      <th>Existencia</th>
+      <th>Caducidad</th>
+      <th>Almacen</th>
+      <th>Fecha</th>
+      <th>Lote</th>
+      <th>Fuente</th>
+      <th>Precio</th>
+      <th>Observacion</th>
+      <th>Estado</th>
+      <th>Movimiento</th>
+      <th>Barras</th>
+      <th>Requisicion</th>
+      <th>Programa</th>
+      <th>Proyecto</th>
+      <th>Partida</th>
+      <th>Etiqueta</th>
+      <th>Detped</th>
+      <th>Lote</th>
+      <th>Renglon</th>
+      <th>Salida</th>
+      <th>Cargo</th>
+      <th>Abono</th>
+      <th>Observsal</th>
+      <th>Prov</th>
+      <th>Iva</th>
+      <th>Cartacom</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @lotes.each do |lote| %>
+      <tr>
+        <td><%= lote.catalogo_id %></td>
+        <td><%= lote.ped_id %></td>
+        <td><%= lote.cantidadp %></td>
+        <td><%= lote.cantidadu %></td>
+        <td><%= lote.existencia %></td>
+        <td><%= lote.caducidad %></td>
+        <td><%= lote.almacen_id %></td>
+        <td><%= lote.fecha %></td>
+        <td><%= lote.lote %></td>
+        <td><%= lote.fuente_id %></td>
+        <td><%= lote.precio %></td>
+        <td><%= lote.observacion %></td>
+        <td><%= lote.estado_id %></td>
+        <td><%= lote.movimiento_id %></td>
+        <td><%= lote.barras %></td>
+        <td><%= lote.requisicion_id %></td>
+        <td><%= lote.programa_id %></td>
+        <td><%= lote.proyecto_id %></td>
+        <td><%= lote.partida_id %></td>
+        <td><%= lote.etiqueta_id %></td>
+        <td><%= lote.detped_id %></td>
+        <td><%= lote.lote_id %></td>
+        <td><%= lote.renglon_id %></td>
+        <td><%= lote.salida_id %></td>
+        <td><%= lote.cargo %></td>
+        <td><%= lote.abono %></td>
+        <td><%= lote.observsal %></td>
+        <td><%= lote.prov_id %></td>
+        <td><%= lote.iva %></td>
+        <td><%= lote.cartacom_id %></td>
+        <td><%= link_to 'Show', lote %></td>
+        <td><%= link_to 'Edit', edit_lote_path(lote) %></td>
+        <td><%= link_to 'Destroy', lote, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Lote', new_lote_path %>

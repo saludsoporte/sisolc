@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  area: MyString
+  estructura: one
+  area_abrev: MyString
+
+two:
+  area: MyString
+  estructura: two
+  area_abrev: MyString

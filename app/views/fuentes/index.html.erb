@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Fuentes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Periodo</th>
+      <th>Clave</th>
+      <th>Fuente</th>
+      <th>Cuenta</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @fuentes.each do |fuente| %>
+      <tr>
+        <td><%= fuente.periodo %></td>
+        <td><%= fuente.clave %></td>
+        <td><%= fuente.fuente %></td>
+        <td><%= fuente.cuenta %></td>
+        <td><%= link_to 'Show', fuente %></td>
+        <td><%= link_to 'Edit', edit_fuente_path(fuente) %></td>
+        <td><%= link_to 'Destroy', fuente, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Fuente', new_fuente_path %>

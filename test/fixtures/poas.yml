@@ -1,0 +1,57 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombreuni: MyString
+  programa: MyString
+  subprograma: MyString
+  accion: MyString
+  intcauses: MyString
+  afaspe: MyString
+  partida: 1
+  articulo: MyString
+  sino: MyString
+  descripcion: MyText
+  presentacion: MyString
+  precioiva: 9.99
+  cantidad: 9.99
+  presupuesto: 9.99
+  fuente: MyString
+  marca: MyString
+  observacion: MyString
+  preciolin: MyString
+  sacp_requisi: 1
+  sacp_interno: 1
+  sacp_anio: 1
+  fuente: one
+  accion: one
+  clave: one
+  sacp_esq: 1
+  clues: one
+
+two:
+  nombreuni: MyString
+  programa: MyString
+  subprograma: MyString
+  accion: MyString
+  intcauses: MyString
+  afaspe: MyString
+  partida: 1
+  articulo: MyString
+  sino: MyString
+  descripcion: MyText
+  presentacion: MyString
+  precioiva: 9.99
+  cantidad: 9.99
+  presupuesto: 9.99
+  fuente: MyString
+  marca: MyString
+  observacion: MyString
+  preciolin: MyString
+  sacp_requisi: 1
+  sacp_interno: 1
+  sacp_anio: 1
+  fuente: two
+  accion: two
+  clave: two
+  sacp_esq: 1
+  clues: two

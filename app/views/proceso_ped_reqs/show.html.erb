@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Proceso:</strong>
+  <%= @proceso_ped_req.proceso_id %>
+</p>
+
+<p>
+  <strong>Poas:</strong>
+  <%= @proceso_ped_req.poas_id %>
+</p>
+
+<p>
+  <strong>Req sacp:</strong>
+  <%= @proceso_ped_req.req_sacp %>
+</p>
+
+<p>
+  <strong>Req sacp interno:</strong>
+  <%= @proceso_ped_req.req_sacp_interno %>
+</p>
+
+<p>
+  <strong>Empate:</strong>
+  <%= @proceso_ped_req.empate %>
+</p>
+
+<p>
+  <strong>Clave:</strong>
+  <%= @proceso_ped_req.clave_id %>
+</p>
+
+<p>
+  <strong>Detpeds:</strong>
+  <%= @proceso_ped_req.detpeds_id %>
+</p>
+
+<p>
+  <strong>Entrega:</strong>
+  <%= @proceso_ped_req.entrega %>
+</p>
+
+<p>
+  <strong>Fecha:</strong>
+  <%= @proceso_ped_req.fecha %>
+</p>
+
+<p>
+  <strong>Cantidad:</strong>
+  <%= @proceso_ped_req.cantidad %>
+</p>
+
+<%= link_to 'Edit', edit_proceso_ped_req_path(@proceso_ped_req) %> |
+<%= link_to 'Back', proceso_ped_reqs_path %>

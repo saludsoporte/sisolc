@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Clave:</strong>
+  <%= @programa.clave %>
+</p>
+
+<p>
+  <strong>Programa:</strong>
+  <%= @programa.programa %>
+</p>
+
+<p>
+  <strong>Numpro:</strong>
+  <%= @programa.numpro %>
+</p>
+
+<%= link_to 'Edit', edit_programa_path(@programa) %> |
+<%= link_to 'Back', programas_path %>

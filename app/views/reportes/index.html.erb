@@ -1,0 +1,47 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Reportes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Reporte</th>
+      <th>Desde</th>
+      <th>Hasta</th>
+      <th>Unidad</th>
+      <th>Cpini</th>
+      <th>Cpfin</th>
+      <th>Usuario</th>
+      <th>Texto</th>
+      <th>Rango1</th>
+      <th>Rango2</th>
+      <th>Sistema</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @reportes.each do |reporte| %>
+      <tr>
+        <td><%= reporte.reporte %></td>
+        <td><%= reporte.desde %></td>
+        <td><%= reporte.hasta %></td>
+        <td><%= reporte.unidad %></td>
+        <td><%= reporte.cpini %></td>
+        <td><%= reporte.cpfin %></td>
+        <td><%= reporte.usuario %></td>
+        <td><%= reporte.texto %></td>
+        <td><%= reporte.rango1 %></td>
+        <td><%= reporte.rango2 %></td>
+        <td><%= reporte.sistema_id %></td>
+        <td><%= link_to 'Show', reporte %></td>
+        <td><%= link_to 'Edit', edit_reporte_path(reporte) %></td>
+        <td><%= link_to 'Destroy', reporte, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Reporte', new_reporte_path %>

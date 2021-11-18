@@ -1,0 +1,42 @@
+<%= form_with(model: afiliacion) do |form| %>
+  <% if afiliacion.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(afiliacion.errors.count, "error") %> prohibited this afiliacion from being saved:</h2>
+
+      <ul>
+        <% afiliacion.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :paciente_id %>
+    <%= form.text_field :paciente_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :institu_id %>
+    <%= form.text_field :institu_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :institucion %>
+    <%= form.text_field :institucion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :afiliacion %>
+    <%= form.text_field :afiliacion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

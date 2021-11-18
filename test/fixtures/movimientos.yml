@@ -1,0 +1,53 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  almacen: one
+  movimiento: one
+  ped: one
+  oridest: 1
+  user: one
+  descripcion: MyString
+  tipo: one
+  consec: 1
+  estado: one
+  fecha: 2021-11-18
+  partida: one
+  sancion: 9.99
+  importe: 9.99
+  factura: MyString
+  fechafac: 2021-11-18
+  impfac: 9.99
+  pedido: 1
+  facrepc: 2021-11-18
+  nfacrep: 1
+  tipo2: 1
+  notacre: MyString
+  montonota: 9.99
+  cve_factura_sacp: 
+  facrep: 2021-11-18 12:23:50
+
+two:
+  almacen: two
+  movimiento: two
+  ped: two
+  oridest: 1
+  user: two
+  descripcion: MyString
+  tipo: two
+  consec: 1
+  estado: two
+  fecha: 2021-11-18
+  partida: two
+  sancion: 9.99
+  importe: 9.99
+  factura: MyString
+  fechafac: 2021-11-18
+  impfac: 9.99
+  pedido: 1
+  facrepc: 2021-11-18
+  nfacrep: 1
+  tipo2: 1
+  notacre: MyString
+  montonota: 9.99
+  cve_factura_sacp: 
+  facrep: 2021-11-18 12:23:50

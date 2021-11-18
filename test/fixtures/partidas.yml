@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  partida: 1
+  descripcion: MyString
+  indice: 1.5
+  cog2011: 1
+  descripcion2: MyString
+
+two:
+  partida: 1
+  descripcion: MyString
+  indice: 1.5
+  cog2011: 1
+  descripcion2: MyString

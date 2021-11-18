@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Clave:</strong>
+  <%= @cat_basico.clave %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @cat_basico.descripcion %>
+</p>
+
+<p>
+  <strong>Presentacion:</strong>
+  <%= @cat_basico.presentacion %>
+</p>
+
+<p>
+  <strong>Precio:</strong>
+  <%= @cat_basico.precio %>
+</p>
+
+<p>
+  <strong>Es causes:</strong>
+  <%= @cat_basico.es_causes %>
+</p>
+
+<%= link_to 'Edit', edit_cat_basico_path(@cat_basico) %> |
+<%= link_to 'Back', cat_basicos_path %>

@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  clave: MyString
+  descripcion: MyString
+  presentacion: MyString
+  precio: 9.99
+  es_causes: false
+
+two:
+  clave: MyString
+  descripcion: MyString
+  presentacion: MyString
+  precio: 9.99
+  es_causes: false

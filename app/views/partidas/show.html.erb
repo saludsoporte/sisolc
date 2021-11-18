@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Partida:</strong>
+  <%= @partida.partida %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @partida.descripcion %>
+</p>
+
+<p>
+  <strong>Indice:</strong>
+  <%= @partida.indice %>
+</p>
+
+<p>
+  <strong>Cog2011:</strong>
+  <%= @partida.cog2011 %>
+</p>
+
+<p>
+  <strong>Descripcion2:</strong>
+  <%= @partida.descripcion2 %>
+</p>
+
+<%= link_to 'Edit', edit_partida_path(@partida) %> |
+<%= link_to 'Back', partidas_path %>

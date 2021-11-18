@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Solicitud:</strong>
+  <%= @solnotum.solicitud_id %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @solnotum.user_id %>
+</p>
+
+<p>
+  <strong>Fecha:</strong>
+  <%= @solnotum.fecha %>
+</p>
+
+<p>
+  <strong>Comenta:</strong>
+  <%= @solnotum.comenta %>
+</p>
+
+<%= link_to 'Edit', edit_solnotum_path(@solnotum) %> |
+<%= link_to 'Back', solnota_path %>

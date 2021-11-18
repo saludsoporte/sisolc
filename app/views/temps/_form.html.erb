@@ -1,0 +1,157 @@
+<%= form_with(model: temp) do |form| %>
+  <% if temp.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(temp.errors.count, "error") %> prohibited this temp from being saved:</h2>
+
+      <ul>
+        <% temp.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :pedido %>
+    <%= form.number_field :pedido %>
+  </div>
+
+  <div class="field">
+    <%= form.label :claveuni %>
+    <%= form.number_field :claveuni %>
+  </div>
+
+  <div class="field">
+    <%= form.label :nombreuni %>
+    <%= form.text_field :nombreuni %>
+  </div>
+
+  <div class="field">
+    <%= form.label :articulo %>
+    <%= form.text_field :articulo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :partida %>
+    <%= form.number_field :partida %>
+  </div>
+
+  <div class="field">
+    <%= form.label :preciouni %>
+    <%= form.text_field :preciouni %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cantidad %>
+    <%= form.text_field :cantidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :marca %>
+    <%= form.text_field :marca %>
+  </div>
+
+  <div class="field">
+    <%= form.label :clavepro %>
+    <%= form.number_field :clavepro %>
+  </div>
+
+  <div class="field">
+    <%= form.label :proveedor %>
+    <%= form.text_field :proveedor %>
+  </div>
+
+  <div class="field">
+    <%= form.label :entrega %>
+    <%= form.date_select :entrega %>
+  </div>
+
+  <div class="field">
+    <%= form.label :descripcion %>
+    <%= form.text_area :descripcion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :presentacion %>
+    <%= form.text_field :presentacion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :requisicion %>
+    <%= form.number_field :requisicion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :proceso %>
+    <%= form.text_field :proceso %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fuente %>
+    <%= form.text_field :fuente %>
+  </div>
+
+  <div class="field">
+    <%= form.label :pedidounico %>
+    <%= form.number_field :pedidounico %>
+  </div>
+
+  <div class="field">
+    <%= form.label :almacen %>
+    <%= form.text_field :almacen %>
+  </div>
+
+  <div class="field">
+    <%= form.label :archivo %>
+    <%= form.text_field :archivo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cantfac %>
+    <%= form.text_field :cantfac %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cantcanc %>
+    <%= form.text_field :cantcanc %>
+  </div>
+
+  <div class="field">
+    <%= form.label :elaboracion %>
+    <%= form.date_select :elaboracion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :etiqueta %>
+    <%= form.number_field :etiqueta %>
+  </div>
+
+  <div class="field">
+    <%= form.label :proyecto %>
+    <%= form.number_field :proyecto %>
+  </div>
+
+  <div class="field">
+    <%= form.label :programa %>
+    <%= form.text_field :programa %>
+  </div>
+
+  <div class="field">
+    <%= form.label :subprograma %>
+    <%= form.text_field :subprograma %>
+  </div>
+
+  <div class="field">
+    <%= form.label :comenta %>
+    <%= form.text_area :comenta %>
+  </div>
+
+  <div class="field">
+    <%= form.label :iva %>
+    <%= form.number_field :iva %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

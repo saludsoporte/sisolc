@@ -1,0 +1,83 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Temp18s</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Clues</th>
+      <th>Proceso</th>
+      <th>Fecha</th>
+      <th>Proveedor</th>
+      <th>Condiciones</th>
+      <th>Almacen</th>
+      <th>Entrega</th>
+      <th>Requisicion</th>
+      <th>Programa</th>
+      <th>Observaciones</th>
+      <th>User</th>
+      <th>Jda</th>
+      <th>So</th>
+      <th>Cp</th>
+      <th>Da</th>
+      <th>Dg</th>
+      <th>Adq</th>
+      <th>Subtotal</th>
+      <th>Iva</th>
+      <th>Total</th>
+      <th>Estado</th>
+      <th>Renglon</th>
+      <th>Tipo</th>
+      <th>Partida</th>
+      <th>Pena</th>
+      <th>Contrato</th>
+      <th>Fuente</th>
+      <th>Fianza</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @temp18s.each do |temp18| %>
+      <tr>
+        <td><%= temp18.id %></td>
+        <td><%= temp18.clues_id %></td>
+        <td><%= temp18.proceso_id %></td>
+        <td><%= temp18.fecha %></td>
+        <td><%= temp18.proveedor_id %></td>
+        <td><%= temp18.condiciones_id %></td>
+        <td><%= temp18.almacen_id %></td>
+        <td><%= temp18.entrega %></td>
+        <td><%= temp18.requisicion_id %></td>
+        <td><%= temp18.programa_id %></td>
+        <td><%= temp18.observaciones %></td>
+        <td><%= temp18.user_id %></td>
+        <td><%= temp18.jda_id %></td>
+        <td><%= temp18.so_id %></td>
+        <td><%= temp18.cp_id %></td>
+        <td><%= temp18.da_id %></td>
+        <td><%= temp18.dg_id %></td>
+        <td><%= temp18.adq_id %></td>
+        <td><%= temp18.subtotal %></td>
+        <td><%= temp18.iva %></td>
+        <td><%= temp18.total %></td>
+        <td><%= temp18.estado_id %></td>
+        <td><%= temp18.renglon_id %></td>
+        <td><%= temp18.tipo_id %></td>
+        <td><%= temp18.partida_id %></td>
+        <td><%= temp18.pena %></td>
+        <td><%= temp18.contrato %></td>
+        <td><%= temp18.fuente_id %></td>
+        <td><%= temp18.fianza_id %></td>
+        <td><%= link_to 'Show', temp18 %></td>
+        <td><%= link_to 'Edit', edit_temp18_path(temp18) %></td>
+        <td><%= link_to 'Destroy', temp18, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Temp18', new_temp18_path %>

@@ -1,0 +1,73 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Movimientos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Almacen</th>
+      <th>Movimiento</th>
+      <th>Ped</th>
+      <th>Oridest</th>
+      <th>User</th>
+      <th>Descripcion</th>
+      <th>Tipo</th>
+      <th>Consec</th>
+      <th>Estado</th>
+      <th>Fecha</th>
+      <th>Partida</th>
+      <th>Sancion</th>
+      <th>Importe</th>
+      <th>Factura</th>
+      <th>Fechafac</th>
+      <th>Impfac</th>
+      <th>Pedido</th>
+      <th>Facrepc</th>
+      <th>Nfacrep</th>
+      <th>Tipo2</th>
+      <th>Notacre</th>
+      <th>Montonota</th>
+      <th>Cve factura sacp</th>
+      <th>Facrep</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @movimientos.each do |movimiento| %>
+      <tr>
+        <td><%= movimiento.almacen_id %></td>
+        <td><%= movimiento.movimiento_id %></td>
+        <td><%= movimiento.ped_id %></td>
+        <td><%= movimiento.oridest %></td>
+        <td><%= movimiento.user_id %></td>
+        <td><%= movimiento.descripcion %></td>
+        <td><%= movimiento.tipo_id %></td>
+        <td><%= movimiento.consec %></td>
+        <td><%= movimiento.estado_id %></td>
+        <td><%= movimiento.fecha %></td>
+        <td><%= movimiento.partida_id %></td>
+        <td><%= movimiento.sancion %></td>
+        <td><%= movimiento.importe %></td>
+        <td><%= movimiento.factura %></td>
+        <td><%= movimiento.fechafac %></td>
+        <td><%= movimiento.impfac %></td>
+        <td><%= movimiento.pedido %></td>
+        <td><%= movimiento.facrepc %></td>
+        <td><%= movimiento.nfacrep %></td>
+        <td><%= movimiento.tipo2 %></td>
+        <td><%= movimiento.notacre %></td>
+        <td><%= movimiento.montonota %></td>
+        <td><%= movimiento.cve_factura_sacp %></td>
+        <td><%= movimiento.facrep %></td>
+        <td><%= link_to 'Show', movimiento %></td>
+        <td><%= link_to 'Edit', edit_movimiento_path(movimiento) %></td>
+        <td><%= link_to 'Destroy', movimiento, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Movimiento', new_movimiento_path %>

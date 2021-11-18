@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  requisicion: one
+  renglon: MyString
+  proyecto: one
+  programa: one
+  clues: one
+  partida: one
+  ejercicio: 2021-11-18
+  descripcion: MyString
+  importe: 9.99
+  etiqueta: one
+  cant_detpeds: 9.99
+
+two:
+  requisicion: two
+  renglon: MyString
+  proyecto: two
+  programa: two
+  clues: two
+  partida: two
+  ejercicio: 2021-11-18
+  descripcion: MyString
+  importe: 9.99
+  etiqueta: two
+  cant_detpeds: 9.99

@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ped: one
+  catalogo: one
+  nuevoped: 1
+
+two:
+  ped: two
+  catalogo: two
+  nuevoped: 1

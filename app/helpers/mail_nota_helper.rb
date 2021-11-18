@@ -1,0 +1,2 @@
+module MailNotaHelper
+end

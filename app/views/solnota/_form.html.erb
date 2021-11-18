@@ -1,0 +1,37 @@
+<%= form_with(model: solnotum) do |form| %>
+  <% if solnotum.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(solnotum.errors.count, "error") %> prohibited this solnotum from being saved:</h2>
+
+      <ul>
+        <% solnotum.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :solicitud_id %>
+    <%= form.text_field :solicitud_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fecha %>
+    <%= form.date_select :fecha %>
+  </div>
+
+  <div class="field">
+    <%= form.label :comenta %>
+    <%= form.text_area :comenta %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Requisicion:</strong>
+  <%= @reqnotum.requisicion_id %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @reqnotum.user_id %>
+</p>
+
+<p>
+  <strong>Fecha:</strong>
+  <%= @reqnotum.fecha %>
+</p>
+
+<p>
+  <strong>Comenta:</strong>
+  <%= @reqnotum.comenta %>
+</p>
+
+<%= link_to 'Edit', edit_reqnotum_path(@reqnotum) %> |
+<%= link_to 'Back', reqnota_path %>

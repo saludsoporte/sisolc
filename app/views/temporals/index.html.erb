@@ -1,0 +1,105 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Temporals</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>C1</th>
+      <th>C2</th>
+      <th>C3</th>
+      <th>C4</th>
+      <th>C5</th>
+      <th>C6</th>
+      <th>C7</th>
+      <th>C8</th>
+      <th>C9</th>
+      <th>C10</th>
+      <th>C11</th>
+      <th>C12</th>
+      <th>C13</th>
+      <th>C14</th>
+      <th>C15</th>
+      <th>C16</th>
+      <th>C17</th>
+      <th>C18</th>
+      <th>C19</th>
+      <th>C20</th>
+      <th>C21</th>
+      <th>C22</th>
+      <th>C23</th>
+      <th>C24</th>
+      <th>C25</th>
+      <th>C26</th>
+      <th>C27</th>
+      <th>C28</th>
+      <th>C29</th>
+      <th>C30</th>
+      <th>C31</th>
+      <th>C32</th>
+      <th>C33</th>
+      <th>C34</th>
+      <th>C35</th>
+      <th>C36</th>
+      <th>C37</th>
+      <th>C38</th>
+      <th>C39</th>
+      <th>C40</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @temporals.each do |temporal| %>
+      <tr>
+        <td><%= temporal.c1 %></td>
+        <td><%= temporal.c2 %></td>
+        <td><%= temporal.c3 %></td>
+        <td><%= temporal.c4 %></td>
+        <td><%= temporal.c5 %></td>
+        <td><%= temporal.c6 %></td>
+        <td><%= temporal.c7 %></td>
+        <td><%= temporal.c8 %></td>
+        <td><%= temporal.c9 %></td>
+        <td><%= temporal.c10 %></td>
+        <td><%= temporal.c11 %></td>
+        <td><%= temporal.c12 %></td>
+        <td><%= temporal.c13 %></td>
+        <td><%= temporal.c14 %></td>
+        <td><%= temporal.c15 %></td>
+        <td><%= temporal.c16 %></td>
+        <td><%= temporal.c17 %></td>
+        <td><%= temporal.c18 %></td>
+        <td><%= temporal.c19 %></td>
+        <td><%= temporal.c20 %></td>
+        <td><%= temporal.c21 %></td>
+        <td><%= temporal.c22 %></td>
+        <td><%= temporal.c23 %></td>
+        <td><%= temporal.c24 %></td>
+        <td><%= temporal.c25 %></td>
+        <td><%= temporal.c26 %></td>
+        <td><%= temporal.c27 %></td>
+        <td><%= temporal.c28 %></td>
+        <td><%= temporal.c29 %></td>
+        <td><%= temporal.c30 %></td>
+        <td><%= temporal.c31 %></td>
+        <td><%= temporal.c32 %></td>
+        <td><%= temporal.c33 %></td>
+        <td><%= temporal.c34 %></td>
+        <td><%= temporal.c35 %></td>
+        <td><%= temporal.c36 %></td>
+        <td><%= temporal.c37 %></td>
+        <td><%= temporal.c38 %></td>
+        <td><%= temporal.c39 %></td>
+        <td><%= temporal.c40 %></td>
+        <td><%= link_to 'Show', temporal %></td>
+        <td><%= link_to 'Edit', edit_temporal_path(temporal) %></td>
+        <td><%= link_to 'Destroy', temporal, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Temporal', new_temporal_path %>

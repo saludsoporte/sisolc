@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  paterno: MyString
+  materno: MyString
+  nombre: MyString
+  nacimiento: 2021-11-18
+  curp: MyString
+  observa: MyString
+  cambio: 2021-11-18
+  user: one
+
+two:
+  paterno: MyString
+  materno: MyString
+  nombre: MyString
+  nacimiento: 2021-11-18
+  curp: MyString
+  observa: MyString
+  cambio: 2021-11-18
+  user: two

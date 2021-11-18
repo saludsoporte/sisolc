@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Requisicions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Clues</th>
+      <th>Fuente</th>
+      <th>User</th>
+      <th>Autoriza</th>
+      <th>Estado</th>
+      <th>Anexos</th>
+      <th>Etiqueta</th>
+      <th>Importe</th>
+      <th>Vobo</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @requisicions.each do |requisicion| %>
+      <tr>
+        <td><%= requisicion.fecha %></td>
+        <td><%= requisicion.clues_id %></td>
+        <td><%= requisicion.fuente_id %></td>
+        <td><%= requisicion.user_id %></td>
+        <td><%= requisicion.autoriza_id %></td>
+        <td><%= requisicion.estado_id %></td>
+        <td><%= requisicion.anexos %></td>
+        <td><%= requisicion.etiqueta %></td>
+        <td><%= requisicion.importe %></td>
+        <td><%= requisicion.vobo_id %></td>
+        <td><%= link_to 'Show', requisicion %></td>
+        <td><%= link_to 'Edit', edit_requisicion_path(requisicion) %></td>
+        <td><%= link_to 'Destroy', requisicion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Requisicion', new_requisicion_path %>

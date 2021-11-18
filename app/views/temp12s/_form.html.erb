@@ -1,0 +1,32 @@
+<%= form_with(model: temp12) do |form| %>
+  <% if temp12.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(temp12.errors.count, "error") %> prohibited this temp12 from being saved:</h2>
+
+      <ul>
+        <% temp12.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :almacen_id %>
+    <%= form.text_field :almacen_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :catalogo_id %>
+    <%= form.text_field :catalogo_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :total %>
+    <%= form.text_field :total %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,61 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Solicituds</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Area</th>
+      <th>User</th>
+      <th>Vobotecnico</th>
+      <th>Tipo</th>
+      <th>Partida</th>
+      <th>Requisicion</th>
+      <th>Renglon</th>
+      <th>Notas</th>
+      <th>Anexos</th>
+      <th>Recepcion</th>
+      <th>Estado</th>
+      <th>Fuente</th>
+      <th>Programa</th>
+      <th>Proyecto</th>
+      <th>Importe</th>
+      <th>Adqui</th>
+      <th>Techo</th>
+      <th>Tipotecho</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @solicituds.each do |solicitud| %>
+      <tr>
+        <td><%= solicitud.area_id %></td>
+        <td><%= solicitud.user_id %></td>
+        <td><%= solicitud.vobotecnico_id %></td>
+        <td><%= solicitud.tipo_id %></td>
+        <td><%= solicitud.partida_id %></td>
+        <td><%= solicitud.requisicion_id %></td>
+        <td><%= solicitud.renglon_id %></td>
+        <td><%= solicitud.notas %></td>
+        <td><%= solicitud.anexos %></td>
+        <td><%= solicitud.recepcion %></td>
+        <td><%= solicitud.estado_id %></td>
+        <td><%= solicitud.fuente_id %></td>
+        <td><%= solicitud.programa_id %></td>
+        <td><%= solicitud.proyecto_id %></td>
+        <td><%= solicitud.importe %></td>
+        <td><%= solicitud.adqui_id %></td>
+        <td><%= solicitud.techo %></td>
+        <td><%= solicitud.tipotecho %></td>
+        <td><%= link_to 'Show', solicitud %></td>
+        <td><%= link_to 'Edit', edit_solicitud_path(solicitud) %></td>
+        <td><%= link_to 'Destroy', solicitud, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Solicitud', new_solicitud_path %>

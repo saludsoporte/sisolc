@@ -1,0 +1,53 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Evolucions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Paciente</th>
+      <th>Atencion</th>
+      <th>Fecha</th>
+      <th>Diagnosticos</th>
+      <th>Ta</th>
+      <th>Fr</th>
+      <th>Fc</th>
+      <th>Temp</th>
+      <th>Condiciones</th>
+      <th>Pendientes</th>
+      <th>Pronostico</th>
+      <th>User</th>
+      <th>Tipo</th>
+      <th>Fechaeg</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @evolucions.each do |evolucion| %>
+      <tr>
+        <td><%= evolucion.paciente_id %></td>
+        <td><%= evolucion.atencion_id %></td>
+        <td><%= evolucion.fecha %></td>
+        <td><%= evolucion.diagnosticos %></td>
+        <td><%= evolucion.ta %></td>
+        <td><%= evolucion.fr %></td>
+        <td><%= evolucion.fc %></td>
+        <td><%= evolucion.temp %></td>
+        <td><%= evolucion.condiciones %></td>
+        <td><%= evolucion.pendientes %></td>
+        <td><%= evolucion.pronostico %></td>
+        <td><%= evolucion.user_id %></td>
+        <td><%= evolucion.tipo_id %></td>
+        <td><%= evolucion.fechaeg %></td>
+        <td><%= link_to 'Show', evolucion %></td>
+        <td><%= link_to 'Edit', edit_evolucion_path(evolucion) %></td>
+        <td><%= link_to 'Destroy', evolucion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Evolucion', new_evolucion_path %>

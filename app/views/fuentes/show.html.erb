@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Periodo:</strong>
+  <%= @fuente.periodo %>
+</p>
+
+<p>
+  <strong>Clave:</strong>
+  <%= @fuente.clave %>
+</p>
+
+<p>
+  <strong>Fuente:</strong>
+  <%= @fuente.fuente %>
+</p>
+
+<p>
+  <strong>Cuenta:</strong>
+  <%= @fuente.cuenta %>
+</p>
+
+<%= link_to 'Edit', edit_fuente_path(@fuente) %> |
+<%= link_to 'Back', fuentes_path %>

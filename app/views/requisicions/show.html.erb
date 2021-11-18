@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Fecha:</strong>
+  <%= @requisicion.fecha %>
+</p>
+
+<p>
+  <strong>Clues:</strong>
+  <%= @requisicion.clues_id %>
+</p>
+
+<p>
+  <strong>Fuente:</strong>
+  <%= @requisicion.fuente_id %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @requisicion.user_id %>
+</p>
+
+<p>
+  <strong>Autoriza:</strong>
+  <%= @requisicion.autoriza_id %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @requisicion.estado_id %>
+</p>
+
+<p>
+  <strong>Anexos:</strong>
+  <%= @requisicion.anexos %>
+</p>
+
+<p>
+  <strong>Etiqueta:</strong>
+  <%= @requisicion.etiqueta %>
+</p>
+
+<p>
+  <strong>Importe:</strong>
+  <%= @requisicion.importe %>
+</p>
+
+<p>
+  <strong>Vobo:</strong>
+  <%= @requisicion.vobo_id %>
+</p>
+
+<%= link_to 'Edit', edit_requisicion_path(@requisicion) %> |
+<%= link_to 'Back', requisicions_path %>

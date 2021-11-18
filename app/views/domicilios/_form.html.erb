@@ -1,0 +1,72 @@
+<%= form_with(model: domicilio) do |form| %>
+  <% if domicilio.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(domicilio.errors.count, "error") %> prohibited this domicilio from being saved:</h2>
+
+      <ul>
+        <% domicilio.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :paciente_id %>
+    <%= form.text_field :paciente_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :entidad_id %>
+    <%= form.text_field :entidad_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :municipio %>
+    <%= form.text_field :municipio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :calle %>
+    <%= form.text_field :calle %>
+  </div>
+
+  <div class="field">
+    <%= form.label :numero %>
+    <%= form.text_field :numero %>
+  </div>
+
+  <div class="field">
+    <%= form.label :colonia %>
+    <%= form.text_field :colonia %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cp %>
+    <%= form.text_field :cp %>
+  </div>
+
+  <div class="field">
+    <%= form.label :telefono %>
+    <%= form.text_field :telefono %>
+  </div>
+
+  <div class="field">
+    <%= form.label :observa %>
+    <%= form.text_field :observa %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :muni_id %>
+    <%= form.text_field :muni_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

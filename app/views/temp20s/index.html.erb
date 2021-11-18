@@ -1,0 +1,47 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Temp20s</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Fecha</th>
+      <th>Clues</th>
+      <th>Fuente</th>
+      <th>User</th>
+      <th>Autoriza</th>
+      <th>Estado</th>
+      <th>Anexos</th>
+      <th>Etiqueta</th>
+      <th>Importe</th>
+      <th>Vobo</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @temp20s.each do |temp20| %>
+      <tr>
+        <td><%= temp20.id %></td>
+        <td><%= temp20.fecha %></td>
+        <td><%= temp20.clues_id %></td>
+        <td><%= temp20.fuente_id %></td>
+        <td><%= temp20.user_id %></td>
+        <td><%= temp20.autoriza_id %></td>
+        <td><%= temp20.estado_id %></td>
+        <td><%= temp20.anexos %></td>
+        <td><%= temp20.etiqueta %></td>
+        <td><%= temp20.importe %></td>
+        <td><%= temp20.vobo_id %></td>
+        <td><%= link_to 'Show', temp20 %></td>
+        <td><%= link_to 'Edit', edit_temp20_path(temp20) %></td>
+        <td><%= link_to 'Destroy', temp20, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Temp20', new_temp20_path %>

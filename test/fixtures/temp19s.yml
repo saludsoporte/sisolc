@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  clue: one
+  fuente: one
+  programa: one
+  importe: 9.99
+  proyecto: one
+  requisicion: one
+  ejercicio: 2021-11-18
+  partida: one
+
+two:
+  clue: two
+  fuente: two
+  programa: two
+  importe: 9.99
+  proyecto: two
+  requisicion: two
+  ejercicio: 2021-11-18
+  partida: two

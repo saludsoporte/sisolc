@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nivel:</strong>
+  <%= @cat_cabm.nivel %>
+</p>
+
+<p>
+  <strong>Partida:</strong>
+  <%= @cat_cabm.partida %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @cat_cabm.descripcion %>
+</p>
+
+<%= link_to 'Edit', edit_cat_cabm_path(@cat_cabm) %> |
+<%= link_to 'Back', cat_cabms_path %>

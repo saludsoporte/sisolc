@@ -1,0 +1,33 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  almacen: one
+  partida: one
+  fuente: one
+  ajuste: 9.99
+  lote: one
+  lote: MyString
+  caducidad: 2021-11-18
+  existen: 9.99
+  precio: 9.99
+  estado: one
+  tipo: one
+  fecharep: 2021-11-18
+  catalogo: one
+  descrip: MyString
+
+two:
+  almacen: two
+  partida: two
+  fuente: two
+  ajuste: 9.99
+  lote: two
+  lote: MyString
+  caducidad: 2021-11-18
+  existen: 9.99
+  precio: 9.99
+  estado: two
+  tipo: two
+  fecharep: 2021-11-18
+  catalogo: two
+  descrip: MyString
