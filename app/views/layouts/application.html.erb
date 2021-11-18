@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>EjemLogin</title>
+    <title>Sisolc</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -9,7 +9,19 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+  <body style=" background-color:#DCDCDC" >     
+    <%= render :partial => '/navigation' %>    
     <%= yield %>
+  
+  <footer >
+    <div class="footer">
+      <% if flash[:notice]%> 
+        <p style="color: green"><%= flash[:notice] %></p> 
+      <% end %> 
+      <% if flash[:error] %> 
+        <p style="color: red"><%= flash[:error] %></p> 
+      <% end %> 
+    </div>
+  </footer>
   </body>
 </html>

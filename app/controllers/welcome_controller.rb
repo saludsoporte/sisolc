@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
-  layout "general"
+  #layout "general"
   def index
     ##  @usuarios = User.find(:all, :order => "nombre")
     @usuarios = User.all.order(:nombre)
