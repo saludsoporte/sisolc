@@ -4,7 +4,7 @@ class SolnotasController < ApplicationController
   # GET /solnotas.xml
   def index
 	if [10].include?(current_user.rol_id)
-		@solnotas = Solnota.all
+		@solnotas = Solnotum.all
 
 		respond_to do |format|
 		format.html # index.html.erb
@@ -19,7 +19,7 @@ class SolnotasController < ApplicationController
   # GET /solnotas/1.xml
   def show
 	if [10].include?(current_user.rol_id)
-		@solnota = Solnota.find(params[:id])
+		@solnota = Solnotum.find(params[:id])
 
 		respond_to do |format|
 		format.html # show.html.erb
@@ -33,7 +33,7 @@ class SolnotasController < ApplicationController
   # GET /solnotas/new
   # GET /solnotas/new.xml
   def new
-    @solnota = Solnota.new
+    @solnota = Solnotum.new
 	@solicitud = params[:solicitud]
 
     respond_to do |format|
@@ -45,7 +45,7 @@ class SolnotasController < ApplicationController
   # GET /solnotas/1/edit
   def edit
 	if [10].include?(current_user.rol_id)
-		@solnota = Solnota.find(params[:id])
+		@solnota = Solnotum.find(params[:id])
 	else
 		redirect_to("/")
 	end
@@ -54,7 +54,7 @@ class SolnotasController < ApplicationController
   # POST /solnotas
   # POST /solnotas.xml
   def create
-    @solnota = Solnota.new(params[:solnota])
+    @solnota = Solnotum.new(params[:solnota])
 	if @solnota.fecha == nil
 		@solnota.fecha = Date.today
 	end
@@ -73,7 +73,7 @@ class SolnotasController < ApplicationController
   # PUT /solnotas/1
   # PUT /solnotas/1.xml
   def update
-    @solnota = Solnota.find(params[:id])
+    @solnota = Solnotum.find(params[:id])
 
     respond_to do |format|
       if @solnota.update_attributes(params[:solnota])
@@ -90,7 +90,7 @@ class SolnotasController < ApplicationController
   # DELETE /solnotas/1
   # DELETE /solnotas/1.xml
   def destroy
-    @solnota = Solnota.find(params[:id])
+    @solnota = Solnotum.find(params[:id])
     @solnota.destroy
 
     respond_to do |format|

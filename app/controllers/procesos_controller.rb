@@ -13,7 +13,7 @@ class ProcesosController < ApplicationController
 
   def vistaimp
     @proceso = Proceso.find(params[:id])
-    @propuestas = Propuesta.where("proceso_id =?",@proceso.id).order(provee_id: :asc,anexo: :asc,reng_id: :asc)
+    @propuestas = Propuestum.where("proceso_id =?",@proceso.id).order(provee_id: :asc,anexo: :asc,reng_id: :asc)
   end
 
   # GET /procesos/1
@@ -21,7 +21,7 @@ class ProcesosController < ApplicationController
   def show
     @proceso = Proceso.find(params[:id])
     @pedidos = Pedido.where("proceso =?",@proceso.proceso)
-    @propuestas = Propuesta.where("proceso_id =?",@proceso.id).order(provee_id: :asc,anexo: :asc,reng_id: :asc)
+    @propuestas = Propuestum.where("proceso_id =?",@proceso.id).order(provee_id: :asc,anexo: :asc,reng_id: :asc)
     @peds = Ped.where("proceso_id =? and estado_id in (1,3,12)",@proceso.id).order(:id)
     @resprovs = Ped.find_by_sql ["select pr.fiscal observaciones,sum(pd.total) total from peds pd,provs pr where proceso_id = ? and pd.proveedor_id = pr.id group by pr.fiscal order by total desc",@proceso.id]
 

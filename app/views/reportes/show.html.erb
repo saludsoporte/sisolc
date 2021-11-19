@@ -517,7 +517,7 @@
   </THEAD>
 <br/>
 <%	@renglons = Renglon.where("requisicion_id =?",@requisicion.id).order(:renglon) %>
-<%	@reqnotas = Reqnota.where("requisicion_id =?",@requisicion.id) %>
+<%	@reqnotas = Reqnotum.where("requisicion_id =?",@requisicion.id) %>
 <% for renglon in @renglons %> 
   <tr>
     <td align="center"><%=raw renglon.renglon %></td>
@@ -1371,9 +1371,9 @@
 
 <% @solicituds.each do |solicitud| %>
 <% if solicitud.adqui_id == nil %>
-	<% if [10].include?(current_user.rol_id) || Solnota.where("solicitud_id =? and user_id=?",solicitud.id,current_user.id) != nil || ([5,8,15].include?(current_user.rol_id) && (@soltipo == '2' ? true : [4,5,6,7,8].include?(solicitud.estado_id))) || ([7].include?(current_user.rol_id) && solicitud.area_id == 3) || ([11].include?(current_user.rol_id) && solicitud.area_id == 4) || ([6].include?(current_user.rol_id) && solicitud.area_id == 2) || ([16].include?(current_user.rol_id) && solicitud.area_id == 5) || [solicitud.user_id,solicitud.vobotecnico_id,solicitud.adqui_id].include?(current_user.id) || ([11].include?(current_user.rol_id) && [184,185,191,194,196].include?(solicitud.fuente_id)) %>
+	<% if [10].include?(current_user.rol_id) || Solnotum.where("solicitud_id =? and user_id=?",solicitud.id,current_user.id) != nil || ([5,8,15].include?(current_user.rol_id) && (@soltipo == '2' ? true : [4,5,6,7,8].include?(solicitud.estado_id))) || ([7].include?(current_user.rol_id) && solicitud.area_id == 3) || ([11].include?(current_user.rol_id) && solicitud.area_id == 4) || ([6].include?(current_user.rol_id) && solicitud.area_id == 2) || ([16].include?(current_user.rol_id) && solicitud.area_id == 5) || [solicitud.user_id,solicitud.vobotecnico_id,solicitud.adqui_id].include?(current_user.id) || ([11].include?(current_user.rol_id) && [184,185,191,194,196].include?(solicitud.fuente_id)) %>
 	<tr>
-	<% comenta = Solnota.where("solicitud_id =?",solicitud.id).order(:id).last() %>
+	<% comenta = Solnotum.where("solicitud_id =?",solicitud.id).order(:id).last() %>
 	<% difecha = comenta ? (Date.today - comenta.updated_at.to_date).to_i : nil %>
 	<% tono = 	case
 					when difecha == nil || difecha > 7
@@ -1559,9 +1559,9 @@
   </tr>
 
 <% @solicituds.each do |solicitud| %>
-	<% if [10].include?(current_user.rol_id) || Solnota.where("solicitud_id =? and user_id=?",solicitud.id,current_user.id ) != nil || ([5,8,15].include?(current_user.rol_id) && (@soltipo == '2' ? true : [4,5,6,7,8].include?(solicitud.estado_id))) || ([7].include?(current_user.rol_id) && solicitud.area_id == 3) || ([11].include?(current_user.rol_id) && solicitud.area_id == 4) || ([6].include?(current_user.rol_id) && solicitud.area_id == 2) || ([16].include?(current_user.rol_id) && solicitud.area_id == 5) || [solicitud.user_id,solicitud.vobotecnico_id,solicitud.adqui_id].include?(current_user.id) || ([11].include?(current_user.rol_id) && [184,185,191,194,196].include?(solicitud.fuente_id)) %>
+	<% if [10].include?(current_user.rol_id) || Solnotum.where("solicitud_id =? and user_id=?",solicitud.id,current_user.id ) != nil || ([5,8,15].include?(current_user.rol_id) && (@soltipo == '2' ? true : [4,5,6,7,8].include?(solicitud.estado_id))) || ([7].include?(current_user.rol_id) && solicitud.area_id == 3) || ([11].include?(current_user.rol_id) && solicitud.area_id == 4) || ([6].include?(current_user.rol_id) && solicitud.area_id == 2) || ([16].include?(current_user.rol_id) && solicitud.area_id == 5) || [solicitud.user_id,solicitud.vobotecnico_id,solicitud.adqui_id].include?(current_user.id) || ([11].include?(current_user.rol_id) && [184,185,191,194,196].include?(solicitud.fuente_id)) %>
 	<tr>
-	<% comenta = Solnota.where("solicitud_id =?",solicitud.id).order(:id).last %>
+	<% comenta = Solnotum.where("solicitud_id =?",solicitud.id).order(:id).last %>
 	<% difecha = comenta ? (Date.today - comenta.updated_at.to_date).to_i : nil %>
 	<% tono = 	case
 					when difecha == nil || difecha > 7

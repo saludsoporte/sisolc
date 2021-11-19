@@ -3,7 +3,7 @@ class PropuestasController < ApplicationController
   # GET /propuestas
   # GET /propuestas.xml
   def index
-    @propuestas = Propuesta.all
+    @propuestas = Propuestum.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,7 +14,7 @@ class PropuestasController < ApplicationController
   # GET /propuestas/1
   # GET /propuestas/1.xml
   def show
-    @propuesta = Propuesta.find(params[:id])
+    @propuesta = Propuestum.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -25,7 +25,7 @@ class PropuestasController < ApplicationController
   # GET /propuestas/new
   # GET /propuestas/new.xml
   def new
-    @propuesta = Propuesta.new
+    @propuesta = Propuestum.new
 	@partida = Partida.find(:first ,:conditions => { :partida => params[:partida] }).id
 	@proceso = params[:proceso]
 	
@@ -37,13 +37,13 @@ class PropuestasController < ApplicationController
 
   # GET /propuestas/1/edit
   def edit
-    @propuesta = Propuesta.find(params[:id])
+    @propuesta = Propuestum.find(params[:id])
   end
 
   # POST /propuestas
   # POST /propuestas.xml
   def create
-    @propuesta = Propuesta.new(params[:propuesta])
+    @propuesta = Propuestum.new(params[:propuesta])
 
     respond_to do |format|
       if @propuesta.save
@@ -60,7 +60,7 @@ class PropuestasController < ApplicationController
   # PUT /propuestas/1
   # PUT /propuestas/1.xml
   def update
-    @propuesta = Propuesta.find(params[:id])
+    @propuesta = Propuestum.find(params[:id])
     respond_to do |format|
       if @propuesta.update_attributes(params[:propuesta])
 		if @propuesta.catalogo_id != nil && @propuesta.precio != nil
@@ -90,7 +90,7 @@ class PropuestasController < ApplicationController
   # DELETE /propuestas/1
   # DELETE /propuestas/1.xml
   def destroy
-    @propuesta = Propuesta.find(params[:id])
+    @propuesta = Propuestum.find(params[:id])
     @propuesta.destroy
 
     respond_to do |format|

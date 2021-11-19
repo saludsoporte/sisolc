@@ -3,7 +3,7 @@ class Partida < ApplicationRecord
     has_many :catalogos
     has_many :renglons
     has_many :solicituds
-    has_many :propuestas
+    has_many :propuesta
     has_many :movimientos
     has_many :reordens
     has_many :peds

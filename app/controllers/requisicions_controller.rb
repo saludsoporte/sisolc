@@ -42,7 +42,7 @@ class RequisicionsController < ApplicationController
     logger.debug "visit ***********************"+params[:id]
     @requisicion = Requisicion.find(params[:id])
     @renglons = Renglon.where("requisicion_id = ?",params[:id]).order(:renglon)
-    @reqnotas = Reqnota.where("requisicion_id = ?",params[:id]).first
+    @reqnotas = Reqnotum.where("requisicion_id = ?",params[:id]).first
   end
 
   # GET /requisicions/1
@@ -50,7 +50,7 @@ class RequisicionsController < ApplicationController
   def show   
     @requisicion = Requisicion.find(params[:id])
     @renglones = Renglon.where("requisicion_id = ? ",params[:id]).order(:renglon)    
-    @reqnotas = Reqnota.where("requisicion_id = ?",params[:id]).first       
+    @reqnotas = Reqnotum.where("requisicion_id = ?",params[:id]).first       
   end
   # GET /requisicions/new
   # GET /requisicions/new.xml

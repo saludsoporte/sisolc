@@ -1,6 +1,6 @@
 class Solicitud < ApplicationRecord
   has_many :articulos
-	has_many :solnotas
+	has_many :solnota
 	belongs_to :user
 	belongs_to :area
 	belongs_to :tipo

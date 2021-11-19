@@ -4,7 +4,7 @@ class ReqnotasController < ApplicationController
   # GET /reqnotas.xml
   def index
 	if [10].include?(current_user.rol_id)
-		@reqnotas = Reqnota.all
+		@reqnotas = Reqnotum.all
 
 		respond_to do |format|
 			format.html # index.html.erb
@@ -19,7 +19,7 @@ class ReqnotasController < ApplicationController
   # GET /reqnotas/1.xml
   def show
 	if [10].include?(current_user.rol_id)
-		@reqnota = Reqnota.find(params[:id])
+		@reqnota = Reqnotum.find(params[:id])
 		respond_to do |format|
 			format.html # show.html.erb
 			format.xml  { render :xml => @reqnota }
@@ -32,7 +32,7 @@ class ReqnotasController < ApplicationController
   # GET /reqnotas/new
   # GET /reqnotas/new.xml
   def new
-    @reqnota = Reqnota.new
+    @reqnota = Reqnotum.new
 	@requisicion = params[:requisicion]
 
     respond_to do |format|
@@ -44,7 +44,7 @@ class ReqnotasController < ApplicationController
   # GET /reqnotas/1/edit
   def edit
 	if [10].include?(current_user.rol_id)
-		@reqnota = Reqnota.find(params[:id])
+		@reqnota = Reqnotum.find(params[:id])
 	else
 		redirect_to("/")
 	end
@@ -53,7 +53,7 @@ class ReqnotasController < ApplicationController
   # POST /reqnotas
   # POST /reqnotas.xml
   def create
-    @reqnota = Reqnota.new(params[:reqnota])
+    @reqnota = Reqnotum.new(params[:reqnota])
 	if @reqnota.fecha == nil
 		@reqnota.fecha = Date.today
 	end
@@ -76,7 +76,7 @@ class ReqnotasController < ApplicationController
   # PUT /reqnotas/1
   # PUT /reqnotas/1.xml
   def update
-    @reqnota = Reqnota.find(params[:id])
+    @reqnota = Reqnotum.find(params[:id])
 
     respond_to do |format|
       if @reqnota.update_attributes(params[:reqnota])
@@ -93,7 +93,7 @@ class ReqnotasController < ApplicationController
   # DELETE /reqnotas/1
   # DELETE /reqnotas/1.xml
   def destroy
-    @reqnota = Reqnota.find(params[:id])
+    @reqnota = Reqnotum.find(params[:id])
     @reqnota.destroy
 
     respond_to do |format|

@@ -171,7 +171,7 @@
 </table>
 <br/>
 <table border="1" width="100%">
-<% @solnotas = Solnota.find_by_sql(["select * from solnotas where solicitud_id = ? ", @solicitud.id])
+<% @solnotas = Solnotum.find_by_sql(["select * from solnota where solicitud_id = ? ", @solicitud.id])
    @solnotas.each do |solnota| %>
 	<tr>
 	<td><%=h solnota.fecha %></td>
