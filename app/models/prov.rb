@@ -1,4 +1,3 @@
 class Prov < ApplicationRecord
-  belongs_to :situacion
-  belongs_to :cvealma
+  has_many :peds
 end

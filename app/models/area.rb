@@ -1,3 +1,3 @@
 class Area < ApplicationRecord
-  belongs_to :estructura
+  has_many :solicituds
 end

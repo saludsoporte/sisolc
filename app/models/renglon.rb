@@ -1,8 +1,9 @@
 class Renglon < ApplicationRecord
+  has_many :articulos
+  has_many :solicituds
   belongs_to :requisicion
-  belongs_to :proyecto
-  belongs_to :programa
-  belongs_to :clues
+  belongs_to :clue
   belongs_to :partida
-  belongs_to :etiqueta
+  belongs_to :programa
+  belongs_to :proyecto
 end

@@ -1,3 +1,2 @@
-class Subpro < ApplicationRecord
-  belongs_to :programa
+class Subpro < ApplicationRecord  
 end
