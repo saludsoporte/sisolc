@@ -11,11 +11,11 @@ default: &default
 
 development:
   <<: *default
-  host: localhost
-  port: 5432 
-  database: sisolc  
-  password: 12345
-  username: postgres
+  host: 10.24.1.3
+  port: 5433 
+  database: sisolc_prod  
+  password: sisloco
+  username: sisolc
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
