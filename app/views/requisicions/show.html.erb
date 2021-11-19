@@ -70,14 +70,14 @@
 	<th>OBSERVACIONES REQUISICION # <%= @requisicion.id %></th>
 	</THEAD>
 <% end %>	
-<% for reqnota in @requisicion.reqnotas %>
+<% @reqnotas.each do |r| %>
 	<tr>
-	<td align="center"><%=raw reqnota.fecha %></td>
-	<td align="center"><%=raw User.find(:first, :conditions => { :id => reqnota.user_id }).name %></td>
-	<td><%=raw reqnota.comenta %></td>
+	<td align="center"><%=raw r.fecha %></td>
+	<td align="center"><%=raw User.find(r.user_id).name %></td>
+	<td><%=raw r.comenta %></td>
 	<% if current_user.rol_id==10 %>
-		<td><%= link_to 'Mod.', edit_reqnota_path(reqnota) %></td>
-		<td><%= link_to 'X', reqnota, :confirm => 'Seguro?', :method => :delete %></td>
+		<td><%= link_to 'Mod.', edit_reqnota_path(r.id) %></td>
+		<td><%= link_to 'X', reqnota_path(r.id), :confirm => 'Seguro?', :method => :delete %></td>
 	<% end%>
 	</tr>
 <% end %>

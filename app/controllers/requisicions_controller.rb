@@ -50,7 +50,7 @@ class RequisicionsController < ApplicationController
   def show   
     @requisicion = Requisicion.find(params[:id])
     @renglones = Renglon.where("requisicion_id = ? ",params[:id]).order(:renglon)    
-    @reqnotas = Reqnotum.where("requisicion_id = ?",params[:id]).first       
+    @reqnotas = Reqnotum.where("requisicion_id = ?",params[:id])       
   end
   # GET /requisicions/new
   # GET /requisicions/new.xml

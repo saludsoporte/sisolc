@@ -76,9 +76,16 @@ class SolnotasController < ApplicationController
     @solnota = Solnotum.find(params[:id])
 
     respond_to do |format|
-      if @solnota.update_attributes(params[:solnota])
+      if @solnota.update(
+          solicitud_id:params[:solnotum][:solicitud_id],
+          user_id:params[:solnotum][:user_id],
+          :"fecha(1i)"=>params[:solnotum][:"fecha(1i)"],
+          :"fecha(2i)"=>params[:solnotum][:"fecha(2i)"],
+          :"fecha(3i)"=>params[:solnotum][:"fecha(3i)"],
+          comenta:params[:solnotum][:comenta]         
+        )
         flash[:notice] = 'Solnota was successfully updated.'
-        format.html { redirect_to(@solnota) }
+        format.html { redirect_to solnota_path(@solnota.id) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

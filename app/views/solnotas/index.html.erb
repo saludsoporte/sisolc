@@ -14,9 +14,9 @@
     <td><%=h solnota.user_id %></td>
     <td><%=h solnota.fecha %></td>
     <td><%=h solnota.comenta %></td>
-    <td><%= link_to 'Show', solnota %></td>
+    <td><%= link_to 'Show', solnota_path(solnota.id) %></td>
     <td><%= link_to 'Edit', edit_solnota_path(solnota) %></td>
-    <td><%= link_to 'Destroy', solnota, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Destroy', solnota_path(solnota.id), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

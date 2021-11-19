@@ -3,7 +3,7 @@ class ReqnotasController < ApplicationController
   # GET /reqnotas
   # GET /reqnotas.xml
   def index
-	if [10].include?(current_user.rol_id)
+	if ![10].include?(current_user.rol_id)
 		@reqnotas = Reqnotum.all
 
 		respond_to do |format|
@@ -18,7 +18,7 @@ class ReqnotasController < ApplicationController
   # GET /reqnotas/1
   # GET /reqnotas/1.xml
   def show
-	if [10].include?(current_user.rol_id)
+	if ![10].include?(current_user.rol_id)
 		@reqnota = Reqnotum.find(params[:id])
 		respond_to do |format|
 			format.html # show.html.erb
@@ -33,7 +33,7 @@ class ReqnotasController < ApplicationController
   # GET /reqnotas/new.xml
   def new
     @reqnota = Reqnotum.new
-	@requisicion = params[:requisicion]
+	  @requisicion=Requisicion.all
 
     respond_to do |format|
       format.html # new.html.erb
@@ -43,7 +43,7 @@ class ReqnotasController < ApplicationController
 
   # GET /reqnotas/1/edit
   def edit
-	if [10].include?(current_user.rol_id)
+	if ![10].include?(current_user.rol_id)
 		@reqnota = Reqnotum.find(params[:id])
 	else
 		redirect_to("/")
@@ -53,7 +53,11 @@ class ReqnotasController < ApplicationController
   # POST /reqnotas
   # POST /reqnotas.xml
   def create
-    @reqnota = Reqnotum.new(params[:reqnota])
+    logger.debug"*/*/****************"+params[:reqnotum].to_s
+    @reqnota = Reqnotum.new(
+      requisicion_id:reqnotas[:requisicion_id],
+      user_id:reqnotas[:user_id],
+      comenta:reqnotas[:comenta] )
 	if @reqnota.fecha == nil
 		@reqnota.fecha = Date.today
 	end
@@ -79,9 +83,16 @@ class ReqnotasController < ApplicationController
     @reqnota = Reqnotum.find(params[:id])
 
     respond_to do |format|
-      if @reqnota.update_attributes(params[:reqnota])
+      if @reqnota.update(
+        requisicion_id:reqnotas[:requisicion_id],
+        user_id:reqnotas[:user_id],
+        :"fecha(1i)"=>  reqnotas[:"fecha(1i)"],
+        :"fecha(2i)"=> reqnotas[:"fecha(2i)"],
+        :"fecha(3i)"=> reqnotas[:"fecha(3i)"],
+        comenta:reqnotas[:comenta]         
+        )
         flash[:notice] = 'Reqnota was successfully updated.'
-        format.html { redirect_to(@reqnota) }
+        format.html { redirect_to reqnota_path(@reqnota.id) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -103,3 +114,6 @@ class ReqnotasController < ApplicationController
   end
 end
 
+def reqnotas
+  @parametros=params[:reqnotum]
+end

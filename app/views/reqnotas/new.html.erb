@@ -2,21 +2,31 @@
 	<tr>
 		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
 		<td align="center"><h2>Nuevo Comentario a <br/>Requisicion</h2></td>
-  <% form_for(@reqnota) do |f| %>
-  <%= f.error_messages %>
+  	<%= form_for(@reqnota,url:reqnotas_path) do |f| %>  
+  		<%= @reqnota.errors.full_messages.each do |msg| %>
+    		<div class="alert alert-danger container">
+      			* <%= msg %>
+    		</div>
+		<% end %>
 		<td align="center">
 		<b>Requisicion:</b><br/>
-		<%= f.select :requisicion_id, Requisicion.find(:all ,:conditions => { :id => @requisicion }, :order => "id").collect {|s| [s.id, s.id]} %>  </p>
+		<%= f.select(:requisicion_id,"",{},{}) do %>
+			<%= options_from_collection_for_select(@requisicion,:id,:id) %>
+		<% end %>
+		<%# f.select.pluck(:requisicion_id,@requisicion) %>  </p>
 		<br/><br/><b>Fecha:</b><br/>
 		<%= f.date_select :fecha, :use_month_numbers => true, :disabled => true %>
 		</td>
 		<td align="center">
 		<b>Usuario:</b><br/>
-		<%= f.select :user_id, User.find(:all , :conditions => { :id => current_user.id}, :order => "nombre").collect {|s| [s.name, s.id]} %>  </p>
+		<%= f.select(:user_id,"",{},{}) do %>
+			<%= options_from_collection_for_select(User.all,:id,:nombre) %>
+		<% end %>
+		<%# f.select :user_id, User.find(:all , :conditions => { :id => current_user.id}, :order => "nombre").collect {|s| [s.name, s.id]} %>  </p>
 		</td>
 	</tr>
 </table>
-  <%= f.error_messages %>
+  
   <p>
     <%= f.label :comenta %><br />
     <%= f.text_area :comenta %>

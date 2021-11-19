@@ -1,7 +1,11 @@
 <h1>Editing reqnota</h1>
 
-<% form_for(@reqnota) do |f| %>
-  <%= f.error_messages %>
+<%= form_for(@reqnota,url: reqnota_path) do |f| %>
+  <% @reqnota.errors.full_messages.each do |msg| %>
+    <div class="alert alert-danger container">
+      * <%= msg %>
+    </div>
+  <% end %>
 
   <p>
     <%= f.label :requisicion_id %><br />
@@ -24,5 +28,5 @@
   </p>
 <% end %>
 
-<%= link_to 'Show', @reqnota %> |
+<%= link_to 'Show', reqnota_path(@reqnota.id) %> |
 <%= link_to 'Back', reqnotas_path %>

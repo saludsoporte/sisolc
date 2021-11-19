@@ -1,7 +1,11 @@
 <h1>Editing solnota</h1>
 
-<% form_for(@solnota) do |f| %>
-  <%= f.error_messages %>
+<%= form_for(@solnota,url:solnota_path) do |f| %>
+  <% @solnota.errors.full_messages.each do |msg| %>
+    <div class="alert alert-danger container">
+      * <%= msg %>
+    </div>
+  <% end %>
 
   <p>
     <%= f.label :solicitud_id %><br />
@@ -24,5 +28,5 @@
   </p>
 <% end %>
 
-<%= link_to 'Show', @solnota %> |
+<%= link_to 'Show', solnota_path(@solnota.id) %> |
 <%= link_to 'Back', solnotas_path %>

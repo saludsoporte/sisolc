@@ -28,8 +28,8 @@ Rails.application.routes.draw do
 		:renglons,
 		:pedidos,
 		:poas,
-		:reqnota,
-		:solnota,
+		:reqnotas,
+		:solnotas,
 		:peds,
 		:articulos,
 		:provs,
@@ -52,6 +52,6 @@ Rails.application.routes.draw do
 		:atencions,
 		:evolucions,
 		:nacidos,
-    :propuesta
+    :propuestas
 
 end
