@@ -6,22 +6,24 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>    
+    <%= javascript_pack_tag 'reqnota' %>
   </head>
 
   <body style=" background-color:#DCDCDC" >     
     <%= render :partial => '/navigation' %>    
     <%= yield %>
-  
+<!--  
   <footer >
     <div class="footer">
-      <% if flash[:notice]%> 
-        <p style="color: green"><%= flash[:notice] %></p> 
-      <% end %> 
-      <% if flash[:error] %> 
-        <p style="color: red"><%= flash[:error] %></p> 
-      <% end %> 
+      <%# if flash[:notice]%> 
+        <p style="color: green"><%# flash[:notice] %></p> 
+      <%# end %> 
+      <%# if flash[:error] %> 
+        <p style="color: red"><%# flash[:error] %></p> 
+      <%# end %> 
     </div>
   </footer>
+  -->
   </body>
 </html>

@@ -3,8 +3,8 @@ class ReqnotasController < ApplicationController
   # GET /reqnotas
   # GET /reqnotas.xml
   def index
-	if ![10].include?(current_user.rol_id)
-		@reqnotas = Reqnotum.all
+	if [10].include?(current_user.rol_id)
+		@reqnotas = Reqnotum.paginate(page:params[:page]).all
 
 		respond_to do |format|
 			format.html # index.html.erb
@@ -18,7 +18,7 @@ class ReqnotasController < ApplicationController
   # GET /reqnotas/1
   # GET /reqnotas/1.xml
   def show
-	if ![10].include?(current_user.rol_id)
+	if [10].include?(current_user.rol_id)
 		@reqnota = Reqnotum.find(params[:id])
 		respond_to do |format|
 			format.html # show.html.erb
@@ -43,7 +43,7 @@ class ReqnotasController < ApplicationController
 
   # GET /reqnotas/1/edit
   def edit
-	if ![10].include?(current_user.rol_id)
+	if [10].include?(current_user.rol_id)
 		@reqnota = Reqnotum.find(params[:id])
 	else
 		redirect_to("/")

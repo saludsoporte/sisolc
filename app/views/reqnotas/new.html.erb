@@ -1,30 +1,40 @@
-<table border="0" width="100%">
+<div class="container boder_div">
+<%= link_to 'Regresar a Requisicion', requisicion_path(@requisicion) %> |
+<%= link_to 'Requisiciones', requisicions_path %>
+<%= form_for(@reqnota,url:reqnotas_path) do |f| %>  
+<table class="table table-sm" border="0" width="100%">
+<thead></thead>
+<tbody>
 	<tr>
-		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
-		<td align="center"><h2>Nuevo Comentario a <br/>Requisicion</h2></td>
-  	<%= form_for(@reqnota,url:reqnotas_path) do |f| %>  
-  		<%= @reqnota.errors.full_messages.each do |msg| %>
+		<td><%= image_tag("LOGO SERVICIOS DE SALUD-1 fondo claro.png",size:"250x80",alt: :"Servicios de Salud de S.L.P." ) %></td>
+		<td colspan="2"><h2>Nuevo Comentario a <br/>Requisicion</h2></td>  	
+  		<% @reqnota.errors.full_messages.each do |msg| %>
     		<div class="alert alert-danger container">
       			* <%= msg %>
     		</div>
 		<% end %>
-		<td align="center">
-		<b>Requisicion:</b><br/>
-		<%= f.select(:requisicion_id,"",{},{}) do %>
-			<%= options_from_collection_for_select(@requisicion,:id,:id) %>
-		<% end %>
-		<%# f.select.pluck(:requisicion_id,@requisicion) %>  </p>
-		<br/><br/><b>Fecha:</b><br/>
-		<%= f.date_select :fecha, :use_month_numbers => true, :disabled => true %>
+	</tr>
+	<tr>
+		<td ><b>Requisicion:</b><br/>
+			<div class="form-group" data-controller='select2'>
+			<%= f.select(:requisicion_id,"",{},{class: :"form-select",id: :requisicion,name: :requisicion}) do %>
+				<%= options_from_collection_for_select(@requisicion,:id,:id) %>
+			<% end %>		
+			</div>
+	</td>
+		<td>
+			<b>Fecha:</b><br>
+			<%= f.date_select :fecha, :use_month_numbers => true, :disabled => true %>
 		</td>
 		<td align="center">
 		<b>Usuario:</b><br/>
-		<%= f.select(:user_id,"",{},{}) do %>
+		<%= f.select(:user_id,"",{},{class: :"form-select",id: :user_select,name: :user_select}) do %>
 			<%= options_from_collection_for_select(User.all,:id,:nombre) %>
 		<% end %>
 		<%# f.select :user_id, User.find(:all , :conditions => { :id => current_user.id}, :order => "nombre").collect {|s| [s.name, s.id]} %>  </p>
 		</td>
 	</tr>
+</tbody>
 </table>
   
   <p>
@@ -35,6 +45,4 @@
     <%= f.submit 'Crear' %>
   </p>
 <% end %>
-
-<%= link_to 'Regresar a Requisicion', requisicion_path(@requisicion) %> |
-<%= link_to 'Requisiciones', requisicions_path %>
+</div>

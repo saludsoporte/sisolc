@@ -3,7 +3,7 @@ class AlmacensController < ApplicationController
     # GET /almacens
     # GET /almacens.xml
     def index
-      @almacens = Almacen.all().order(tipo: :asc,nombre: :asc)
+      @almacens = Almacen.paginate(page:params[:page]).all().order(tipo: :asc,nombre: :asc)
   
       respond_to do |format|
         format.html # index.html.erb
@@ -24,19 +24,19 @@ class AlmacensController < ApplicationController
       logger.debug "*************** movimiento_id "+@movimiento_id.to_s
                  
       if @marbetes
-          @existencias = Lote.find_by_sql ["select distinct almacen_id,fuente_id,partida_id,catalogo_id,lote,caducidad from lotes where existencia > 0.0 and almacen_id = ? order by fuente_id,partida_id,catalogo_id",@almacen]
+          @existencias = Lote.paginate(page:params[:page]).where("existencia > 0.0 and almacen_id=?",@alamcen).order(:fuente_id,:partida_id,:catalogo_id )
+          
+          #find_by_sql ["select distinct almacen_id,fuente_id,partida_id,catalogo_id,lote,caducidad 
+          #from lotes where existencia > 0.0 and almacen_id = ? order by fuente_id,partida_id,catalogo_id",@almacen]
       else
           if @partida_id == nil
-              @existencias = Lote.find_by_sql ["select * from lotes where existencia > 0.0 and almacen_id = ? order by partida_id,catalogo_id,fuente_id,caducidad",@almacen]
+              @existencias =  Lote.paginate(page:params[:page]).where("existencia > 0.0 and almacen_id=?",@alamcen).order(:fuente_id,:partida_id,:catalogo_id )          
           else
               @partida_id = @partida_id.to_i
-              @existencias = Lote.find_by_sql ["select * from lotes where existencia > 0.0 and almacen_id = ? and partida_id = ? order by catalogo_id,fuente_id,caducidad",@almacen,@partida_id]
+              @existencias =  Lote.paginate(page:params[:page]).where("existencia > 0.0 and almacen_id=? and partida_id=?",@alamcen,@partida_id).order(:fuente_id,:partida_id,:catalogo_id )
+          
           end	
-      end
-      respond_to do |format|
-        format.html # show.html.erb
-        format.xml  { render :xml => @almacen }
-      end
+      end    
     end
   
     # GET /almacens/new

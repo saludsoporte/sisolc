@@ -1,44 +1,38 @@
-<HEAD>
-    <STYLE TYPE="text/css">
-         P.breakhere {page-break-before: always}
-    </STYLE>
-    </HEAD>
+<div class="container boder_div">
     <% if !@marbetes %>
-    <table border="0" width="90%">
-        <tr>
-            <td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
-            <td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
+    <table class="table table-sm" width="90%">
+        <td><%= image_tag("LOGO SERVICIOS DE SALUD-1 fondo claro.png",size:"250x80",alt: :"Servicios de Salud de S.L.P." ) %></td>
+	    <td><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
             <h2><%= !@marbetes ? 'Existencias de Almacen' : 'Marbetes para Inventario' %></h2>
                 <%= @almacen.nombre %>
-            <td align="center">
-                <%= link_to 'Inicio', url_for("/") %>
-                <br/><br/><%= link_to 'Movimientos', movimientos_path(:almacen=>@almacen.id) %>
-                <br/><br/><%= link_to 'Almacenes', almacens_path %>
-            </td>
-        </tr>
+        <td align="center">
+            <%= link_to 'Inicio', url_for("/") %>
+            <br/><br/><%= link_to 'Movimientos', movimientos_path(:almacen=>@almacen.id) %>
+            <br/><br/><%= link_to 'Almacenes', almacens_path %>
+        </td>    
     </table>
-    <table border="10" width="100%">
+    
+    <table class="table table-striped " style="text-align:center">
     <% articulo = nil %>
     <% @existencia = 0.0 %>
     <% @existencias.each do |lote| %>
-
         <% if articulo != lote.catalogo_id %>
             <% if !lote.catalogo_id.nil? %>
                 <% @catalogo = Catalogo.find(lote.catalogo_id) %>
                 <% if articulo != nil %>
                     <tr>
-                        <td align="right" colspan="3"><%= @existencia %></td>
-                        <th align="center" colspan="2">Existencia Total</th>
+                        <td colspan="3"><%= @existencia %></td>
+                        <th colspan="10">Existencia Total</th>
                     </tr>
                 <% end %>
             <% end %>
-            <tr>
-                <th align="center" colspan="8">Descripcion</th>
-                <th align="center" colspan="4">Presentaci&oacute;n</th>
+            <tr class="table-dark">
+                <th colspan="8">Descripcion</th>
+                <th colspan="5">Presentaci&oacute;n</th>
             </tr>
             <tr>
                 <td align="center" colspan="8"><%= @catalogo ? @catalogo.descripcion : lote.observacion %></td>
-                <td align="center" colspan="4"><%= @catalogo ? @catalogo.presentacion : " " %></td>
+                <td align="center" colspan="5"><%= @catalogo ? @catalogo.presentacion : " " %></td>
             </tr>
             <tr>
                 <th>#Lote</th>
@@ -60,11 +54,11 @@
         <% end %>	
         <% @existencia = @existencia + (lote.existencia.blank? ? 0.0 : lote.existencia)  %>
       <tr>
-        <td align="center"><%= lote.id %></td>
-        <td align="center"><%= @catalogo ? link_to(lote.partida.partida_armonizada,partida_path(@catalogo.partida_id)) : lote.partida.partidas %></td>
-        <td align="center"><%= @catalogo ? link_to(@catalogo.clave, catalogo_path(@catalogo,:acceso=>2,:almacen=>lote.almacen_id)) : lote.observacion %></td>
-        <td align="center"><%= lote.existencia %></td>
-        <td align="center"><%=h lote.cantidadu != nil ? lote.cantidadu * lote.existencia : '' %></td>
+        <td><%= lote.id %></td>
+        <td><%= @catalogo ? link_to(lote.partida.partida_armonizada,partida_path(@catalogo.partida_id)) : lote.partida.partidas %></td>
+        <td><%= @catalogo ? link_to(@catalogo.clave, catalogo_path(@catalogo,:acceso=>2,:almacen=>lote.almacen_id)) : lote.observacion %></td>
+        <td><%= lote.existencia %></td>
+        <td ><%=lote.cantidadu != nil ? lote.cantidadu * lote.existencia : '' %></td>
         <% difecha = lote.caducidad != nil ? (lote.caducidad - Date.today).to_i : nil %>
         <% tono = 	case
                         when difecha == nil || difecha > 365
@@ -80,14 +74,14 @@
                         when difecha <= 365
                             '#FFFFFF'
                     end %>
-        <td align="center" bgcolor=<%= tono %>><%=h lote.caducidad %><%= difecha != nil ? '/'+difecha.to_s : '' %></td>
-        <td align="center"><%=h lote.lote %></td>
-        <td align="center"><%=h lote.fuente == nil ? 'FALTANTE' : lote.fuente.fuente%></td>
-        <td align="center"><%=h number_to_currency(lote.precio, :unit => '$', :separator => ".", :delimiter => ",") %></td>
-        <td align="center"><%=h lote.observacion %></td>
-        <td align="center"><%= link_to 'Ver',movimiento_path(lote.movimiento_id.blank? ? lote.salida_id : lote.movimiento_id) %></td>
-        <td align="center"><%= lote.ped_id != nil ? link_to(lote.ped_id,ped_path(lote.ped_id)) : '' %></td>
-        <td align="center"><%= lote.estado.estado %></td>
+        <td  bgcolor=<%= tono %> style="font-size:10px" ><%= lote.caducidad %><%= difecha != nil ? '/'+difecha.to_s : '' %></td>
+        <td style="font-size:10px" ><%= lote.lote %></td>
+        <td ><%= lote.fuente == nil ? 'FALTANTE' : lote.fuente.fuente%></td>
+        <td ><%= number_to_currency(lote.precio, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+        <td ><%= lote.observacion %></td>
+        <td ><%= link_to 'Ver',movimiento_path(lote.movimiento_id.blank? ? lote.salida_id : lote.movimiento_id) %></td>
+        <td ><%= lote.ped_id != nil ? link_to(lote.ped_id,ped_path(lote.ped_id)) : '' %></td>
+        <td ><%= lote.estado.estado %></td>
         <% if false %>
             <td align="center"><%= link_to 'V', lote %></td>
             <td align="center"><%= link_to 'Mod.', edit_lote_path(lote) %></td>
@@ -146,3 +140,11 @@
       <P CLASS="breakhere">
     <% end %>
     <% end %>
+</div>
+<br>
+<br>
+<% if !@existencias.nil? %>
+<footer >
+    <%= will_paginate @existencias , class: :"footer" %>
+</footer>
+<% end %>

@@ -11,11 +11,11 @@ class LotesController < ApplicationController
 			@lotes = Lote.where(fuente_id:nil).order(ped_id: :asc,movimiento_id: :asc,catalogo_id: :asc)
 		when @tipo == 3
 			@reporte = Reporte.find(params[:reporte].to_i)
-			@lotes = Lote.where("caducidad >= ? and caducidad <= ? and almacen_id = ?"+
+			@lotes = Lote.paginate(page:params[:page]).where("caducidad >= ? and caducidad <= ? and almacen_id = ?"+
 				 "and existencia > 0.0 and partida_id = ?",
 				 @reporte.desde,@reporte.hasta,@reporte.rango1,@reporte.cpfin).order(:caducidad)
 		else
-			@lotes = Lote.where(id:405625).order(movimiento_id: :asc,catalogo_id: :asc)			
+			@lotes = Lote.paginate(page:params[:page]).where(id:405625).order(movimiento_id: :asc,catalogo_id: :asc)			
 	end
     respond_to do |format|
       format.html # index.html.erb
