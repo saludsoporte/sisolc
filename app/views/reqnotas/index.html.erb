@@ -2,7 +2,7 @@
 <%= link_to 'New reqnota', new_reqnota_path %>
 <div class="container boder_div" >
 <table >
-  <thead >
+  <thead style="width:100%">
     <th>Requisicion</th>
     <th>User</th>
     <th>Fecha</th>
@@ -14,13 +14,13 @@
 <tbody> 
 <% @reqnotas.each do |reqnota| %>
   <tr >
-    <td style="width:25%"><%= reqnota.requisicion_id %></td>
-    <td style="width:25%"><%= reqnota.user_id %></td>
-    <td style="width:25%"><%= reqnota.fecha %></td>
-    <td style="width:25%"  ><%= reqnota.comenta %></td>
-    <td style="width:25%"><%= link_to 'Show', reqnota_path(reqnota.id) %></td>
-    <td style="width:25%"><%= link_to 'Edit', edit_reqnota_path(reqnota) %></td>
-    <td style="width:25%"><%= link_to 'Destroy', reqnota_path(reqnota.id), data: {:confirm => 'Are you sure?'}, :method => :delete %></td>
+    <td style="width:10%"><%= reqnota.requisicion_id %></td>
+    <td style="width:10%"><%= reqnota.user_id %></td>
+    <td style="width:10%"><%= reqnota.fecha %></td>
+    <td style="width:40%"><%= reqnota.comenta %></td>
+    <td style="width:10%"><%= link_to 'Show', reqnota_path(reqnota.id) %></td>
+    <td style="width:10%"><%= link_to 'Edit', edit_reqnota_path(reqnota) %></td>
+    <td style="width:10%"><%= link_to 'Destroy', reqnota_path(reqnota.id), data: {:confirm => 'Are you sure?'}, :method => :delete %></td>
   </tr>
 <% end %>
 </tbody>
