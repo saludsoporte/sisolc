@@ -27,14 +27,17 @@ class AlmacensController < ApplicationController
           @existencias = Lote.paginate(page:params[:page]).where("existencia > 0.0 and almacen_id=?",@alamcen).order(:fuente_id,:partida_id,:catalogo_id )
           
           #find_by_sql ["select distinct almacen_id,fuente_id,partida_id,catalogo_id,lote,caducidad 
-          #from lotes where existencia > 0.0 and almacen_id = ? order by fuente_id,partida_id,catalogo_id",@almacen]
+        #from lotes where existencia > 0.0 and almacen_id = ? order by fuente_id,partida_id,catalogo_id",@almacen]
       else
           if @partida_id == nil
-              @existencias =  Lote.paginate(page:params[:page]).where("existencia > 0.0 and almacen_id=?",@alamcen).order(:fuente_id,:partida_id,:catalogo_id )          
+              @existencias = Lote.paginate(page:params[:page]).where("existencia > 0.0 and almacen_id = ?",@almacen).order(:partida_id,:catalogo_id,:fuente_id,:caducidad)
+              
+              #find_by_sql ["select * from lotes where existencia > 0.0 and almacen_id = ? order by partida_id,catalogo_id,fuente_id,caducidad",@almacen]
           else
               @partida_id = @partida_id.to_i
-              @existencias =  Lote.paginate(page:params[:page]).where("existencia > 0.0 and almacen_id=? and partida_id=?",@alamcen,@partida_id).order(:fuente_id,:partida_id,:catalogo_id )
-          
+              @existencias = Lote.paginate(page:params[:page]).where("existencia > 0.0 and almacen_id = ? and partida_id= ?",@almacen,@partida_id).order(:catalogo_id,:fuente_id,:caducidad)
+              
+              #find_by_sql ["select * from lotes where existencia > 0.0 and almacen_id = ? and partida_id = ? order by catalogo_id,fuente_id,caducidad",@almacen,@partida_id]
           end	
       end    
     end
