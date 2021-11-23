@@ -16,24 +16,21 @@ class SolicitudsController < ApplicationController
   def index
         @soltipo = params[:ano]     
         if @soltipo != nil && @soltipo == '2'
-                @solicituds = Solicitud.where("estado_id in (1,2,3,9)").order(id: :DESC)
+                @solicituds = Solicitud.paginate(page:params[:page]).where("estado_id in (1,2,3,9)").order(id: :DESC)
                 @periodos = []
         else
                 @periodos = Solicitud.find_by_sql ["select distinct extract(year from created_at) ANO from solicituds order by ano"]
-                if params[:ano] != nil
-                        @solicituds = Solicitud.find_by_sql ["select * from solicituds where estado_id in (1,2,3,9) and extract(year from created_at) = ? and user_id = ?", params[:ano].to_i, current_user.id]
+                if params[:ano] != ""
+                  logger.debug "***************************************///////////////////// entroooo"
+                        @solicituds = Solicitud.paginate(page:params[:page]).where("estado_id in (1,2,3,9) and  extract(year from created_at) = ? and user_id = ?",params[:ano],current_user.id)
+                #find_by_sql("select * from solicituds where estado_id in (1,2,3,9)  and user_id = ?",  current_user.id)
 #                        @solicituds = Solicitud.find(:all, 
 #                                      :conditions=>["extract(year from created_at) = ?",
-#                                      params[:ano].to_i], :order=>"id DESC")
-
+#                                      params[:ano].to_i], :order=>"id DESC")                    
                 else
                         @solicituds = []
-                end
-        end
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @solicituds }
-    end
+                end            
+        end    
   end
 
   # GET /solicituds/1

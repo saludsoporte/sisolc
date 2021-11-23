@@ -106,4 +106,8 @@ logger.debug "*** link soltipo1: #{link_to("En Adquisiciones",       solicituds_
         <% end %>
 <% end %>
 </table>
-
+<% unless @solicituds.nil? %>
+<footer >
+    <%= will_paginate @solicituds , class: :"footer"%>
+</footer>
+<% end %>

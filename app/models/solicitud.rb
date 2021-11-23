@@ -11,4 +11,5 @@ class Solicitud < ApplicationRecord
 	belongs_to :proyecto
 	belongs_to :fuente
 	belongs_to :programa
+	self.per_page=10
 end
