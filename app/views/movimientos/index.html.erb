@@ -1,6 +1,7 @@
-<table border="0" width="90%">
+<div class="boder_div ">
+<table border="0" width="100%">
 	<tr>
-		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td><%= image_tag("LOGO SERVICIOS DE SALUD-1 fondo claro.png",size:"250x80",alt: :"Servicios de Salud de S.L.P." ) %></td>
 		<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
 		<h2>Movimientos de Almacen (Entradas y Salidas)</h2>
 		<% if @almacen %>
@@ -49,7 +50,7 @@
 	<% if !@almacen %>
 		<td align="center"><%=h movimiento.almacen.nombre %></td>
 	<% end %>	
-    <td align="center"><%= link_to movimiento.consec,movimiento %>
+    <td align="center"><%= link_to "ver: #{movimiento.consec}",movimiento %>
 		<% if [10].include?(current_user.rol_id) %>
 			<br/><%= link_to('Mod.', edit_movimiento_path(movimiento)) %>
 		<% end %>	
@@ -69,9 +70,9 @@
 				<%=h (proveedor_id != nil  ? Prov.find(movimiento.ped.proveedor_id).fiscal : 'FALTA PROVEEDOR EN PEDIDO')+'/'+(movimiento.oridest.blank? ? '' : Almacen.find(movimiento.oridest).nombre) %>
 			<% else %>
 				<% if !movimiento.pedido.blank? %>
-					<% pedido = Pedido.find(:first,:conditions=>{:pedido=>movimiento.pedido}) %>
+					<% pedido = Pedido.find_by(pedido:movimiento.pedido) %>
 					<% if pedido %>
-						<% proveedor = Prov.find(:first,:conditions=>{:cvealma_id=>pedido.clavepro}) %>
+						<% proveedor = Prov.find_by(cvealma_id:pedido.clavepro) %>
 						<%=h !proveedor.blank? ? proveedor.fiscal+'/'+(movimiento.oridest.blank? ? '' : Almacen.find(movimiento.oridest).nombre) : movimiento.oridest != nil ? Almacen.find(movimiento.oridest).nombre: '' %>
 					<% end %>	
 				<% else %>
@@ -115,3 +116,9 @@
 <% end %>
 </table>
 <br />
+<br>
+<% unless @movimientos.nil? %>
+<footer >
+    <%= will_paginate @movimientos , class: :"footer"%>
+</footer>
+<% end %>

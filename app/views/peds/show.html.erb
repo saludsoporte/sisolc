@@ -1,25 +1,24 @@
 <%= render :partial => '/navped' %>
-<table border="1" width="100%">
-	<tr><td colspan="8">
-	<table border="1" width="100%">
-<THEAD>
-		<tr>
-		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
-		<td align="left">
-		PROVEEDOR: 
-		<% if @ped.proveedor_id != nil %>	
-			<% proveedor = Prov.find(@ped.proveedor_id) %>
-			(#<%= proveedor.id %>)<br/>
-			<%= proveedor.fiscal %> <br/>
-			<%= proveedor.domicilio %> <br/>
-			<%= proveedor.colonia %> <br/>
-			<%= proveedor.ciudad %> C.P.<%= proveedor.cp %><br/>
-			<%= proveedor.telefonos %>
-			<% if proveedor.fax != nil %>
-				FAX: <%= proveedor.fax %>
-			<% end %> <br/>	
-			R.F.C. <%= proveedor.rfc %>
-		<% end %>	
+<div class="container boder_div">
+	<table class="table">
+		<thead>
+			<tr>
+				<td><%= image_tag("LOGO SERVICIOS DE SALUD-1 fondo claro.png",size:"250x80",alt: :"Servicios de Salud de S.L.P." ) %></td>
+				<td align="left">
+				PROVEEDOR: 
+				<% if @ped.proveedor_id != nil %>	
+					<% proveedor = Prov.find(@ped.proveedor_id) %>
+					(#<%= proveedor.id %>)<br/>
+					<%= proveedor.fiscal %> <br/>
+					<%= proveedor.domicilio %> <br/>
+					<%= proveedor.colonia %> <br/>
+					<%= proveedor.ciudad %> C.P.<%= proveedor.cp %><br/>
+					<%= proveedor.telefonos %>
+					<% if proveedor.fax != nil %>
+						FAX: <%= proveedor.fax %>
+					<% end %> <br/>	
+					R.F.C. <%= proveedor.rfc %>
+				<% end %>	
 		</td>
 		<td align="left">EFECTUAR ENTREGA EN UNIDAD:<br/>
 		<% if @ped.almacen_id != nil %>
@@ -128,111 +127,108 @@
 		</td>
 	</tr>
 </table>
-		</td>
-	</tr>
-  <tr>
-    <th>CLAVE</th>
-    <th>DESCRIPCION</th>
-    <th>PRESENTACION</th>
-    <th>PRECIO<br/>UNITARIO</th>
-    <th>CANTIDAD</th>
-    <th>IMPORTE</th>
-  </tr>
-</THEAD>
-<TBODY>
-<tr>
-<% for detped in @detpeds %> 
-  <tr>
-	<td align="center">
-	<% if detped.clave_id != nil %>
-		<%=h Catalogo.find(detped.clave_id).clave %>
-		<% if detped.estado_id == 9 %>
-			<br/>Cancelado
-		<% end %>	
-	<% end %>	
-	</td>
-	<td align="center"><%=h detped.descripcion %> <b>MARCA: <%=h detped.marca_mod %></b></td>
-	<td align="center"><%=h detped.presentacion %></td>
-	<td align="center"><%=h number_to_currency(detped.precio, :unit => '$', :separator => ".", :delimiter => ",") %></td>
-	<td align="center"><%=h detped.cantidad %>
-	<% if detped.cancelado != nil &&  detped.cancelado > 0.0 %>
-		<br/> - <%= detped.cancelado %>
-	<% end %>
-	<% if detped.recibido != nil &&  detped.recibido > 0.0 %>
-		<br/> Rec. <%= link_to(detped.recibido,lotes_path(:ped=>detped.ped_id)) %>
-	<% end %>
-	</td>
-    <td align="right"><%=h number_to_currency(detped.importe, :unit => '$', :separator => ".", :delimiter => ",") %></td>
-	<% if false %>	
-    <td align="center"><%= link_to 'Ver', detped %></td>
-	<% end %>
-	<% if [1,3].include?(@ped.estado_id) || [10].include?(current_user.rol_id) %>
-		<td><%= link_to 'Mod.', edit_detped_path(detped) %></td>
-		<td><%= link_to 'X', detped, :confirm => 'Estas seguro(a)?', :method => :delete %></td>
-	<% end %>	
-  </tr>
-<% end %>
-   <td colspan="3">
-	<%=h @ped.observaciones %>
-	</td>
-	<td align=right>
-		<b>Subtotal:</b><br/>
-		<b>Iva:</b><br/>
-		<b>Total:</b>
-	</td>	
-    <td colspan="2" align="right">
-		<%=h number_to_currency(@ped.subtotal, :unit => '$', :separator => ".", :delimiter => ",")%><br/>
-		<%=h number_to_currency(@ped.iva, :unit => '$', :separator => ".", :delimiter => ",")%><br/>
-		<%=h number_to_currency(@ped.total, :unit => '$', :separator => ".", :delimiter => ",")%><br/>
-	</td>
-  </tr>
-</TBODY>
-<TFOOT>
+<table class="table table-striped">
+	<thead class="table-dark">
+		<th>CLAVE</th>
+    	<th>DESCRIPCION</th>
+    	<th>PRESENTACION</th>
+    	<th>PRECIO<br/>UNITARIO</th>
+    	<th>CANTIDAD</th>
+    	<th>IMPORTE</th>
+	</thead>
+	<tbody>		
+		<% for detped in @detpeds %> 
+		<tr>
+			<td align="center">
+				<% if detped.clave_id != nil %>
+					<%=h Catalogo.find(detped.clave_id).clave %>
+					<% if detped.estado_id == 9 %>
+						<br/>Cancelado
+					<% end %>	
+				<% end %>	
+			</td>
+			<td align="center"><%=h detped.descripcion %> <b>MARCA: <%=h detped.marca_mod %></b></td>
+			<td align="center"><%=h detped.presentacion %></td>
+			<td align="center"><%=h number_to_currency(detped.precio, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<td align="center"><%=h detped.cantidad %>
+				<% if detped.cancelado != nil &&  detped.cancelado > 0.0 %>
+					<br/> - <%= detped.cancelado %>
+				<% end %>
+				<% if detped.recibido != nil &&  detped.recibido > 0.0 %>
+					<br/> Rec. <%= link_to(detped.recibido,lotes_path(:ped=>detped.ped_id)) %>
+				<% end %>
+			</td>
+			<td align="right"><%=h number_to_currency(detped.importe, :unit => '$', :separator => ".", :delimiter => ",") %></td>
+			<% if false %>	
+				<td align="center"><%= link_to 'Ver', detped %></td>
+			<% end %>
+			<% if [1,3].include?(@ped.estado_id) || [10].include?(current_user.rol_id) %>
+				<td><%= link_to 'Mod.', edit_detped_path(detped) %></td>
+				<td><%= link_to 'X', detped, :confirm => 'Estas seguro(a)?', :method => :delete %></td>
+			<% end %>	
+		</tr>
+		<% end %>
+		<tr>
+   			<td colspan="3"><%=h @ped.observaciones %></td>
+			<td align=right>
+				<b>Subtotal:</b>
+				<br/><b>Iva:</b><br/>
+				<b>Total:</b>
+			</td>	
+    		<td colspan="2" align="right">
+				<%=h number_to_currency(@ped.subtotal, :unit => '$', :separator => ".", :delimiter => ",")%><br/>
+				<%=h number_to_currency(@ped.iva, :unit => '$', :separator => ".", :delimiter => ",")%><br/>
+				<%=h number_to_currency(@ped.total, :unit => '$', :separator => ".", :delimiter => ",")%><br/>
+			</td>
+  		</tr>
+	</tbody>
+</table>
+<table border="1" width="100%" style="text-align:center">	
+	<% @columnas=0%>
+	<tbody>
 	<% if @ped.tipo_id != 15 && @ped.estado_id == 12 %>
-	<tr>
-	<td colspan="8">
-	<table border="1" width="100%">
-	<tr>
-		<% if @ped.adq_id != nil %>
-			<td align="center">
-			<%= User.find(@ped.adq_id ).puesto %><br/><br/>
-			<%= User.find(@ped.adq_id).name %>
+		<tr>
+			<% if @ped.adq_id != nil %>
+				<% @columnas+=1%>
+				<td>
+					<%= User.find(@ped.adq_id ).puesto %><br/><br/>
+					<%= User.find(@ped.adq_id).name %>
+				</td>
+			<% end %>
+			<td>
+				<% @columnas+=1%>
+				ADQUISICIONES<br/><br/>
+				<%= User.find(@ped.jda_id).name %>
 			</td>
-		<% end %>
-		<td align="center">
-		ADQUISICIONES<br/><br/>
-		<%= User.find(@ped.jda_id).name %>
-		</td>
-		<td align="center">
-		SUBDIRECCION OPERATIVA<br/><br/>
-		<%= User.find(@ped.so_id).name %>
-		</td>
-		<td align="center">
-		DIRECCION ADMINISTRATIVA<br/><br/>
-		<%= User.find(@ped.da_id).name %>
-		</td>
-		<% periodo = @ped.fecha.year.to_i %>
-		<% if @ped.subtotal != nil && ((@ped.subtotal >= 66465.00 && periodo == 2012) || 
-			(@ped.subtotal >= 50000.00 && periodo < 2012)) %>
-			<td align="center">
-			<% @director = User.find(@ped.dg_id) %>
-			<%= true ? 'DIRECCION GENERAL' : @director.puesto %><br/><br/>
-			<%= @director.name %>
+			<td>
+				<% @columnas+=1%>
+				SUBDIRECCION OPERATIVA<br/><br/>
+				<%= User.find(@ped.so_id).name %>
 			</td>
-		<% end %>
-	</tr>
-	<% end %>
+			<td>
+				<% @columnas+=1%>
+				DIRECCION ADMINISTRATIVA<br/><br/>
+				<%= User.find(@ped.da_id).name %>
+			</td>
+			<% periodo = @ped.fecha.year.to_i %>
+			<% if @ped.subtotal != nil && ((@ped.subtotal >= 66465.00 && periodo == 2012) || (@ped.subtotal >= 50000.00 && periodo < 2012)) %>
+				<% @columnas+=1%>
+				<td>
+					<% @director = User.find(@ped.dg_id) %>
+					<%= true ? 'DIRECCION GENERAL' : @director.puesto %><br/><br/>
+					<%= @director.name %>
+				</td>
+			<% end %>
+		</tr>
+	<% end %>	
 	<tr>
-		<td colspan="6" align="center">
-			<b><FONT face="arial" size="1"> Pedido No. <%=h @ped.id %>/<%= @ped.fecha.year%>. Estado del pedido: <%= 
+		<td colspan="<%= @columnas%>" align="center">
+			<b> Pedido No. <%=h @ped.id %>/<%= @ped.fecha.year%>. Estado del pedido: <%= 
 				@ped.estado.estado %> / Elabora: <%= User.find(@ped.user_id).name %>
 			<%=(@ped.renglon_id != nil && 
 			@ped.renglon_id != 0 ? " / " + 
-			link_to("Solicitud No."+@ped.renglon_id.to_s,solicitud_path(@ped.renglon_id)) : "") %></b></FONT>
+			link_to("Solicitud No."+@ped.renglon_id.to_s,solicitud_path(@ped.renglon_id)) : "") %></b>
 		</td>
 	</tr>	
-	</table>
-	</td>
-	</tr>
-</TFOOT>
+	</tbody>
 </table>

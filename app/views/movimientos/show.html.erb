@@ -1,6 +1,7 @@
+<div class="container boder_div">
 <table border="0" width="90%">
 	<tr>
-		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+		<td><%= image_tag("LOGO SERVICIOS DE SALUD-1 fondo claro.png",size:"250x80",alt: :"Servicios de Salud de S.L.P." ) %></td>
 		<td align="center"><b>Sistema Integral Estatal de Control de Inventarios</b><hr/>
 		<h2>Movimiento de Almacen<%= @movimiento.tipo_id == 4 && @movimiento.estado_id == 2 ? '<br/>Orden de Surtido' : '' %></h2>
 		<% @almacen = @movimiento.almacen %>
@@ -227,3 +228,4 @@
 		<% end %>
 		</table>
 <% end %>
+</div>

@@ -1,7 +1,8 @@
 <%# render :partial => '/navigation' %>
+<div class="container boder_div" >
 <table border="0" width="84%">
         <tr>
-                <td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
+                <td><%= image_tag("LOGO SERVICIOS DE SALUD-1 fondo claro.png",size:"250x80",alt: :"Servicios de Salud de S.L.P." ) %></td>
                 <td align="center"><h2>Solicitudes</h2>
                         A&ntilde;o de creaci&oacute;n:                    
                         <% @periodos.each do |periodo| %>
@@ -11,12 +12,6 @@
                 <td align="center"><%= link_to 'Nueva solicitud', new_solicitud_path %>
                 <% if [5,10,15].include?(current_user.rol_id) %>
                         <br/><br/><%= [10].include?(current_user.rol_id) ? link_to("Detalle Solicitudes", articulos_url) : "" %><br/>
-<% logger.debug "** solicituds#index:"
-logger.debug "*** link le include?: #{['2'].include?(@soltipo)}"
-logger.debug "*** link soltipo1: #{link_to("En Adquisiciones",       solicituds_path(:soltipo =>1))}:"
-#logger.debug "*** link soltipo2: #{link_to("Antes de Adquisiciones", solicituds_path(:soltipo =>2))}:"
-%>
-
                         <br/><%= ['2'].include?(@soltipo) ? 
 				link_to("En Adquisiciones", solicituds_path(:soltipo =>1)) : 
 				link_to("Antes de Adquisiciones", solicituds_path(:soltipo =>2)) %>
@@ -24,8 +19,8 @@ logger.debug "*** link soltipo1: #{link_to("En Adquisiciones",       solicituds_
         </tr>
 </table>
 
-<table border='10' width='100%'>
-  <tr>
+<table class="table">
+  <thead class="table-dark">
     <th>No.</th>
     <th>Area</th>
     <th>Solicitante</th>
@@ -39,9 +34,8 @@ logger.debug "*** link soltipo1: #{link_to("En Adquisiciones",       solicituds_
     <th>F.F.</th>
     <th>Importe</th>
     <th>Techo F.</th>
-  </tr>
-
-
+  </thead>
+<tbody>
 <% @solicituds.each do |solicitud| %>
         <% if [10].include?(current_user.rol_id) ||
              Solnotum.find_by_sql(["select * from solnota where solicitud_id = ?", solicitud.id]) != nil ||
@@ -51,11 +45,11 @@ logger.debug "*** link soltipo1: #{link_to("En Adquisiciones",       solicituds_
              [solicitud.user_id,solicitud.vobotecnico_id,solicitud.adqui_id].include?(current_user.id) ||
              ([11].include?(current_user.rol_id) && [184,185,191,194,196].include?(solicitud.fuente_id)) %>
         <tr>
-        <% ret_comenta = Solnotum.find_by_sql(["select * from solnota where solicitud_id = ? ", solicitud.id]) %>
-        <% comenta = ret_comenta[0] %>
+                <% ret_comenta = Solnotum.find_by_sql(["select * from solnota where solicitud_id = ? ", solicitud.id]) %>
+                <% comenta = ret_comenta[0] %>
 
-        <% difecha = comenta ? (Date.today - comenta.updated_at.to_date).to_i : nil %>
-        <% tono =       case
+                <% difecha = comenta ? (Date.today - comenta.updated_at.to_date).to_i : nil %>
+                <% tono =       case
                                         when difecha == nil || difecha > 7
                                                 '#FFFFFF'
                                         when difecha == 0
@@ -69,35 +63,37 @@ logger.debug "*** link soltipo1: #{link_to("En Adquisiciones",       solicituds_
                                         else
                                                 '#E0E0E0'
                                 end %>
-    <td align="center" rowspan='2' bgcolor=<%= tono %>><%=link_to solicitud.id, solicitud %>
-                <% if (current_user.id == solicitud.user_id && [1,3].include?(solicitud.estado_id)) ||
-                      (current_user.id == solicitud.vobotecnico_id && solicitud.estado_id ==2) ||
-                      [10,15].include?(current_user.rol_id) || current_user.id == solicitud.adqui_id  ||
-                      ([5].include?(current_user.rol_id) && [15].include?(current_user.dato2)) %>
-                        <br /><%= link_to 'Mod.', edit_solicitud_path(solicitud) %>
-               <% end%>
-        </td>
-    <td align="center"><%=h solicitud.area.area_abrev %></td>
-        <td><%=h solicitud.user.name %></td>
-        <td><%=h User.find(solicitud.vobotecnico_id).name %></td>
-        <td align="center"<%= solicitud.estado_id == 4 && !solicitud.adqui_id ? ' bgcolor="#FF6666"' : '' %>>
-                <% if solicitud.adqui_id != nil %>
-                        <%=h User.find(solicitud.adqui_id).name %>
-                <% else %>
-                        <%=solicitud.estado_id == 4 ? Date.today-solicitud.updated_at.to_date : '' %>
-                <% end %>
-        </td>
-    <td><%=h solicitud.tipo.tipo %></td>
-    <td><%=h solicitud.partida.partida_armonizada %></td>
-    <td><% if solicitud.updated_at != nil && solicitud.created_at != nil %><%=h solicitud.created_at.strftime('%Y/%m/%d') %>-<%=h solicitud.updated_at.strftime('%Y/%m/%d') %><% end %></td>
-    <td align="center"><%= solicitud.estado.estado %></td>
-        <td><%=h (solicitud.anexos ? 'Si' : 'No') %></td>
-        <td align="center"><%=h solicitud.fuente_id != nil ? Fuente.find(solicitud.fuente_id).fuente : 'FUENTE FALTANTE'%></td>
-        <td align="right"><%=h (solicitud.importe) %></td>
-        <td align="right"><%=h (solicitud.techo) %></td>
-        <% if [10].include?(current_user.rol_id) %>
-                <td><%= link_to 'X', solicitud, :confirm => 'Are you sure?', :method => :delete %></td>
-        <% end%>
+                <td align="center" rowspan='2' bgcolor=<%= tono %>>
+                        <%=link_to "ver solicitud: #{solicitud.id}", solicitud,class: :"btn btn-sm btn-success" %>
+                        <% if (current_user.id == solicitud.user_id && [1,3].include?(solicitud.estado_id)) ||
+                                (current_user.id == solicitud.vobotecnico_id && solicitud.estado_id ==2) ||
+                                [10,15].include?(current_user.rol_id) || current_user.id == solicitud.adqui_id  ||
+                                ([5].include?(current_user.rol_id) && [15].include?(current_user.dato2)) %>
+                                <br />
+                                <%= link_to 'Mod.', edit_solicitud_path(solicitud) %>
+                        <% end%>
+                </td>
+                <td align="center"><%=h solicitud.area.area_abrev %></td>
+                <td><%=h solicitud.user.name %></td>
+                <td><%=h User.find(solicitud.vobotecnico_id).name %></td>
+                <td align="center"<%= solicitud.estado_id == 4 && !solicitud.adqui_id ? ' bgcolor="#FF6666"' : '' %>>
+                        <% if solicitud.adqui_id != nil %>
+                                <%=h User.find(solicitud.adqui_id).name %>
+                        <% else %>
+                                <%=solicitud.estado_id == 4 ? Date.today-solicitud.updated_at.to_date : '' %>
+                        <% end %>
+                </td>
+                <td><%=h solicitud.tipo.tipo %></td>
+                <td><%=h solicitud.partida.partida_armonizada %></td>
+                <td><% if solicitud.updated_at != nil && solicitud.created_at != nil %><%=h solicitud.created_at.strftime('%Y/%m/%d') %>-<%=h solicitud.updated_at.strftime('%Y/%m/%d') %><% end %></td>
+                <td align="center"><%= solicitud.estado.estado %></td>
+                <td><%=h (solicitud.anexos ? 'Si' : 'No') %></td>
+                <td align="center"><%=h solicitud.fuente_id != nil ? Fuente.find(solicitud.fuente_id).fuente : 'FUENTE FALTANTE'%></td>
+                <td align="right"><%=h (solicitud.importe) %></td>
+                <td align="right"><%=h (solicitud.techo) %></td>
+                <% if [10].include?(current_user.rol_id) %>
+                        <td><%= link_to 'X', solicitud, :confirm => 'Are you sure?', :method => :delete %></td>
+                <% end%>
         </tr>
         <tr>
                 <th align='center'>Notas</th>
@@ -105,9 +101,11 @@ logger.debug "*** link soltipo1: #{link_to("En Adquisiciones",       solicituds_
         </tr>
         <% end %>
 <% end %>
+</tbody>
 </table>
 <% unless @solicituds.nil? %>
 <footer >
     <%= will_paginate @solicituds , class: :"footer"%>
 </footer>
 <% end %>
+</div>

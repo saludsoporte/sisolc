@@ -4,9 +4,9 @@ class PartidasController < ApplicationController
   # GET /partidas.xml
   def index
 	@partidas = case current_user.rol_id
-		when 12	then @partidas = Partida.where("partida between 5000 and 5999").order(:partida)
-		when 13	then @partidas = Partida.where("partida between 1000 and 3999").order(:partida)
-		when 14	then @partidas = Partida.where("partida between 5300 and 5399").order(:partida)
+		when 12	then @partidas = Partida.paginate(page:params[:page]).where("partida between 5000 and 5999").order(:partida)
+		when 13	then @partidas = Partida.paginate(page:params[:page]).where("partida between 1000 and 3999").order(:partida)
+		when 14	then @partidas = Partida.paginate(page:params[:page]).where("partida between 5300 and 5399").order(:partida)
 		else Partida.all().order(:partida)
 	end
     respond_to do |format|

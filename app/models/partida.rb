@@ -8,6 +8,8 @@ class Partida < ApplicationRecord
     has_many :reordens
     has_many :peds
 
+    self.per_page = 10
+    
     def partida_armonizada
             cog2011.to_s + " (" + partida.to_s+ ")"
     end

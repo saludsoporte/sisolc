@@ -32,12 +32,12 @@
 			<td align="center"><%=h almacen.clue.nomunidad %></td>
 			<td align="center"><%=h almacen.user.name %></td>
 			<td align="center"><%= link_to almacen.nombre, almacen_path(almacen.id) %></td>
-			<td align="center"><%= link_to 'Ver', movimientos_path(:almacen=>almacen.id) %></td>
-			<td align="center"><%= link_to almacen.tipo, almacen_path(almacen.id,:marbetes=> true) %></td>
+			<td align="center"><%= link_to 'Ver', movimientos_path(:almacen=>almacen.id),class: :"btn btn-sm btn-primary" %></td>
+			<td align="center"><%= link_to almacen.tipo, almacen_path(almacen.id,:marbetes=> true) ,class: :"btn btn-sm btn-success" %></td>
 			<% if [10,13,27].include?(current_user.rol_id) || [165].include?(current_user.id) %>
-				<td align="center"><%= link_to 'Mod.', edit_almacen_path(almacen) %></td>
+				<!-- <td align="center"><%# link_to 'Mod.', edit_almacen_path(almacen) %></td>-->
 				<% if [10].include?(current_user.rol_id) %>
-					<td align="center"><%= link_to 'X', almacen, :confirm => 'Are you sure?', :method => :delete %></td>
+					<!-- <td align="center"><%= link_to 'X', almacen, :confirm => 'Are you sure?', :method => :delete %></td>-->
 				<% end %>
 			<% end %>
 		</tr>
@@ -50,3 +50,4 @@
 <footer >
     <%= will_paginate @almacens , class: :"footer"%>
 </footer>
+

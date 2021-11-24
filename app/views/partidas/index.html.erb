@@ -1,4 +1,5 @@
 <%# render :partial => '/navigation' %>
+<div class="container boder_div">
 <table border="0" width="85%">
 	<tr>
 		<td><img src="/images/ssslp.jpg" alt="Servicios de Salud de S.L.P." width="215" height="101" /></td>
@@ -34,3 +35,8 @@
 <% end %>
 </table>
 <br />
+</div>
+
+<footer >
+    <%= will_paginate @partidas , class: :"footer"%>
+</footer>

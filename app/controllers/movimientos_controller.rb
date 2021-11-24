@@ -12,7 +12,7 @@ class MovimientosController < ApplicationController
           end          
       else
           @almacen = Almacen.find(@almacen)
-          @movimientos = Movimiento.where("almacen_id = ? and extract(year from fecha) = ? and extract(month from fecha) = ?",@almacen.id,params[:ano].to_i,params[:mes].to_i).order(consec:  :DESC)
+          @movimientos = Movimiento.paginate(page:params[:page]).where("almacen_id = ? and extract(year from fecha) = ? and extract(month from fecha) = ?",@almacen.id,params[:ano].to_i,params[:mes].to_i).order(consec:  :DESC)
           respond_to do |format|
               format.html # index.html.erb
               format.xml  { render :xml => @movimientos }
