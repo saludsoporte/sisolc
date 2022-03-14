@@ -7,7 +7,7 @@ class PartidasController < ApplicationController
 		when 12	then @partidas = Partida.paginate(page:params[:page]).where("partida between 5000 and 5999").order(:partida)
 		when 13	then @partidas = Partida.paginate(page:params[:page]).where("partida between 1000 and 3999").order(:partida)
 		when 14	then @partidas = Partida.paginate(page:params[:page]).where("partida between 5300 and 5399").order(:partida)
-		else Partida.all().order(:partida)
+		else Partida.paginate(page:params[:page]).all().order(:partida)
 	end
     respond_to do |format|
       format.html # index.html.erb
