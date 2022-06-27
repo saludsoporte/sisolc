@@ -55,6 +55,8 @@ class UsersController < ApplicationController
     if [5,7,8,10,17,18,19].include?(current_user.rol_id)
       @usuario = [17].include?(current_user.rol_id) ? current_user.id : params[:id]
       @pacientes = Paciente.find_by_sql ["select * from pacientes where id = ? or exists(select * from atencions where user_id = ?) order by nombre",@usuario,@usuario]
+      logger.debug "****************/////////////////////" + @pacientes.count.to_s
+      
       @domicilios = Domicilio.where("user_id=?",@usuario).order(id: :DESC)   
       @afiliacions = Afiliacion.where("user_id=?",@usuario).order(id: :DESC)
       @atencions = Atencion.where("user_id=?",@usuario).order(id: :DESC)
